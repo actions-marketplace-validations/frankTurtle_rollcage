@@ -41,16 +41,20 @@ Other pieces (07, 08, 09, 11, 13, 14) are not set up by this command; see
 2. Preview. Nothing is written:
 
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node - --dry-run
+   npx rollcage-init --dry-run
    ```
+
+   No npm? Use the fallback: `curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node - --dry-run`.
 
 3. Run it for real:
 
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -
+   npx rollcage-init
    ```
 
-   Options (add after `node -`):
+   Fallback without npm: `curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -`.
+
+   Options (add after the command, or after `node -` for the curl fallback):
    - `--pieces 01,04,05` enables only those pieces. `--without 03,10` removes some from the default.
    - `--ref v0.4.0` picks the Rollcage release. It is resolved to a commit SHA and every reference
      is pinned to that SHA.
