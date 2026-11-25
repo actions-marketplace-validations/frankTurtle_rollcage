@@ -3,3 +3,5 @@ coverage
 dist
 pnpm-lock.yaml
 *.md
+.claude/worktrees
+.aws-sam

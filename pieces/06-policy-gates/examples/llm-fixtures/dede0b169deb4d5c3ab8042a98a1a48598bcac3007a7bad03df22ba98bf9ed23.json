@@ -1,0 +1,4 @@
+{
+  "text": "{\"explanation\":\"Data on this resource is stored unencrypted, so a copied disk or snapshot would be readable.\",\"assumptions\":[\"No account-level default encryption already covers this resource.\"]}",
+  "model": "hand-written-fixture"
+}

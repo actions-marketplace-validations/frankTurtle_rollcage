@@ -1,0 +1,12 @@
+{
+  "headline": "Spend rose $711 (28.2%) week over week; $580 of it is unexplained.",
+  "paragraphs": [
+    "Amazon OpenSearch Service is new this week at $310. Cost Anomaly Detection flagged it.",
+    "EC2 - Other rose $270, from $120 to $390. Cost Anomaly Detection points at NatGateway-Bytes in us-east-1, which is data moving through a NAT gateway.",
+    "Spend with no team tag grew from $135 to $296, so part of this week's increase has no owner."
+  ],
+  "assumptions": [
+    "The OpenSearch domain was created on purpose. The data does not say who created it.",
+    "The NAT gateway traffic comes from a new or changed workload. The data does not name it."
+  ]
+}

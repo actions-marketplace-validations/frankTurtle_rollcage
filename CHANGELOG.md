@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 (2026-11-25)
+
+- Pieces 05 to 14, built in parallel and in review: SBOM and vulnerability triage (Syft, Grype,
+  KEV, EPSS, code evidence), policy gates (OPA/Rego with conftest, illustrative NIST SP 800-171
+  mapping), CI failure triage (signatures, flip-rate history, quarantine proposals), AWS cost
+  explainer (SAM app, not deployed), postmortem drafter (redaction before any model call),
+  provenance signing (deploy gate; the attestation job is disabled until approved), RAG onboarding
+  (Python, cited answers, refusals, eval gate), golden path template (scaffold CLI and reusable
+  workflows), multi-agent workflow (built on Escapement 0.2.0, approval checkpoint, exact replay)
+  and AI dev tool evaluation (rubric, pilot plan, weighted scorecard).
+- Video hooks for pieces 06 and 12 no longer cite unverified statistics.
+
 ## 0.1.0 (2026-11-25)
 
 - Piece 04 deployed to AWS (us-east-1) and tested with signed webhooks and a canary IAM user. The

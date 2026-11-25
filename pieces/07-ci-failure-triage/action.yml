@@ -1,0 +1,73 @@
+name: CI failure triage
+description: Classify failed workflow runs (regression, flaky, infrastructure, dependency) and draft a quarantine proposal for flaky tests. Read-only; it never opens a pull request.
+author: rollcage
+
+inputs:
+  days:
+    description: How many days of runs to read, ending now.
+    default: '14'
+  history:
+    description: Path to the flip-rate history JSON, relative to the workspace. Created if missing and update-history is true.
+    default: .ci-triage/history.json
+  update-history:
+    description: Record this run's outcomes in the history file ('true' or 'false').
+    default: 'false'
+  quarantine:
+    description: Path to the quarantine list JSON, relative to the workspace.
+    default: quarantine.json
+  config:
+    description: Path to triage.yml, relative to the workspace. Defaults are used if the file is missing.
+    default: triage.yml
+  llm:
+    description: "Summary writer: 'none' (fixed text), 'auto' (live model only if anthropic-api-key is set) or 'live'."
+    default: none
+  anthropic-api-key:
+    description: Optional. Only used when llm is auto or live. The model id comes from the ANTHROPIC_MODEL environment variable.
+    default: ''
+  github-token:
+    description: Token with actions read access.
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 24
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}/../..
+      run: |
+        corepack enable
+        pnpm install --frozen-lockfile --filter "@adl/ci-failure-triage..."
+    - name: Triage failed runs
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        TRIAGE_REPO: ${{ github.repository }}
+        TRIAGE_DAYS: ${{ inputs.days }}
+        TRIAGE_HISTORY: ${{ github.workspace }}/${{ inputs.history }}
+        TRIAGE_UPDATE_HISTORY: ${{ inputs.update-history }}
+        TRIAGE_QUARANTINE: ${{ github.workspace }}/${{ inputs.quarantine }}
+        TRIAGE_CONFIG: ${{ github.workspace }}/${{ inputs.config }}
+        TRIAGE_LLM: ${{ inputs.llm }}
+        TRIAGE_OUT: ${{ runner.temp }}/triage-out
+      run: |
+        until=$(date -u +%F)
+        since=$(date -u -d "$TRIAGE_DAYS days ago" +%F)
+        args=(triage --repo "$TRIAGE_REPO" --since "$since" --until "$until" --llm "$TRIAGE_LLM" --out "$TRIAGE_OUT")
+        mkdir -p "$(dirname "$TRIAGE_HISTORY")"
+        args+=(--history "$TRIAGE_HISTORY")
+        [ "$TRIAGE_UPDATE_HISTORY" = "true" ] && args+=(--update-history)
+        [ -f "$TRIAGE_QUARANTINE" ] && args+=(--quarantine "$TRIAGE_QUARANTINE")
+        [ -f "$TRIAGE_CONFIG" ] && args+=(--config "$TRIAGE_CONFIG")
+        pnpm exec tsx src/bin.ts "${args[@]}"
+        cat "$TRIAGE_OUT/triage.md" >> "$GITHUB_STEP_SUMMARY"
+    - name: Upload triage report
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: ci-failure-triage-${{ github.run_id }}
+        path: ${{ runner.temp }}/triage-out
+        if-no-files-found: ignore

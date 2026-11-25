@@ -8,6 +8,7 @@ export default tseslint.config(
       '**/coverage/**',
       '**/dist/**',
       '**/.aws-sam/**',
+      '.claude/worktrees/**',
       '**/.venv/**',
     ],
   },

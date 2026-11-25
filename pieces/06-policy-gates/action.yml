@@ -1,0 +1,52 @@
+name: Policy gates
+description: Run OPA/Rego policies with conftest against Terraform plan JSON and GitHub workflow YAML. Fails the job on any violation.
+author: rollcage
+
+inputs:
+  path:
+    description: Files or directories to test, relative to the workspace, separated by spaces.
+    default: '.'
+  policy:
+    description: Policy directory, relative to the workspace. Empty uses the rules bundled with this action.
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 24
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}/../..
+      run: |
+        corepack enable
+        pnpm install --frozen-lockfile --filter "@adl/policy-gates..."
+    - name: Install conftest
+      shell: bash
+      env:
+        CONFTEST_VERSION: 0.71.1
+        RUNNER_TEMP_DIR: ${{ runner.temp }}
+      run: |
+        if command -v conftest >/dev/null; then exit 0; fi
+        base="https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}"
+        archive="conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz"
+        dir="$RUNNER_TEMP_DIR/conftest"
+        mkdir -p "$dir"
+        curl -fsSL -o "$dir/$archive" "$base/$archive"
+        curl -fsSL -o "$dir/checksums.txt" "$base/checksums.txt"
+        (cd "$dir" && grep " $archive\$" checksums.txt | sha256sum --check --strict -)
+        tar -xzf "$dir/$archive" -C "$dir" conftest
+        echo "$dir" >> "$GITHUB_PATH"
+    - name: Run policy gates
+      shell: bash
+      env:
+        PG_PATHS: ${{ inputs.path }}
+        PG_POLICY: ${{ inputs.policy }}
+        PG_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        read -r -a paths <<< "$PG_PATHS"
+        args=(check "${paths[@]}")
+        [ -n "$PG_POLICY" ] && args+=(--policy "$PG_POLICY")
+        "$PG_ACTION_PATH/node_modules/.bin/tsx" "$PG_ACTION_PATH/src/bin.ts" "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+        exit "${PIPESTATUS[0]}"

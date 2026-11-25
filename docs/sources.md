@@ -117,3 +117,18 @@ person has read them.
 - Not found in the pages read: the SAM esbuild build options, and AWS's own statement about keys in
   public GitHub repositories.
 - Status: re-check before each release; runtimes and deprecation dates change.
+
+## Claude Code subagent file format (piece 13)
+
+- URL: https://code.claude.com/docs/en/sub-agents (read 2026-11-25).
+- Used by piece 13: Markdown with YAML frontmatter in `.claude/agents/`; `name` and `description`
+  required; optional `tools` and `model`.
+- Status: re-check before each release; the field list changes.
+
+## SLSA build levels and GitHub artifact attestations (piece 10)
+
+- https://slsa.dev/spec/v1.0/levels and
+  https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations
+- Piece 10's README claims Build 2 for its (disabled) attestation workflow and Build 3 only with a
+  reusable workflow. These pages were not fetched during the build.
+- Status: VERIFY BEFORE PUBLISHING.

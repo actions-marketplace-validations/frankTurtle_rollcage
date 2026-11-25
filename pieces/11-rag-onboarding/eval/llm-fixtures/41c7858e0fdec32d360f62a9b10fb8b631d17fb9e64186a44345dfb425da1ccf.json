@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"Reviewers answer within one working day. If nobody has looked after two working days, post in\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:13-19\", \"quote\": \"Reviewers answer within one working day. If nobody has looked after two working days, post in\"}]}",
+  "model": "offline-generator"
+}

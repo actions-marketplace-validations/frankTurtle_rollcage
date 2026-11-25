@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"5. Two approvals are required. One of them must come from a code owner listed in `CODEOWNERS`.\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:7-14\", \"quote\": \"5. Two approvals are required. One of them must come from a code owner listed in `CODEOWNERS`.\"}]}",
+  "model": "offline-generator"
+}

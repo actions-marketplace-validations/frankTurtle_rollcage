@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "suiteId": "multi-agent-workflow",
+  "tolerance": 0,
+  "aggregateTolerance": 0,
+  "aggregate": {
+    "score": 1,
+    "passed": 4,
+    "failed": 0
+  },
+  "cases": {
+    "1-planner": {
+      "score": 1,
+      "passed": true,
+      "critical": true,
+      "fingerprint": "24a34e4e"
+    },
+    "2-implementer": {
+      "score": 1,
+      "passed": true,
+      "critical": true,
+      "fingerprint": "1bd2f682"
+    },
+    "3-tester": {
+      "score": 1,
+      "passed": true,
+      "critical": true,
+      "fingerprint": "086419a6"
+    },
+    "4-reviewer": {
+      "score": 1,
+      "passed": true,
+      "critical": true,
+      "fingerprint": "24a34e4e"
+    }
+  }
+}

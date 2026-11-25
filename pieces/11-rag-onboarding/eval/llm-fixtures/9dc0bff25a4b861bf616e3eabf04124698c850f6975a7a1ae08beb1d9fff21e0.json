@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"3. If consumers are running but the age keeps growing, look at the dead-letter queue. More than\", \"citations\": [{\"chunk_id\": \"runbooks/queue-backlog.md:13-19\", \"quote\": \"3. If consumers are running but the age keeps growing, look at the dead-letter queue. More than\"}]}",
+  "model": "offline-generator"
+}

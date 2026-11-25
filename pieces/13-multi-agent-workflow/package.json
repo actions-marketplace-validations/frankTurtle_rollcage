@@ -1,0 +1,24 @@
+{
+  "name": "@adl/multi-agent-workflow",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "workflow": "tsx src/bin.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "eval": "tsx evals/run.ts",
+    "eval:gate": "tsx evals/run.ts --gate",
+    "eval:baseline": "tsx evals/run.ts --record",
+    "demo": "bash demo/demo.sh",
+    "demo:reset": "rm -rf demo/out"
+  },
+  "dependencies": {
+    "@adl/shared": "workspace:*",
+    "escapement": "0.2.0",
+    "tsx": "^4.23.15",
+    "yaml": "^2.6.0",
+    "zod": "^3.23.0"
+  }
+}

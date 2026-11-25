@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"def create_order(headers: dict[str, str], body: dict) -> tuple[int, dict]:\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/api.py:7-14\", \"quote\": \"def create_order(headers: dict[str, str], body: dict) -> tuple[int, dict]:\"}]}",
+  "model": "offline-generator"
+}

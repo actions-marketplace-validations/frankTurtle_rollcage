@@ -1,0 +1,23 @@
+{
+  "name": "@adl/policy-gates",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsx src/bin.ts check",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:rego": "bash scripts/test-rego.sh",
+    "coverage": "vitest run --coverage",
+    "demo": "bash demo/demo.sh",
+    "demo:reset": "rm -rf demo/out"
+  },
+  "dependencies": {
+    "@adl/shared": "workspace:*",
+    "tsx": "^4.23.15",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "yaml": "^2.6.0"
+  }
+}

@@ -1,0 +1,7 @@
+2026-03-24T13:05:44.1001922Z ##[group]Run docker/build-push-action
+2026-03-24T13:05:44.1003011Z ##[endgroup]
+2026-03-24T13:05:45.6602010Z #3 [internal] load metadata for docker.io/library/node:24-slim
+2026-03-24T13:05:46.9910021Z #3 ERROR: failed to copy: httpReadSeeker: failed open: unexpected status from GET request to https://registry-1.docker.io/v2/library/node/manifests/sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef: 429 Too Many Requests
+2026-03-24T13:05:46.9911034Z toomanyrequests: You have reached your unauthenticated pull rate limit. https://www.docker.com/increase-rate-limit
+2026-03-24T13:05:47.0102200Z ERROR: failed to solve: node:24-slim: failed to resolve source metadata for docker.io/library/node:24-slim
+2026-03-24T13:05:47.0203311Z ##[error]buildx failed with: ERROR: failed to solve: node:24-slim: failed to resolve source metadata for docker.io/library/node:24-slim: failed to copy: httpReadSeeker: failed open: unexpected status from GET request: 429 Too Many Requests

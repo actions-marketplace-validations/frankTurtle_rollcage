@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"return FLAT_SHIPPING_CENTS\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/pricing.py:15-19\", \"quote\": \"    return FLAT_SHIPPING_CENTS\"}]}",
+  "model": "offline-generator"
+}

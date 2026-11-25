@@ -1,0 +1,22 @@
+{
+  "illustrative": true,
+  "entries": [
+    { "ruleId": "PG001", "stage": "pre-merge" },
+    { "ruleId": "PG001", "stage": "pre-merge" },
+    { "ruleId": "PG001", "stage": "pre-merge" },
+    { "ruleId": "PG001", "stage": "post-deploy" },
+    { "ruleId": "PG002", "stage": "pre-merge" },
+    { "ruleId": "PG002", "stage": "pre-merge" },
+    { "ruleId": "PG002", "stage": "pre-merge" },
+    { "ruleId": "PG002", "stage": "pre-merge" },
+    { "ruleId": "PG002", "stage": "post-deploy" },
+    { "ruleId": "PG003", "stage": "pre-merge" },
+    { "ruleId": "PG003", "stage": "pre-merge" },
+    { "ruleId": "PG003", "stage": "post-deploy" },
+    { "ruleId": "PG004", "stage": "pre-merge" },
+    { "ruleId": "PG004", "stage": "pre-merge" },
+    { "ruleId": "PG005", "stage": "pre-merge" },
+    { "ruleId": "PG005", "stage": "pre-merge" },
+    { "ruleId": "PG006", "stage": "pre-merge" }
+  ]
+}
