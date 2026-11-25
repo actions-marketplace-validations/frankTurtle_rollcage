@@ -13,3 +13,4 @@ export * from './random.js';
 export * from './github-http.js';
 export * from './stats.js';
 export * from './demo.js';
+export * from './llm-select.js';
