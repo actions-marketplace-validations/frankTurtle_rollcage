@@ -29,7 +29,7 @@ function rubricRows(markdown: string): RubricRow[] {
       group = heading[1];
       continue;
     }
-    const match = /^\| ([A-Z]\d+) \|/.exec(line);
+    const match = /^\|\s*([A-Z]\d+)\s*\|/.exec(line);
     if (!match) continue;
     const cells = line
       .split('|')

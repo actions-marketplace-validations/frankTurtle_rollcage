@@ -86,7 +86,8 @@ describe('AC5: validation rejects bad input', () => {
   });
 
   it('reports every problem it finds, not just the first', () => {
-    const errors = scorecardErrors(fullCsv(header, { A1: '9,9', B1: '' }));
+    // A1: two out-of-range scores. B1: a blank score for Tool A.
+    const errors = scorecardErrors(fullCsv(header, { A1: '9,9', B1: ',1' }));
     expect(errors.length).toBeGreaterThanOrEqual(3);
   });
 

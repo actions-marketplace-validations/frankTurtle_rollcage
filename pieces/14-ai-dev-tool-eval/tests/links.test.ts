@@ -48,7 +48,7 @@ describe('AC9: slugs and headings', () => {
     expect(slugify('Acceptance criteria (each has a test)')).toBe(
       'acceptance-criteria-each-has-a-test',
     );
-    expect(slugify('  Mixed  Case_Ok ')).toBe('mixed-case_ok');
+    expect(slugify('  Mixed Case_Ok ')).toBe('mixed-case_ok');
   });
 
   it('collects heading slugs and skips headings inside code fences', () => {

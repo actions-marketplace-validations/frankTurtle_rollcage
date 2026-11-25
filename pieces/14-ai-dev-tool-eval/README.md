@@ -123,13 +123,13 @@ descending. Equal scores sort by tool name, so the output never depends on file 
 
 ```bash
 pnpm --filter @adl/ai-dev-tool-eval exec tsx src/bin.ts score \
-  --scorecard scorecard.example.csv --weights weights.json [--out FILE]
+  [--root DIR] [--scorecard FILE] [--weights FILE] [--out FILE]
 pnpm --filter @adl/ai-dev-tool-eval exec tsx src/bin.ts links [--root DIR] [--live]
 ```
 
-`score` exits 1 and prints every validation error it finds. `links` exits 1 when a relative link
-is broken, or, with `--live`, when an external URL fails. Without `--live` external links are
-listed as skipped.
+Paths default to the current folder: `scorecard.example.csv` and `weights.json`. `score` exits 1
+and prints every validation error it finds. `links` exits 1 when a relative link is broken, or,
+with `--live`, when an external URL fails. Without `--live` external links are counted as skipped.
 
 ### Acceptance criteria (each has a test)
 
