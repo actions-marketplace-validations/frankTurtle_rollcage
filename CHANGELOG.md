@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.1 (2026-11-25)
+
 - `rollcage-init` defaults to the v0.5.0 release instead of v0.4.0. Version 0.5.1 is the first published by
   GitHub Actions with provenance.
 - `docs/readiness.md` names the npm package as the install path.
