@@ -1,5 +1,9 @@
 # Adopting Rollcage in a real project
 
+Short on time? `curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -`
+writes the proven pieces for you (see [SETUP.md](../SETUP.md)). The rest of this guide explains
+what it wrote and why.
+
 The demos show each piece alone. This guide turns the pieces on in the order a team would, using
 [rollcage-example](https://github.com/frankTurtle/rollcage-example), a small orders service that
 adopts the library. It covers sequencing and checks. Each piece's README has the install detail, so

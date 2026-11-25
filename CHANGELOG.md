@@ -11,6 +11,10 @@
 - Piece 07: strips the byte order mark real job logs start with. Piece 05: table column spacing.
 - Piece 11: `fixtures --with-model`. Piece 12: template Markdown tables are formatted.
 
+- `init/rollcage-init.mjs`: one command that sets Rollcage up in an existing repository (pieces 01
+  to 06 and a manual 10 workflow), pinned to a commit SHA, never overwriting files. `SETUP.md` and
+  `llms.txt` give coding agents the same steps at a stable URL.
+
 ## 0.3.0 (2026-11-25)
 
 - Piece 13 moves to Escapement 0.3.0: the four agents run as an Escapement `pipeline()` with linked

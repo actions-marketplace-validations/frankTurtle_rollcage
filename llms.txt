@@ -1,0 +1,9 @@
+# Rollcage
+
+> Safety checks for AI-assisted delivery on GitHub: PR risk scoring, coding-agent rules, secret scanning, vulnerability and policy gates, signed releases and DORA metrics.
+
+To set Rollcage up in a repository, follow the agent instructions:
+
+- [SETUP.md](https://raw.githubusercontent.com/frankTurtle/rollcage/main/SETUP.md): one command, step by step, with rules for agents
+- [docs/adopting.md](https://raw.githubusercontent.com/frankTurtle/rollcage/main/docs/adopting.md): the longer adoption path and checks
+- [README.md](https://raw.githubusercontent.com/frankTurtle/rollcage/main/README.md): what each piece does
