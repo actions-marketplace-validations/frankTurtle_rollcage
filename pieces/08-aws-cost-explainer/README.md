@@ -115,17 +115,17 @@ without them the deterministic summary is used.
 
 ### Config reference (Lambda environment)
 
-| Variable                   | Default      | Meaning                                                                 |
-| -------------------------- | ------------ | ----------------------------------------------------------------------- |
-| `DATA_SOURCE`              | `fixture`    | `live` reads Cost Explorer. Anything else uses the bundled fixture.     |
-| `TAG_KEY`                  | `team`       | Cost allocation tag to group by.                                        |
-| `MIN_DELTA_USD`            | `25`         | A change is material only if its absolute size is at least this.        |
-| `MIN_DELTA_PCT`            | `20`         | and its size relative to last week is at least this percent (new spend always qualifies). |
-| `EXPECTED_CHANGES`         | empty        | Comma-separated service names whose increase is expected.              |
-| `TOPIC_ARN`                | empty        | SNS topic for the email notification.                                   |
-| `SLACK_WEBHOOK_SECRET_ARN` | empty        | Secrets Manager secret whose value is the Slack webhook URL.            |
-| `ANTHROPIC_KEY_SECRET_ARN` | empty        | Secrets Manager secret holding an API key. Empty means no model call.   |
-| `ANTHROPIC_MODEL`          | shared default | Model id, read through the shared config. Never hard-coded here.      |
+| Variable                   | Default        | Meaning                                                                                   |
+| -------------------------- | -------------- | ----------------------------------------------------------------------------------------- |
+| `DATA_SOURCE`              | `fixture`      | `live` reads Cost Explorer. Anything else uses the bundled fixture.                       |
+| `TAG_KEY`                  | `team`         | Cost allocation tag to group by.                                                          |
+| `MIN_DELTA_USD`            | `25`           | A change is material only if its absolute size is at least this.                          |
+| `MIN_DELTA_PCT`            | `20`           | and its size relative to last week is at least this percent (new spend always qualifies). |
+| `EXPECTED_CHANGES`         | empty          | Comma-separated service names whose increase is expected.                                 |
+| `TOPIC_ARN`                | empty          | SNS topic for the email notification.                                                     |
+| `SLACK_WEBHOOK_SECRET_ARN` | empty          | Secrets Manager secret whose value is the Slack webhook URL.                              |
+| `ANTHROPIC_KEY_SECRET_ARN` | empty          | Secrets Manager secret holding an API key. Empty means no model call.                     |
+| `ANTHROPIC_MODEL`          | shared default | Model id, read through the shared config. Never hard-coded here.                          |
 
 ### Acceptance criteria (each has a test)
 
@@ -170,18 +170,18 @@ No test calls AWS, Slack or the model. They use fakes, and `FakeLlm` for model r
 
 ### Runtime dependencies
 
-| Package                          | Why                                                          |
-| -------------------------------- | ------------------------------------------------------------ |
-| `zod`                            | Validate model output and config.                            |
-| `@adl/shared`                    | LLM client, structured output helper, demo helpers (workspace). |
-| `tsx`                            | Run the CLI and demo without a build step.                   |
+| Package                                                                         | Why                                                               |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `zod`                                                                           | Validate model output and config.                                 |
+| `@adl/shared`                                                                   | LLM client, structured output helper, demo helpers (workspace).   |
+| `tsx`                                                                           | Run the CLI and demo without a build step.                        |
 | AWS SDK v3 `client-cost-explorer`, `client-sns`, `client-secrets-manager` (dev) | Bundled into the Lambda file by `build:lambda`, as piece 04 does. |
-| `esbuild` (dev)                  | The bundle step.                                             |
+| `esbuild` (dev)                                                                 | The bundle step.                                                  |
 
 ### Cost of the API calls
 
-Per run the function makes two `GetCostAndUsage` calls per week-pair per grouping (service, tag),
-so four, plus one `GetAnomalies` call, plus pagination if a result is large. Cost Explorer API
+Per run the function makes four `GetCostAndUsage` calls (two weeks, grouped by service and by
+tag), plus one `GetAnomalies` call, plus pagination if a result is large. Cost Explorer API
 requests are billed per request. Check the current price at https://aws.amazon.com/aws-cost-management/aws-cost-explorer/pricing/
 before you schedule the function. This README states no price because it did not read the page.
 
@@ -212,6 +212,12 @@ Unverified: that `GetAnomalies` and `GetCostAndUsage` accept the exact request s
 builds (written from the SDK types and docs, not run); that the tag grouping returns `team$` for
 untagged spend as documented; that the `ce:*` actions cannot be scoped below `*`; and the price of
 the API calls.
+
+### Decisions
+
+See `docs/decisions/0009-cost-explainer-deterministic-numbers-fixture-default.md` for how unexplained
+spend is defined, why the model text is checked for ungrounded dollar figures, and why fixture mode is
+the default.
 
 ### Status
 
