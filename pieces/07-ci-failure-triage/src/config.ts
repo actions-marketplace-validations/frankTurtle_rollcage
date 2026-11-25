@@ -16,8 +16,8 @@ const LogSchema = z.object({
 });
 
 const ConfigSchema = z.object({
-  flaky: FlakySchema.default({}),
-  log: LogSchema.default({}),
+  flaky: FlakySchema.prefault({}),
+  log: LogSchema.prefault({}),
   /** Metrics for a period with fewer failed runs than this are flagged as a small sample. */
   min_samples: z.number().int().min(1).default(5),
 });

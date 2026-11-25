@@ -15,6 +15,6 @@
   "dependencies": {
     "@adl/shared": "workspace:*",
     "tsx": "^4.23.15",
-    "zod": "^3.23.0"
+    "zod": "^4.6.6"
   }
 }

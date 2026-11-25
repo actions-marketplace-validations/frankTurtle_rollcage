@@ -12,7 +12,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "zod": "^3.23.0",
+    "zod": "^4.6.6",
     "yaml": "^2.6.0"
   }
 }

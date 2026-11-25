@@ -7,6 +7,7 @@ const mappingSchema = z.object({
   label: z.literal(MAPPING_LABEL),
   standard: z.string().min(1),
   rules: z.record(
+    z.string(),
     z.object({
       title: z.string().min(1),
       controls: z
