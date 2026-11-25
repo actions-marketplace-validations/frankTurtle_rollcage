@@ -176,3 +176,16 @@ describe('protected paths: the guard cannot edit itself', () => {
     expect(d.reason).toMatch(/themselves/);
   });
 });
+
+describe('find that deletes under a protected directory', () => {
+  it('denies -delete and -exec rm over a path holding protected files', () => {
+    expectDenied(['find .claude -delete', 'find . -name "*.json" -delete', 'find -delete']);
+  });
+  it('allows find elsewhere and find without deleting', () => {
+    expectAllowed([
+      'find node_modules -name x -delete',
+      'find .claude -name "*.json"',
+      'find . -name "*.ts" -exec grep -l foo {} +',
+    ]);
+  });
+});

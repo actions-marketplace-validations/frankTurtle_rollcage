@@ -29,6 +29,13 @@ const DEFAULT_SECRET_PATHS = [
   '**/.docker/config.json',
 ];
 
+const DEFAULT_PROTECTED_PATHS = [
+  '.claude/settings.json',
+  '.claude/settings.local.json',
+  '.claude/agent-policy.yml',
+  'pieces/02-agent-policy/src/**',
+];
+
 const DEFAULT_SECRET_EXCEPTIONS = ['.env.example', '.env.sample', '.env.template', '*.pub'];
 
 const DEFAULT_HOSTS = [
@@ -51,6 +58,7 @@ const ConfigSchema = z
     allow_loopback: z.boolean().default(true),
     allow_write_dirs: z.array(z.string().min(1)).default(['/tmp', '/private/tmp', '~/.claude']),
     secret_paths: z.array(z.string().min(1)).default(DEFAULT_SECRET_PATHS),
+    protected_paths: z.array(z.string().min(1)).default(DEFAULT_PROTECTED_PATHS),
     secret_exceptions: z.array(z.string().min(1)).default(DEFAULT_SECRET_EXCEPTIONS),
     allow_web_search: z.boolean().default(true),
     audit_required: z.boolean().default(true),
