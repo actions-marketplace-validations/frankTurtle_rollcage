@@ -5,7 +5,7 @@ import { UNTAGGED } from '../src/types.ts';
 import { must } from './helpers.ts';
 
 const run = () => analyze(fixtureAnalysisInput());
-const svc = (name: string) => run().services.find((r) => r.key === name);
+const svc = (name: string) => must(run().services.find((r) => r.key === name));
 
 describe('AC-1 deltas by service and tag are computed in code', () => {
   it('totals the two weeks', () => {

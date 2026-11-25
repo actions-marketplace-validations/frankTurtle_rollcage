@@ -109,7 +109,7 @@ describe('AC-11 the Cost Explorer adapter', () => {
     });
   });
 
-  it('skips anomalies with no id or start date', async () => {
+  it('skips anomalies with no id or no service', async () => {
     const { client } = fakeClient<CostExplorerClient>([
       { Anomalies: [{ Impact: { MaxImpact: 1 } }, { AnomalyId: 'x', Impact: { MaxImpact: 1 } }] },
     ]);
