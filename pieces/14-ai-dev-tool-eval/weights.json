@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "criteria": [
+    {
+      "id": "A1",
+      "group": "Data handling and security",
+      "name": "Training use and retention of code and prompts",
+      "weight": 10,
+      "gate": true
+    },
+    {
+      "id": "A2",
+      "group": "Data handling and security",
+      "name": "Data location and sub-processors",
+      "weight": 5,
+      "gate": false
+    },
+    {
+      "id": "A3",
+      "group": "Data handling and security",
+      "name": "Context control: what the tool may read and send",
+      "weight": 8,
+      "gate": false
+    },
+    {
+      "id": "A4",
+      "group": "Data handling and security",
+      "name": "Encryption in transit and at rest",
+      "weight": 5,
+      "gate": false
+    },
+    {
+      "id": "A5",
+      "group": "Data handling and security",
+      "name": "Identity and access",
+      "weight": 7,
+      "gate": false
+    },
+    {
+      "id": "B1",
+      "group": "Admin and governance controls",
+      "name": "Central admin of seats, roles and policy",
+      "weight": 8,
+      "gate": false
+    },
+    {
+      "id": "B2",
+      "group": "Admin and governance controls",
+      "name": "Feature and tool-execution controls",
+      "weight": 7,
+      "gate": false
+    },
+    {
+      "id": "B3",
+      "group": "Admin and governance controls",
+      "name": "Model and provider choice",
+      "weight": 4,
+      "gate": false
+    },
+    {
+      "id": "B4",
+      "group": "Admin and governance controls",
+      "name": "Seat lifecycle and offboarding",
+      "weight": 6,
+      "gate": false
+    },
+    {
+      "id": "C1",
+      "group": "Audit logging",
+      "name": "Audit events can be exported",
+      "weight": 5,
+      "gate": true
+    },
+    {
+      "id": "C2",
+      "group": "Audit logging",
+      "name": "Record of agent actions",
+      "weight": 6,
+      "gate": false
+    },
+    {
+      "id": "C3",
+      "group": "Audit logging",
+      "name": "Retention and tamper resistance",
+      "weight": 4,
+      "gate": false
+    },
+    {
+      "id": "D1",
+      "group": "Cost",
+      "name": "Price is published and can be capped",
+      "weight": 4,
+      "gate": false
+    },
+    {
+      "id": "D2",
+      "group": "Cost",
+      "name": "Total cost includes overage, rollout and admin time",
+      "weight": 3,
+      "gate": false
+    },
+    { "id": "D3", "group": "Cost", "name": "Cost per merged change", "weight": 3, "gate": false },
+    {
+      "id": "E1",
+      "group": "Measured productivity",
+      "name": "Delivery metrics during the pilot",
+      "weight": 6,
+      "gate": false
+    },
+    {
+      "id": "E2",
+      "group": "Measured productivity",
+      "name": "Quality and rework during the pilot",
+      "weight": 6,
+      "gate": false
+    },
+    {
+      "id": "E3",
+      "group": "Measured productivity",
+      "name": "Developer experience, measured",
+      "weight": 3,
+      "gate": false
+    }
+  ]
+}
