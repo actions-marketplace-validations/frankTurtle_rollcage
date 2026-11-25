@@ -1,0 +1,43 @@
+name: piece-11-rag-onboarding
+
+on:
+  push:
+    branches: [main, develop]
+    paths: ['pieces/11-rag-onboarding/**', '.github/workflows/piece-11-rag-onboarding.yml']
+  pull_request:
+    paths: ['pieces/11-rag-onboarding/**', '.github/workflows/piece-11-rag-onboarding.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-demo:
+    runs-on: ubuntu-latest
+    env:
+      # Fail instead of skipping when uv is missing.
+      RAG_REQUIRE_UV: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      # uv from PyPI at a fixed version (no third-party action to pin). The runner's python3 is
+      # 3.12 or newer, which satisfies requires-python.
+      - name: Install uv
+        run: |
+          python3 -m pip install --user uv==0.9.24
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - run: pnpm install --frozen-lockfile
+      - name: Lint, format check and strict types
+        run: pnpm --filter @adl/rag-onboarding typecheck
+      - name: Tests with the 90 percent coverage floor
+        run: pnpm --filter @adl/rag-onboarding coverage
+      - name: Eval gate (fails the build when accuracy drops below the committed baseline)
+        working-directory: pieces/11-rag-onboarding
+        run: uv run rag-onboarding eval
+      - name: Demo runs offline end to end
+        run: pnpm --filter @adl/rag-onboarding demo
