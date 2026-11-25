@@ -12,7 +12,7 @@ import { AuditLogger, FakeLlm } from '@adl/shared';
 import { gate, renderMarkdown, renderText, runSuite, toBaseline, type Baseline } from 'escapement';
 import { loadRoleAgents } from '../src/agents.js';
 import { buildEvalSuite } from '../src/eval-cases.js';
-import { LlmModelProvider } from '../src/provider.js';
+import { llmModelProvider } from '../src/provider.js';
 import { runWorkflow } from '../src/workflow.js';
 import { markerTestRunner, Workspace } from '../src/workspace.js';
 
@@ -21,7 +21,7 @@ const baselinePath = join(piece, 'evals', 'baseline.json');
 const readJson = <T>(rel: string): T => JSON.parse(readFileSync(join(piece, rel), 'utf8')) as T;
 
 const agents = loadRoleAgents(join(piece, 'agents'));
-const provider = new LlmModelProvider(
+const provider = llmModelProvider(
   new FakeLlm(readJson<unknown[]>('fixtures/replies-clean.json').map((r) => JSON.stringify(r))),
 );
 const record = await runWorkflow({

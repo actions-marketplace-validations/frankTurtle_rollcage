@@ -16,7 +16,7 @@ import { loadRoleAgents } from './agents.js';
 import { ApprovalGate, DryRunCommitter } from './approval.js';
 import { loadConfig } from './config.js';
 import { computeMetrics } from './metrics.js';
-import { LlmModelProvider } from './provider.js';
+import { llmModelProvider } from './provider.js';
 import { replayRecord } from './replay.js';
 import { ROLES } from './roles.js';
 import { parseRecord, runWorkflow, serializeRecord, type RunRecord } from './workflow.js';
@@ -117,7 +117,7 @@ async function cmdRun(flags: Map<string, string>, io: CliIo): Promise<number> {
   const out = flags.get('out') ?? 'workflow-out';
   mkdirSync(out, { recursive: true });
   const runId = flags.get('run-id') ?? `run-${short(sha256Hex(task))}`;
-  const provider = new LlmModelProvider(llm, model ? { model } : {});
+  const provider = llmModelProvider(llm, model ? { model } : {});
 
   const record = await runWorkflow({
     runId,

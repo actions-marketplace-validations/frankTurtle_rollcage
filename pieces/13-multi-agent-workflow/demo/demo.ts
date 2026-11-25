@@ -18,7 +18,7 @@ import {
 import { loadRoleAgents } from '../src/agents.js';
 import { ApprovalGate, DryRunCommitter } from '../src/approval.js';
 import { computeMetrics } from '../src/metrics.js';
-import { LlmModelProvider } from '../src/provider.js';
+import { llmModelProvider } from '../src/provider.js';
 import { replayRecord } from '../src/replay.js';
 import { ROLES } from '../src/roles.js';
 import { parseRecord, runWorkflow, serializeRecord, type RunRecord } from '../src/workflow.js';
@@ -37,7 +37,7 @@ const short = (h: string) => h.slice(0, 8);
 
 async function record(id: string, fixture: string): Promise<RunRecord> {
   const llm = new FakeLlm(readJson<unknown[]>(fixture).map((r) => JSON.stringify(r)));
-  const provider = new LlmModelProvider(llm);
+  const provider = llmModelProvider(llm);
   const result = await runWorkflow({
     runId: id,
     task: TASK,

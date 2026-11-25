@@ -28,6 +28,13 @@ describe('workflow: planner to reviewer', () => {
     expect(record.change?.hash).toMatch(/^[0-9a-f]{64}$/);
   });
 
+  it('repairs a planner reply that breaks the turn format and still finishes', async () => {
+    const w = world(['not json', ...replies('clean')]);
+    const record = await runWorkflow(w.options);
+    expect(record.status).toBe('awaiting-approval');
+    expect(record.ledgers['1-planner']?.usage.modelCalls).toBe(2);
+  });
+
   it('records agent, input hash, output, tool calls and decision for every handoff', async () => {
     const { record } = await cleanRun();
     for (const h of record.handoffs) {
