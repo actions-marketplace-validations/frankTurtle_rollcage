@@ -1,7 +1,7 @@
-import { spawn } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { execRunner } from '@adl/shared';
 
 export interface RunResult {
   status: number | null;
@@ -12,16 +12,13 @@ export interface RunResult {
 /** Runs a program with a fixed argument list (no shell). Tests inject a fake. */
 export type Runner = (cmd: string, args: string[]) => Promise<RunResult>;
 
-export const spawnRunner: Runner = (cmd, args) =>
-  new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] });
-    let stdout = '';
-    let stderr = '';
-    child.stdout.on('data', (d: Buffer) => (stdout += d.toString()));
-    child.stderr.on('data', (d: Buffer) => (stderr += d.toString()));
-    child.on('error', reject);
-    child.on('close', (status) => resolve({ status, stdout, stderr }));
-  });
+const exec = execRunner({ throwOnStartError: true });
+
+/** The shared runner, reshaped: a program that cannot start rejects, as `run` expects. */
+export const spawnRunner: Runner = async (cmd, args) => {
+  const r = await exec(cmd, args);
+  return { status: r.code, stdout: r.stdout, stderr: r.stderr };
+};
 
 async function run(runner: Runner, cmd: string, args: string[]): Promise<string> {
   let result: RunResult;

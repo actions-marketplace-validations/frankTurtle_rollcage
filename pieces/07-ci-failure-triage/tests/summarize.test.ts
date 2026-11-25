@@ -1,10 +1,9 @@
-import { FakeLlm } from '@adl/shared';
+import { FakeLlm, UnavailableLlm } from '@adl/shared';
 import { describe, expect, it } from 'vitest';
 import type { Classification } from '../src/classify.ts';
 import { DEFAULT_CONFIG } from '../src/config.ts';
 import { fallbackSummary, summarize } from '../src/summarize.ts';
 import type { SummaryInput } from '../src/summarize.ts';
-import { UnavailableLlm } from '../src/llm-select.ts';
 
 const classification = (category: Classification['category']): Classification => ({
   category,

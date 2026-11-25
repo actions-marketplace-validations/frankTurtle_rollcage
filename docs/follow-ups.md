@@ -2,24 +2,33 @@
 
 Collected from each piece's integration notes. Nothing here blocks the demos.
 
-## Needs the maintainer's OK
+## Needs the maintainer
 
-- Piece 10: enabling the `attest-sample` job or running the action in `attest` mode writes a public
-  Rekor transparency log entry that includes the repo identity.
-- Piece 10: re-check the pinned SHAs for `actions/attest-build-provenance` (v4.2.2) and
-  `sigstore/cosign-installer` (v4.1.4); they were read with `git ls-remote`.
-- Piece 08: deploying the SAM app (`DEPLOY.md` has the command, tags and teardown). Cost Explorer
-  API calls are billed per request.
 - Piece 14: the rubric levels and default weights are drafts.
+- AWS: three demo stacks run in us-east-1 (`rollcage-secrets-guard`, its canary, and
+  `rollcage-aws-cost-explainer` in fixture mode). A reminder to tear them down is set for
+  2026-12-28. The deploy profile is the account root user; a scoped deploy role would be safer.
+
+## Closed on 2026-11-25
+
+- Piece 10: the attestation job is enabled for manual runs (`workflow_dispatch`); the pinned SHAs
+  for `actions/attest-build-provenance` v4.2.2 and `sigstore/cosign-installer` v4.1.4 match the
+  tags; the SLSA level claims match slsa.dev and GitHub's docs.
+- Piece 08: deployed and invoked once in fixture mode.
+- Piece 05: the KEV and EPSS parsers are pinned to real responses captured on 2026-11-25.
+- Piece 02: the guard now blocks agents from editing its own config and source
+  (`protected_paths`).
 
 ## Not yet proven against the real service
 
-- Piece 05: Grype JSON fixtures are hand-authored in Grype's shape; KEV and EPSS live response
-  shapes are unchecked; syft and grype were not run end to end through the action.
+- Piece 05: Grype JSON fixtures are hand-authored in Grype's shape; syft and grype were not run end
+  to end through the action.
 - Piece 06: the Terraform plan fixtures were not produced by a Terraform run.
 - Piece 07: the live GitHub path (log redirects, `updated_at` as finish time).
-- Piece 08: Cost Explorer request shapes come from SDK types; whether `ce:*` can be scoped below `*`.
-- Piece 10: the `gh attestation verify --format json` output shape.
+- Piece 08: live mode; Cost Explorer request shapes come from SDK types; whether `ce:*` can be
+  scoped below `*`.
+- Piece 10: the `gh attestation verify --format json` output shape (checkable after the first
+  manual attestation run on `main`).
 - Piece 11: the ONNX embedder and live Anthropic paths; eval accuracy is 77.3% against scripted
   model responses, which is the committed baseline.
 - Piece 12: `pnpm install` on a generated project; the branch-protection `gh api` command.
@@ -28,20 +37,47 @@ Collected from each piece's integration notes. Nothing here blocks the demos.
 
 ## Candidates for `shared/ts`
 
-- A command runner with an injectable exec (pieces 05, 06, 10).
-- A redactor (pieces 07, 09).
-- `selectLlm` / `UnavailableLlm` (copied in piece 07 from piece 01).
-- `unifiedDiff` (07), the markdown link checker (14), `memo` and a `must()` test helper (08), a
-  day-difference helper (05).
-- `completeStructured` should reject zod schemas that use `.transform` (09).
+Done: `selectLlm` / `UnavailableLlm` / `parseLlmMode`, `unifiedDiff`, the markdown link checker,
+`daysBetween` (pieces 05 and 08), and `completeStructured` now rejects `.transform` schemas. Piece
+08's `memo` was removed rather than shared.
 
-## Escapement 0.2.0 gaps found by piece 13
+Skipped, with the reason:
 
-1. No multi-agent topology: one `run()` is one agent, so the piece chains four runs.
-2. No suspended or approval phase; the human checkpoint lives outside the state machine.
-3. `replay(ledger)` replays the reducer only, not tools or the model.
-4. No `caseFromLedger(ledger, graders)` for building eval cases from recorded runs.
-5. `scriptedProvider` generates its own tool call ids, so it cannot reproduce another provider's
-   ledger byte for byte.
-6. Tool handlers need casts on `args`; a schema-typed `tool()` overload would help.
-7. `ModelProvider` assumes native tool calls; text-only clients need a JSON turn format.
+- A `must()` test helper (08); it is a test-only one-liner.
+
+Done afterwards, as reviewed behavior changes:
+
+- Command runner: `execRunner` in `shared/ts` has the shape piece 10 had: it never throws, returns
+  `code: null` plus `error` and `errorCode` when a program cannot start, and takes a timeout and
+  extra env. With `throwOnStartError` it rejects instead, with the Node error (`code === 'ENOENT'`),
+  which is what pieces 05 and 06 relied on. The default is no timeout; piece 10 passes 60 s.
+  Piece 10's own wrapper is gone and its callers use the shared function. Change: piece 05 now
+  collects output through `execFile` with a 64 MB limit instead of streaming through `spawn`.
+  Piece 12's runner is synchronous and stays local.
+- Redactor: piece 09's `Redactor` moved to `shared/ts` and gained Slack token and `sk-` API key
+  rules, plus `types` and `format` options. Piece 07 uses `redactSecrets`, which applies only the
+  secret rules. Changes to piece 07 output: every marker is `[REDACTED:<type>]` (the AWS key type
+  is `aws-access-key`, not `aws-key`; bearer tokens and `NAME=value` secrets no longer keep
+  `Bearer [REDACTED]` or `NAME=[REDACTED]`, the name stays and the value is replaced); a bearer
+  token must contain a digit or symbol to match; and a credential value ends at whitespace, a
+  quote, a comma or a semicolon.
+
+## Escapement gaps found by piece 13
+
+Seven gaps were logged against Escapement 0.2.0. Version 0.3.0 closes all seven in the library, and
+piece 13 now runs on it. Six are adopted; one is available but deliberately not used.
+
+1. No multi-agent topology. Closed by `pipeline()` (ADR-0020). The workflow runs as a pipeline.
+2. No suspended or approval phase. Closed by `requiresApproval` and `resume()` (ADR-0019), **not
+   adopted**: the piece's gate approves a change hash for the orchestrator's commit, and agents hold
+   no commit tool, so there is no model-issued call to suspend on.
+3. `replay(ledger)` replays the reducer only. Closed by `reexecute`, `replayProvider` and
+   `recordedTools` (ADR-0018). Piece 13 uses `replayProvider`; its own workflow-level re-execution
+   stays because the routing code is the piece's.
+4. No `caseFromLedger`. Closed (ADR-0018); the evals use it.
+5. `scriptedProvider` generated its own call ids. Closed: ledger-derived scripts keep recorded ids.
+6. Tool handlers needed casts on `args`. Closed by `defineTool` (ADR-0021); the casts are gone.
+7. `ModelProvider` assumed native tool calls. Closed by `textProvider` (ADR-0022); the piece's own
+   JSON turn protocol and retry are gone. A malformed reply is now repaired inside the run and
+   counts against `max_steps`, not retried once outside it.
+

@@ -1,9 +1,8 @@
-import { completeStructured } from '@adl/shared';
+import { completeStructured, redactSecrets } from '@adl/shared';
 import type { LlmClient } from '@adl/shared';
 import { z } from 'zod';
 import type { Category, Classification } from './classify.js';
 import type { TriageConfig } from './config.js';
-import { redact } from './redact.js';
 
 export interface SummaryInput {
   classification: Classification;
@@ -87,10 +86,10 @@ function buildPrompt(input: SummaryInput): string {
       category: c.category,
       confidence: c.confidence,
       rule: c.ruleId,
-      evidence: c.evidence.map(redact),
-      signature: redact(input.signature),
+      evidence: c.evidence.map(redactSecrets),
+      signature: redactSecrets(input.signature),
       failing_tests: input.tests,
-      log_excerpt: input.excerpt.slice(0, input.config.log.excerpt_lines).map(redact),
+      log_excerpt: input.excerpt.slice(0, input.config.log.excerpt_lines).map(redactSecrets),
     },
     null,
     2,

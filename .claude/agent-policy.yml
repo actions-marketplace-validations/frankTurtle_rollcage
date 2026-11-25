@@ -14,6 +14,9 @@ allowed_hosts:
   - docs.github.com
   - dora.dev
   - survey.stackoverflow.co
+  - www.cisa.gov
+  - api.first.org
+  - slsa.dev
   - about.gitlab.com
   - docs.aws.amazon.com # read-only AWS documentation, needed to verify the secrets-guard facts
   # - your-internal-docs.example.com

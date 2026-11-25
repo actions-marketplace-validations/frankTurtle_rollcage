@@ -33,7 +33,3 @@ export const findingKey = (f: Pick<Finding, 'app' | 'id' | 'package'>): string =
 
 /** A day as YYYY-MM-DD (UTC). */
 export type IsoDay = string;
-
-const DAY_MS = 86_400_000;
-export const daysBetween = (from: IsoDay, to: IsoDay): number =>
-  Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / DAY_MS);

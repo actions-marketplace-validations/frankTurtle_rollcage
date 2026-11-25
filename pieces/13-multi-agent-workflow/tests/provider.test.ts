@@ -1,7 +1,7 @@
 import { FakeLlm } from '@adl/shared';
 import { describe, expect, it } from 'vitest';
 import { system, user } from 'escapement';
-import { LlmModelProvider } from '../src/provider.js';
+import { llmModelProvider } from '../src/provider.js';
 
 const ctx = { runId: 'r', stepId: 's', attempt: 1 };
 const req = {
@@ -13,10 +13,10 @@ const valid = JSON.stringify({
   tool_calls: [{ name: 'read_file', args: { path: 'a' } }],
 });
 
-describe('LlmModelProvider', () => {
+describe('llmModelProvider', () => {
   it('turns a valid JSON reply into a model response with tool calls', async () => {
     const llm = new FakeLlm([valid]);
-    const res = await new LlmModelProvider(llm).generate(req, ctx);
+    const res = await llmModelProvider(llm).generate(req, ctx);
     expect(res.ok).toBe(true);
     if (!res.ok) return;
     expect(res.value.stopReason).toBe('tool_use');
@@ -30,48 +30,41 @@ describe('LlmModelProvider', () => {
   });
 
   it('ends the turn when there are no tool calls', async () => {
-    const res = await new LlmModelProvider(new FakeLlm([JSON.stringify({ say: 'done' })])).generate(
+    const res = await llmModelProvider(new FakeLlm([JSON.stringify({ say: 'done' })])).generate(
       req,
       ctx,
     );
     expect(res.ok && res.value.stopReason).toBe('end_turn');
   });
 
-  it('retries once on invalid output, then recovers', async () => {
-    const llm = new FakeLlm(['not json', valid]);
-    const res = await new LlmModelProvider(llm).generate(req, ctx);
-    expect(res.ok).toBe(true);
-    expect(llm.calls).toHaveLength(2);
-  });
-
-  it('fails closed after one retry and says why', async () => {
-    const llm = new FakeLlm(['nope', '{"say": 3}']);
-    const res = await new LlmModelProvider(llm).generate(req, ctx);
+  it('turns invalid output into a repair turn that names the problem', async () => {
+    const llm = new FakeLlm(['not json']);
+    const res = await llmModelProvider(llm).generate(req, ctx);
     expect(res.ok).toBe(false);
     if (res.ok) return;
-    expect(res.error).toMatchObject({ class: 'fatal', code: 'provider.invalid_output' });
-    expect(llm.calls).toHaveLength(2);
+    expect(res.error).toMatchObject({ class: 'correctable', code: 'model.invalid_turn' });
+    expect(llm.calls).toHaveLength(1);
   });
 
   it('fails closed when the client throws', async () => {
-    const res = await new LlmModelProvider(
-      new FakeLlm([new Error('boom'), new Error('boom')]),
-    ).generate(req, ctx);
+    const res = await llmModelProvider(new FakeLlm([new Error('boom')])).generate(req, ctx);
     expect(res.ok).toBe(false);
+    if (res.ok) return;
+    expect(res.error).toMatchObject({ class: 'fatal', code: 'provider.llm_failed' });
   });
 
   it('never hard-codes a model id and passes through one it is given', async () => {
     const a = new FakeLlm([valid]);
-    await new LlmModelProvider(a).generate(req, ctx);
+    await llmModelProvider(a).generate(req, ctx);
     expect(a.calls[0]?.model).toBeUndefined();
     const b = new FakeLlm([valid]);
-    await new LlmModelProvider(b, { model: 'm-from-env' }).generate(req, ctx);
+    await llmModelProvider(b, { model: 'm-from-env' }).generate(req, ctx);
     expect(b.calls[0]?.model).toBe('m-from-env');
   });
 
   it('renders tool results back to the model', async () => {
     const llm = new FakeLlm([valid]);
-    await new LlmModelProvider(llm).generate(
+    await llmModelProvider(llm).generate(
       {
         messages: [
           system('s'),

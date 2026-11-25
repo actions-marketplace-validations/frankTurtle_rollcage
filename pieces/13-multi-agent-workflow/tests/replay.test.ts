@@ -66,6 +66,27 @@ describe('replay', () => {
     expect(result.handoffMismatches.map((m) => m.seq)).toContain(4);
   });
 
+  it('links each ledger to the run before it', async () => {
+    const { record } = await cleanRun();
+    const parents = record.handoffs.map((h) => record.ledgers[h.ledgerKey]?.parentRunId ?? null);
+    expect(parents).toEqual([
+      null,
+      'run-test-1-planner',
+      'run-test-2-implementer',
+      'run-test-3-tester',
+    ]);
+  });
+
+  it('detects handoffs reordered after the fact', async () => {
+    const { w, record } = await cleanRun();
+    const copy = parseRecord(serializeRecord(record));
+    const [a, b] = [copy.handoffs[1]!, copy.handoffs[2]!];
+    [a.ledgerKey, b.ledgerKey] = [b.ledgerKey, a.ledgerKey];
+    const result = await replayRecord(copy, deps(w));
+    expect(result.ok).toBe(false);
+    expect(result.handoffMismatches.some((m) => /parent/.test(m.what))).toBe(true);
+  });
+
   it('rejects a record from an unknown version', () => {
     expect(() => parseRecord('{"version":99}')).toThrow(/version/);
   });

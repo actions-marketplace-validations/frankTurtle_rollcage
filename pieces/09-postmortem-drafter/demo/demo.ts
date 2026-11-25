@@ -9,7 +9,7 @@ import { FakeLlm, header, isLiveMode, runStages } from '@adl/shared';
 import type { LlmClient, LlmRequest } from '@adl/shared';
 import { loadBundle } from '../src/bundle.ts';
 import { runCli } from '../src/cli.ts';
-import { Redactor } from '../src/redact.ts';
+import { Redactor } from '@adl/shared';
 import { sampleBundleFiles } from '../src/sample-bundle.ts';
 
 const out = join(dirname(fileURLToPath(import.meta.url)), 'out');

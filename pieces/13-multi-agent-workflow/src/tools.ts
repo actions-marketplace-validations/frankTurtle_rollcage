@@ -1,12 +1,12 @@
 import {
   correctable,
   createRegistry,
+  defineTool,
   err,
   ok,
   type JsonValue,
   type ObjectSchema,
   type ToolDefinition,
-  type ToolHandler,
   type ToolRegistry,
 } from 'escapement';
 import type { AgentDef } from './agents.js';
@@ -18,12 +18,12 @@ export interface ToolDeps {
 }
 
 const str = (description: string) => ({ type: 'string' as const, description });
-const empty: ObjectSchema = { type: 'object', properties: {} };
-const pathSchema: ObjectSchema = {
+const empty = { type: 'object', properties: {} } as const satisfies ObjectSchema;
+const pathSchema = {
   type: 'object',
   properties: { path: str('Repository-relative path') },
   required: ['path'],
-};
+} as const satisfies ObjectSchema;
 
 /** Run a workspace operation and turn a thrown message into an observation the model can correct. */
 function guarded(fn: () => JsonValue) {
@@ -35,52 +35,48 @@ function guarded(fn: () => JsonValue) {
 }
 
 function allTools({ workspace, runTests }: ToolDeps): Record<string, ToolDefinition> {
-  const def = (
-    name: string,
-    description: string,
-    schema: ObjectSchema,
-    handler: ToolHandler,
-    readOnly = false,
-  ): ToolDefinition => ({ name, description, schema, handler, readOnly });
   return {
-    read_file: def(
-      'read_file',
-      'Read one file.',
-      pathSchema,
-      (a) => guarded(() => workspace.read(a['path'] as string)),
-      true,
-    ),
-    list_files: def(
-      'list_files',
-      'List every file path.',
-      empty,
-      () => guarded(() => workspace.list()),
-      true,
-    ),
-    search_files: def(
-      'search_files',
-      'List files whose content contains the query text.',
-      { type: 'object', properties: { query: str('Text to find') }, required: ['query'] },
-      (a) => guarded(() => workspace.search(a['query'] as string)),
-      true,
-    ),
-    write_file: def(
-      'write_file',
-      'Create or replace one file.',
-      {
+    read_file: defineTool({
+      name: 'read_file',
+      description: 'Read one file.',
+      schema: pathSchema,
+      handler: (a) => guarded(() => workspace.read(a.path)),
+      readOnly: true,
+    }),
+    list_files: defineTool({
+      name: 'list_files',
+      description: 'List every file path.',
+      schema: empty,
+      handler: () => guarded(() => workspace.list()),
+      readOnly: true,
+    }),
+    search_files: defineTool({
+      name: 'search_files',
+      description: 'List files whose content contains the query text.',
+      schema: { type: 'object', properties: { query: str('Text to find') }, required: ['query'] },
+      handler: (a) => guarded(() => workspace.search(a.query)),
+      readOnly: true,
+    }),
+    write_file: defineTool({
+      name: 'write_file',
+      description: 'Create or replace one file.',
+      schema: {
         type: 'object',
         properties: { path: str('Repository-relative path'), content: str('Full new content') },
         required: ['path', 'content'],
       },
-      (a) =>
+      handler: (a) =>
         guarded(() => {
-          workspace.write(a['path'] as string, a['content'] as string);
-          return `wrote ${a['path'] as string}`;
+          workspace.write(a.path, a.content);
+          return `wrote ${a.path}`;
         }),
-    ),
-    run_tests: def('run_tests', 'Run the test suite and return {passed, summary}.', empty, () =>
-      guarded(() => ({ ...runTests(workspace) })),
-    ),
+    }),
+    run_tests: defineTool({
+      name: 'run_tests',
+      description: 'Run the test suite and return {passed, summary}.',
+      schema: empty,
+      handler: () => guarded(() => ({ ...runTests(workspace) })),
+    }),
   };
 }
 

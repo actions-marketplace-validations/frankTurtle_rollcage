@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, isAbsolute, join, relative } from 'node:path';
 import { parseArgs } from 'node:util';
-import { GitHubHttp } from '@adl/shared';
+import { GitHubHttp, parseLlmMode, selectLlm } from '@adl/shared';
 import type { FetchLike } from '@adl/shared';
 import { loadConfig } from './config.js';
 import type { TriageConfig } from './config.js';
@@ -9,7 +9,6 @@ import { GitHubRunSource } from './github-source.js';
 import type { RunSource } from './github-source.js';
 import { loadHistory, recordRuns, serializeHistory } from './history.js';
 import type { History } from './history.js';
-import { parseLlmMode, selectLlm } from './llm-select.js';
 import { compareMetrics, computeMetrics, renderComparison, renderPeriod } from './metrics.js';
 import { loadQuarantine, maintainerCommands, proposeQuarantine } from './quarantine.js';
 import { renderMarkdown, renderText } from './report.js';

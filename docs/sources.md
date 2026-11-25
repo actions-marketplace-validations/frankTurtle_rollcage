@@ -11,21 +11,8 @@ it does not replace a human reading the primary source.
 - Claims to support, with status:
   - 90% use AI at work, and over 80% believe it raised their productivity. **Read on 2026-11-25** in DORA's own post https://dora.dev/insights/balancing-ai-tensions/ (March 10, 2026). Not yet checked in the report PDF.
   - Higher AI adoption is associated with higher throughput and higher delivery instability. **Read on 2026-11-25** in https://dora.dev/insights/balancing-ai-tensions/ and https://dora.dev/insights/dora-2025-year-in-review/ ("AI improves throughput, but often at the cost of stability if your foundation isn't solid"). This is an association, so say "associated with", not "causes".
-  - About 30% report little or no trust in AI-generated code. **Not found on the landing page. Not confirmed.**
-  - "AI doesn't fix a team; it amplifies what's already there." **Exact quote not found.** The landing page says the report's "primary role is as an amplifier, magnifying an organization's existing strengths and weaknesses." Use that wording, or confirm the quote in the full report.
+- Dropped on 2026-11-25, unconfirmed and unused: "about 30% little or no trust" and the "AI doesn't fix a team; it amplifies" quote. DORA's wording is that the report's "primary role is as an amplifier".
 - Status: VERIFY BEFORE PUBLISHING. Read the full report before citing any number.
-
-## GitLab Global DevSecOps Report (Harris Poll)
-
-- URL found: https://about.gitlab.com/developer-survey/ (canonical per page metadata:
-  https://about.gitlab.com/resources/developer-survey/). **This is the 2026 edition**, not 2025.
-  The 2025 edition URL has not been located.
-- Claims to support, with status:
-  - 7 hours a week lost to inefficient processes. **Not confirmed.** (2026 page references hours lost but gives no figure in the text read.)
-  - 70% say AI makes compliance harder. **Not confirmed.**
-  - 76% find compliance issues after deployment more than during development. **Not confirmed.**
-- Status: VERIFY BEFORE PUBLISHING. Do not cite until the 2025 report is located and read.
-  Piece 06's hook ("76% find compliance issues after deployment") depends on this.
 
 ## Stack Overflow Developer Survey 2025, AI section
 
@@ -35,6 +22,7 @@ it does not replace a human reading the primary source.
   - 46% actively distrust the accuracy of AI tools; 33% trust it.
   - 66% cite "AI solutions that are almost right, but not quite" as the biggest frustration.
   - 45% say debugging AI-generated code is more time-consuming. (Page wording is "more time-consuming"; use that, not "takes longer".)
+- Re-read verbatim on 2026-11-25: all four figures are on the page; the debugging figure is 45.2%.
 - Caution: the AI agents section has a different 84% figure (agent use). Do not conflate them.
 - Status: VERIFY BEFORE PUBLISHING.
 
@@ -127,8 +115,11 @@ person has read them.
 
 ## SLSA build levels and GitHub artifact attestations (piece 10)
 
-- https://slsa.dev/spec/v1.0/levels and
+- https://slsa.dev/spec/v1.0/levels (marked Retired on 2026-11-25; v1.2 is the current version and its level names were not re-read) and
   https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations
-- Piece 10's README claims Build 2 for its (disabled) attestation workflow and Build 3 only with a
-  reusable workflow. These pages were not fetched during the build.
-- Status: VERIFY BEFORE PUBLISHING.
+- Read on 2026-11-25. GitHub's page
+  https://docs.github.com/en/actions/concepts/security/artifact-attestations says artifact
+  attestations by themselves provide SLSA v1.0 Build Level 2, and reusable workflows can provide the
+  isolation needed for Build Level 3. The slsa.dev page names Build L2 "hosted build platform" and
+  Build L3 "hardened builds". Piece 10's README matches both.
+- Status: checked; re-check before each release.

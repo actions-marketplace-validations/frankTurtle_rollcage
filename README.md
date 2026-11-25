@@ -7,7 +7,7 @@ AI-assisted software delivery: working code, tests and CI for guardrails you can
 numbers that show whether AI is paying off.
 
 > Status: all 14 pieces are built. 0.1.0 shipped Phase 0 and the MVP (pieces 01 to 04); 0.2.0 adds
-> pieces 05 to 14.
+> pieces 05 to 14; 0.3.0 adds the adoption guide, shared helpers and Escapement 0.3.0.
 
 ## For engineering leaders
 
@@ -71,6 +71,8 @@ pnpm demo:NN:reset   # restore the before state for another take
 1. Start with **02 (agent policy)** so the rules and guardrails exist before usage grows.
 2. Add **01 (PR risk gate)** so risky changes get extra scrutiny.
 3. Measure with **03 (DORA metrics)**, using the date you rolled out AI tools as the split.
+
+For the full path in a real repo, with checks at each step, see [docs/adopting.md](docs/adopting.md).
 
 ## Principles
 

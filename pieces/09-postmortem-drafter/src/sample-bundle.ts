@@ -3,7 +3,7 @@
  * Everything here is fictional. Secret-shaped values are assembled from parts at runtime so that
  * no secret-looking string is stored in the repository (the AWS key is the documented example).
  */
-import type { RedactionType } from './redact.js';
+import type { RedactionType } from '@adl/shared';
 
 export interface Planted {
   type: RedactionType;

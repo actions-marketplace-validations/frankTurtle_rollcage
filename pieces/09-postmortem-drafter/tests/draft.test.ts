@@ -2,7 +2,7 @@ import { FakeLlm } from '@adl/shared';
 import { describe, expect, it } from 'vitest';
 import { parseBundleFiles } from '../src/bundle.js';
 import { draftPostmortem } from '../src/draft.js';
-import { Redactor } from '../src/redact.js';
+import { Redactor } from '@adl/shared';
 import { PLANTED, sampleBundleFiles } from '../src/sample-bundle.js';
 import { INCIDENT, goodReply } from './helpers.js';
 

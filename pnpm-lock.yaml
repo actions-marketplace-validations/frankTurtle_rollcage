@@ -214,8 +214,8 @@ importers:
         specifier: workspace:*
         version: link:../../shared/ts
       escapement:
-        specifier: 0.2.0
-        version: 0.2.0
+        specifier: 0.3.0
+        version: 0.3.0
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
@@ -228,6 +228,9 @@ importers:
 
   pieces/14-ai-dev-tool-eval:
     dependencies:
+      '@adl/shared':
+        specifier: workspace:*
+        version: link:../../shared/ts
       zod:
         specifier: ^3.23.0
         version: 3.25.76
@@ -1019,8 +1022,8 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
-  escapement@0.2.0:
-    resolution: {integrity: sha512-3f2nsjGuknaAIlMg87yvSZqQc5UEh8C3uWkfCcYunh/eUsT1IlkiM3lxUbeD533dtrSxeHwfMPvi84QhkOJSAA==}
+  escapement@0.3.0:
+    resolution: {integrity: sha512-afKzZOqPq1aobw7RkIn3Y8mMGDYy6E4wxE5/ufLq49aZoC5LuIVriwjp/1uP57+kshvUVL3frOdaIaavoBxReQ==}
     engines: {node: '>=22.6.0'}
     hasBin: true
 
@@ -2401,7 +2404,7 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  escapement@0.2.0: {}
+  escapement@0.3.0: {}
 
   eslint-scope@8.4.0:
     dependencies:

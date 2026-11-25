@@ -1,17 +1,18 @@
 import { canonicalJson, extractJson, sha256Hex, type AuditLogger } from '@adl/shared';
 import {
   createAssembler,
-  digest,
   manualClock,
-  run,
+  pipeline,
   seededRng,
   sequentialIds,
   toolCalls,
   type ContextAssembler,
-  type JsonValue,
+  type Handoff as PipelineHandoff,
   type ModelProvider,
   type Outcome,
+  type PipelineStage,
   type RunLedger,
+  type StageInput,
 } from 'escapement';
 import { z } from 'zod';
 import type { AgentDef } from './agents.js';
@@ -105,14 +106,9 @@ export const makeAssembler = (agent: AgentDef): ContextAssembler =>
     systemPrompt: agent.prompt,
   });
 
-interface StepResult {
-  handoff: Handoff;
-  ledger: RunLedger;
-}
-
 const list = (files: string[]): string => files.map((f) => `- ${f}`).join('\n');
 
-/** Run planner, implementer, tester and reviewer in order, with a bounded rework loop. */
+/** Run planner, implementer, tester and reviewer as an Escapement pipeline, with a bounded rework loop. */
 export async function runWorkflow(options: WorkflowOptions): Promise<RunRecord> {
   const config: RecordConfig = {
     branch: options.branch,
@@ -123,47 +119,86 @@ export async function runWorkflow(options: WorkflowOptions): Promise<RunRecord> 
   const handoffs: Handoff[] = [];
   const ledgers: Record<string, RunLedger> = {};
   const toolDeps = { workspace: options.workspace, runTests: options.runTests };
+  const task = `Task:\n${options.task}`;
 
-  async function step(
-    role: Role,
-    goal: string,
-    decide: (ledger: RunLedger, output: string) => [Decision, string?],
-  ): Promise<StepResult & { reason?: string }> {
-    const seq = handoffs.length + 1;
-    const key = `${seq}-${role}`;
-    const agent = options.agents[role];
-    const { ledger, outcome } = await run({
-      goal,
-      provider: options.providerFor(role, seq),
-      tools: buildToolRegistry(agent, toolDeps),
-      assembler: makeAssembler(agent),
-      config: { budget: { maxSteps: config.maxSteps } },
-      deps: {
-        clock: manualClock(0),
-        rng: seededRng(`${options.runId}-${key}`),
-        ids: sequentialIds(),
-      },
-      runId: `${options.runId}-${key}`,
-      seed: `${options.runId}-${key}`,
-    });
-    const output = outputOf(outcome);
-    const [decision, reason] =
-      outcome.status === 'completed'
-        ? decide(ledger, output)
-        : (['halt', `${role} run ${outcome.status}`] as [Decision, string]);
+  let reworkRounds = 0;
+  let plan = '';
+  let feedback = '';
+  let testReport = '';
+  let stopReason: string | undefined;
+  let haltReason: string | undefined;
+  let noChange = false;
+
+  /** One agent run, as Escapement builds it for a pipeline stage. */
+  const stage =
+    (role: Role, goal: (input: StageInput) => string): PipelineStage =>
+    (input) => {
+      const agent = options.agents[role];
+      return {
+        goal: goal(input),
+        provider: options.providerFor(role, input.seq),
+        tools: buildToolRegistry(agent, toolDeps),
+        assembler: makeAssembler(agent),
+        config: { budget: { maxSteps: config.maxSteps } },
+        deps: {
+          clock: manualClock(0),
+          rng: seededRng(`${options.runId}-${input.seq}-${role}`),
+          ids: sequentialIds(),
+        },
+      };
+    };
+
+  /** What a finished run means for the workflow: proceed, rework, approve, request changes or halt. */
+  function decide(h: PipelineHandoff, output: string): [Decision, string?] {
+    const role = h.stage as Role;
+    if (h.outcome.status !== 'completed') return ['halt', `${role} run ${h.outcome.status}`];
+    switch (role) {
+      case 'planner':
+        return ['proceed'];
+      case 'implementer':
+        noChange = Object.keys(options.workspace.changes()).length === 0;
+        return noChange ? ['halt', 'implementer made no change'] : ['proceed'];
+      case 'tester': {
+        const last = toolCalls(h.ledger)
+          .filter((c) => c.name === 'run_tests')
+          .at(-1);
+        if (!last) return ['rework', 'tester did not run the tests'];
+        const result = last.ok
+          ? (JSON.parse(last.content) as { passed: boolean; summary: string })
+          : { passed: false, summary: last.content };
+        return result.passed ? ['proceed'] : ['rework', `tests failed: ${result.summary}`];
+      }
+      case 'reviewer': {
+        const verdict = parseVerdict(output);
+        if (!verdict) return ['request_changes', 'reviewer verdict was not valid JSON'];
+        return verdict.verdict === 'approve'
+          ? ['approve']
+          : ['request_changes', verdict.findings.join('\n') || 'reviewer requested changes'];
+      }
+    }
+  }
+
+  /** Record a finished run in the audit trail and the run record, and return its decision. */
+  function settle(h: PipelineHandoff): { decision: Decision; reason?: string } {
+    const role = h.stage as Role;
+    const key = `${h.seq}-${role}`;
+    const output = outputOf(h.outcome);
+    const [decision, reason] = decide(h, output);
+    if (decision === 'halt') haltReason = reason;
+    const goal = h.ledger.goal;
     const handoff: Handoff = {
-      seq,
+      seq: h.seq,
       agent: role,
       inputHash: hashInput(role, goal),
       output,
       outputHash: sha256Hex(output),
-      toolCalls: summarizeToolCalls(ledger),
+      toolCalls: summarizeToolCalls(h.ledger),
       decision,
       ledgerKey: key,
-      ledgerDigest: digest(ledger as unknown as JsonValue),
+      ledgerDigest: h.ledgerDigest,
     };
     handoffs.push(handoff);
-    ledgers[key] = ledger;
+    ledgers[key] = h.ledger;
     options.audit?.append({
       actor: `agent:${role}`,
       action: 'handoff',
@@ -171,7 +206,7 @@ export async function runWorkflow(options: WorkflowOptions): Promise<RunRecord> 
       decision,
       detail: {
         runId: options.runId,
-        seq,
+        seq: h.seq,
         ledgerKey: key,
         outputHash: handoff.outputHash,
         ledgerDigest: handoff.ledgerDigest,
@@ -179,9 +214,66 @@ export async function runWorkflow(options: WorkflowOptions): Promise<RunRecord> 
         ...(reason ? { reason } : {}),
       },
     });
-    return { handoff, ledger, ...(reason ? { reason } : {}) };
+    return { decision, ...(reason ? { reason } : {}) };
   }
 
+  /** Send the work back to the implementer, or stop when the rework limit is spent. */
+  function rework(why: string): string | null {
+    if (reworkRounds >= config.maxReworkRounds) {
+      stopReason = `rework limit reached (${config.maxReworkRounds}): ${why}`;
+      return null;
+    }
+    reworkRounds += 1;
+    feedback = why;
+    return 'implementer';
+  }
+
+  const result = await pipeline({
+    id: options.runId,
+    start: 'planner',
+    maxHandoffs: 1 + 3 * (config.maxReworkRounds + 1), // the planner, then three agents per round,
+    stages: {
+      planner: stage('planner', () => task),
+      implementer: stage(
+        'implementer',
+        () =>
+          `${task}\n\nPlan:\n${plan}${feedback ? `\n\nReview feedback to fix:\n${feedback}` : ''}`,
+      ),
+      tester: stage(
+        'tester',
+        ({ prior }) =>
+          `${task}\n\nChanged files:\n${list(Object.keys(options.workspace.changes()))}\n\nImplementer report:\n${outputOf(prior.at(-1)?.outcome ?? null)}`,
+      ),
+      reviewer: stage(
+        'reviewer',
+        () =>
+          `${task}\n\nPlan:\n${plan}\n\nChanged files:\n${list(Object.keys(options.workspace.changes()))}\n\nTest report:\n${testReport}`,
+      ),
+    },
+    next: (h) => {
+      const { decision, reason } = settle(h);
+      const output = outputOf(h.outcome);
+      switch (h.stage) {
+        case 'planner':
+          plan = output;
+          return 'implementer';
+        case 'implementer':
+          return decision === 'halt' ? null : 'tester';
+        case 'tester':
+          if (decision === 'rework') return rework(reason ?? '');
+          testReport = output;
+          return 'reviewer';
+        default:
+          return decision === 'request_changes' ? rework(reason ?? '') : null;
+      }
+    },
+  });
+
+  // A run that does not complete stops the pipeline before `next`, so its handoff is settled here.
+  const stopped = result.handoffs.at(-1);
+  if (stopped && stopped.outcome.status !== 'completed') settle(stopped);
+
+  const last = handoffs.at(-1);
   const finish = (status: RunStatus, reason?: string, change?: ProposedChange): RunRecord => ({
     version: 1,
     runId: options.runId,
@@ -195,77 +287,18 @@ export async function runWorkflow(options: WorkflowOptions): Promise<RunRecord> 
     ...(change ? { change } : {}),
   });
 
-  let reworkRounds = 0;
-  const task = `Task:\n${options.task}`;
-
-  const planned = await step('planner', task, () => ['proceed']);
-  if (planned.handoff.decision === 'halt')
-    return finish('failed', planned.reason ?? 'planner failed');
-  const plan = planned.handoff.output;
-
-  let feedback = '';
-  for (;;) {
-    const implGoal = `${task}\n\nPlan:\n${plan}${feedback ? `\n\nReview feedback to fix:\n${feedback}` : ''}`;
-    const impl = await step('implementer', implGoal, () =>
-      Object.keys(options.workspace.changes()).length === 0
-        ? ['halt', 'implementer made no change']
-        : ['proceed'],
-    );
-    if (impl.handoff.decision === 'halt') {
-      return finish(impl.reason?.endsWith('no change') ? 'halted' : 'failed', impl.reason);
-    }
-    const files = Object.keys(options.workspace.changes());
-
-    const tested = await step(
-      'tester',
-      `${task}\n\nChanged files:\n${list(files)}\n\nImplementer report:\n${impl.handoff.output}`,
-      (ledger) => {
-        const last = toolCalls(ledger)
-          .filter((c) => c.name === 'run_tests')
-          .at(-1);
-        if (!last) return ['rework', 'tester did not run the tests'];
-        const result = last.ok
-          ? (JSON.parse(last.content) as { passed: boolean; summary: string })
-          : { passed: false, summary: last.content };
-        return result.passed ? ['proceed'] : ['rework', `tests failed: ${result.summary}`];
-      },
-    );
-    let why = tested.reason ?? '';
-    if (tested.handoff.decision === 'halt') return finish('failed', tested.reason);
-
-    if (tested.handoff.decision === 'proceed') {
-      const reviewed = await step(
-        'reviewer',
-        `${task}\n\nPlan:\n${plan}\n\nChanged files:\n${list(files)}\n\nTest report:\n${tested.handoff.output}`,
-        (_ledger, output) => {
-          const verdict = parseVerdict(output);
-          if (!verdict) return ['request_changes', 'reviewer verdict was not valid JSON'];
-          return verdict.verdict === 'approve'
-            ? ['approve']
-            : ['request_changes', verdict.findings.join('\n') || 'reviewer requested changes'];
-        },
-      );
-      if (reviewed.handoff.decision === 'halt') return finish('failed', reviewed.reason);
-      if (reviewed.handoff.decision === 'approve') {
-        const changeFiles = options.workspace.changes();
-        const change: ProposedChange = {
-          branch: config.branch,
-          message: config.commitMessage,
-          files: changeFiles,
-          hash: '',
-        };
-        change.hash = hashChange(change);
-        return finish('awaiting-approval', undefined, change);
-      }
-      why = reviewed.reason ?? 'reviewer requested changes';
-    }
-
-    if (reworkRounds >= config.maxReworkRounds) {
-      return finish('halted', `rework limit reached (${config.maxReworkRounds}): ${why}`);
-    }
-    reworkRounds += 1;
-    feedback = why;
+  if (stopReason) return finish('halted', stopReason);
+  if (last?.decision === 'approve') {
+    const change: ProposedChange = {
+      branch: config.branch,
+      message: config.commitMessage,
+      files: options.workspace.changes(),
+      hash: '',
+    };
+    change.hash = hashChange(change);
+    return finish('awaiting-approval', undefined, change);
   }
+  return finish(noChange ? 'halted' : 'failed', haltReason);
 }
 
 function parseVerdict(output: string): z.infer<typeof Verdict> | undefined {

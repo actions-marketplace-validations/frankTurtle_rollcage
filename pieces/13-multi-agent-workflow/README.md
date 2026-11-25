@@ -3,7 +3,7 @@
 Four Claude Code subagents (planner, implementer, tester, reviewer) and a headless orchestrator
 that runs them in order, logs every handoff, replays a recorded run exactly, and stops at a human
 approval checkpoint before anything lands on a shared branch. The orchestrator is built on
-[Escapement](https://github.com/frankTurtle/escapement) 0.2.0.
+[Escapement](https://github.com/frankTurtle/escapement) 0.3.0.
 
 ## For engineering leaders
 
@@ -51,8 +51,8 @@ recorded fixture runs and are labeled as such.
 - This is a process control. It shows what happened and stops unapproved commits made through the
   orchestrator. It does not stop someone who runs `git push` by hand. Pair it with branch
   protection and piece 02.
-- Escapement runs one agent per loop, so "multi-agent" here is four sequential runs chained by this
-  piece's code. There is no parallelism and no agent-to-agent negotiation.
+- "Multi-agent" here is an Escapement `pipeline()`: four sequential runs, each linked to the one
+  before. There is no parallelism and no agent-to-agent negotiation.
 - Replay proves the recorded run reproduces. It does not prove the agent was right.
 - The reviewer is a model. Its verdict is advice that the human approver reads, not a guarantee.
 - The shipped committer is a dry run that records what it would commit. A real git committer is
@@ -77,12 +77,12 @@ flowchart LR
   P & I & S & R -.-> L[(run ledger + audit log)]
 ```
 
-Each box is one Escapement `run()`: a state machine with a token-budgeted context assembler, a tool
+Each box is one run in an Escapement `pipeline()`: a state machine with a token-budgeted context assembler, a tool
 registry, and an append-only ledger. The ports are implemented here:
 
 | Escapement port | This piece                                                                                         |
 | --------------- | -------------------------------------------------------------------------------------------------- |
-| `ModelProvider` | `LlmModelProvider`, an adapter over the repo's shared `LlmClient`. Tests use `FakeLlm`.            |
+| `ModelProvider` | `llmModelProvider`, Escapement's `textProvider` over the repo's shared `LlmClient`. Tests use `FakeLlm`. |
 | `ToolRegistry`  | `buildToolRegistry`, built from the agent's frontmatter `tools`. Tests use an in-memory workspace. |
 | Assembler       | Escapement's `createAssembler`, with the agent's prompt as the system section.                     |
 | Eval harness    | `evals/suite.ts`: `EvalCase`s with trajectory graders, gated against `evals/baseline.json`.        |
@@ -112,13 +112,15 @@ at load time, so a typo cannot widen an agent's access.
 ### Model protocol
 
 The shared `LlmClient` returns text, so each turn is a JSON object:
-`{"say": "...", "tool_calls": [{"name": "...", "args": {}}]}`. The adapter validates it with zod
-through the shared structured-output helper: one retry, then it fails the run closed. The model id
+`{"say": "...", "tool_calls": [{"name": "...", "args": {}}]}`. Escapement's `textProvider` renders
+the prompt and parses the reply. A reply that breaks the format becomes a repair turn inside the
+run, which counts against `max_steps`; a client that throws fails the run closed. The model id
 comes from `ANTHROPIC_MODEL` through the shared config.
 
 ### The ledger, the audit log, and replay
 
-- Each Escapement run produces a ledger. The workflow stores them all in one run record
+- Each Escapement run produces a ledger, and the pipeline links each one to the run before it
+  (`parentRunId`). The workflow stores them all in one run record
   (`run-<id>.json`) next to a handoff list.
 - A handoff is `{seq, agent, inputHash, output, outputHash, toolCalls, decision, ledgerKey,
   ledgerDigest}`. The same facts go to the shared `AuditLogger` (actor `agent:<name>`, action
@@ -126,8 +128,9 @@ comes from `ANTHROPIC_MODEL` through the shared config.
 - Runs use Escapement's manual clock, seeded RNG and sequential ids, so a ledger depends only on
   the model's replies and the tools' results.
 - `workflow replay <record>` checks three things: Escapement's reducer replay of every ledger,
-  that every handoff still matches its ledger, and a full re-execution from the recorded model
-  turns that must produce a byte-identical record.
+  that every handoff still matches its ledger and the pipeline links hold (`verifyPipeline`), and a
+  full re-execution from the recorded model turns (`replayProvider`) that must produce a
+  byte-identical record.
 
 ### The approval checkpoint
 
@@ -162,7 +165,7 @@ Anthropic with `ANTHROPIC_API_KEY`; opt-in). Live mode was not exercised in this
 
 ### Evals
 
-`evals/suite.ts` builds one Escapement `EvalCase` per role from the recorded fixture turns, with
+`evals/suite.ts` builds one Escapement `EvalCase` per role with `caseFromLedger`, with
 graders for the tool sequence, a step limit, "never calls a commit tool", and exact replay.
 `pnpm --filter @adl/multi-agent-workflow eval:gate` compares the scores and trajectory
 fingerprints with `evals/baseline.json` and fails on a regression. `eval:baseline` re-records the
@@ -183,7 +186,7 @@ touches the network. Each acceptance criterion above has at least one test.
 
 | Dependency       | Why                                                                      |
 | ---------------- | ------------------------------------------------------------------------ |
-| `escapement` 0.2.0 | State machine, context assembler, run ledger and replay, eval harness. Zero dependencies of its own. |
+| `escapement` 0.3.0 | State machine, context assembler, run ledger and replay, eval harness. Zero dependencies of its own. |
 | `@adl/shared`    | `LlmClient`, structured output, `AuditLogger`, glob, config.             |
 | `zod`            | Validates model turns, the reviewer verdict, and config.                 |
 | `yaml`           | Parses agent frontmatter and `workflow.yml`.                             |
@@ -208,4 +211,4 @@ ANTHROPIC_API_KEY=... pnpm --filter @adl/multi-agent-workflow workflow run --liv
 pnpm --filter @adl/multi-agent-workflow workflow replay /tmp/rollcage-live/run-*.json
 ```
 
-See [docs/follow-ups.md](../../docs/follow-ups.md) for what the Escapement library did not cover.
+See [docs/follow-ups.md](../../docs/follow-ups.md) for what the Escapement library still does not cover.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { redact } from '../src/redact.ts';
+import { redactSecrets } from '@adl/shared';
 import { excerpt, extractSignature, extractTests, normalizeLine } from '../src/signature.ts';
 import { gh, readLog } from './helpers.ts';
 
@@ -106,7 +106,7 @@ describe('redaction and excerpts', () => {
       'DB_PASSWORD: hunter2',
       '-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----',
     ].join('\n');
-    const out = redact(text);
+    const out = redactSecrets(text);
     for (const secret of [
       'AKIAIOSFODNN7EXAMPLE',
       ghToken,
