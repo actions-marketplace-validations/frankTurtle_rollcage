@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { execRunner } from '../src/runner.ts';
+import { execRunner } from '@adl/shared';
 import { generateKeyPair, signBlob } from '../src/sign.ts';
 import { fail, fakeRunner, ok } from './helpers.ts';
 
 describe('AC-9: the real runner, against harmless local commands', () => {
   it('captures stdout, stderr and the exit code', async () => {
-    const run = execRunner(10_000);
+    const run = execRunner({ timeoutMs: 10_000 });
     const result = await run(process.execPath, [
       '-e',
       'console.log("out"); console.error("err"); process.exit(3)',
@@ -16,22 +16,25 @@ describe('AC-9: the real runner, against harmless local commands', () => {
   });
 
   it('reports a missing program as an error instead of throwing', async () => {
-    const result = await execRunner(10_000)('definitely-not-a-real-program-xyz', []);
+    const result = await execRunner({ timeoutMs: 10_000 })('definitely-not-a-real-program-xyz', []);
     expect(result.code).toBeNull();
     expect(result.error).toMatch(/ENOENT/);
   });
 
   it('reports a timeout as an error', async () => {
-    const result = await execRunner(200)(process.execPath, ['-e', 'setTimeout(()=>{}, 5000)']);
+    const result = await execRunner({ timeoutMs: 200 })(process.execPath, [
+      '-e',
+      'setTimeout(()=>{}, 5000)',
+    ]);
     expect(result.code).toBeNull();
     expect(result.error).toMatch(/timed out|killed|SIGTERM/i);
   });
 
   it('passes the extra environment through', async () => {
-    const result = await execRunner(10_000, { PROV_TEST: 'yes' })(process.execPath, [
-      '-e',
-      'console.log(process.env.PROV_TEST)',
-    ]);
+    const result = await execRunner({ timeoutMs: 10_000, env: { PROV_TEST: 'yes' } })(
+      process.execPath,
+      ['-e', 'console.log(process.env.PROV_TEST)'],
+    );
     expect(result.stdout.trim()).toBe('yes');
   });
 });

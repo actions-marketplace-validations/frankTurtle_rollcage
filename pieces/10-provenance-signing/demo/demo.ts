@@ -6,9 +6,8 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { header, runStages } from '@adl/shared';
+import { execRunner, header, runStages } from '@adl/shared';
 import { runCli } from '../src/cli.ts';
-import { execRunner } from '../src/runner.ts';
 import { generateKeyPair, signBlob } from '../src/sign.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -23,7 +22,7 @@ const PUBLIC_KEY = 'signer/demo.pub';
 const PRIVATE_KEY = 'signer/demo.key';
 const TARBALL = 'build/rollcage-sample-1.0.0.tgz';
 
-const runner = execRunner(60_000, { COSIGN_PASSWORD: '' });
+const runner = execRunner({ timeoutMs: 60_000, env: { COSIGN_PASSWORD: '' } });
 const say = (text: string): void => console.log(text);
 
 /** Flip one bit in the middle of the file. */
