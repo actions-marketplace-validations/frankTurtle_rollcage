@@ -16,7 +16,7 @@ on:
         'shared/ts/**',
         '.github/workflows/piece-10-provenance-signing.yml',
       ]
-  # Only used by attest-sample, which is switched off until the maintainer approves it.
+  # Runs attest-sample, the only job that writes a public attestation.
   workflow_dispatch:
 
 permissions:
@@ -41,12 +41,11 @@ jobs:
       - name: Demo runs offline end to end (throwaway key, no transparency log)
         run: pnpm --filter @adl/provenance-signing demo
 
-  # DISABLED. Keyless signing and GitHub artifact attestations write a public Sigstore (Rekor)
-  # entry that includes the repository identity. Do not enable without the maintainer's approval,
-  # and only on the public demo repository. To enable, replace `if: false` with
-  # `if: github.event_name == 'workflow_dispatch'`.
+  # Manual only (approved by the maintainer on 2026-11-25). GitHub artifact attestations write a
+  # public Sigstore (Rekor) entry that includes the repository identity, so this job never runs on
+  # push or pull_request.
   attest-sample:
-    if: false
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     # The only job in this file with id-token and attestations write.
     permissions:

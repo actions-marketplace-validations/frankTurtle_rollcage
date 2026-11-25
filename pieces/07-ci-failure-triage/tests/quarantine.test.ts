@@ -4,12 +4,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_CONFIG } from '../src/config.ts';
 import { loadHistory, emptyHistory } from '../src/history.ts';
-import {
-  loadQuarantine,
-  maintainerCommands,
-  proposeQuarantine,
-  unifiedDiff,
-} from '../src/quarantine.ts';
+import { loadQuarantine, maintainerCommands, proposeQuarantine } from '../src/quarantine.ts';
 import { FIXTURES, fixtureText, tmp } from './helpers.ts';
 
 const ORDERS = 'tests/api/orders.test.ts > creates an order';
@@ -133,12 +128,5 @@ describe('AC-6 quarantine proposal', () => {
       /quarantine file is invalid/,
     );
     expect(() => loadQuarantine('nope')).toThrow(/quarantine file is not valid JSON/);
-  });
-
-  it('unifiedDiff handles identical text and edits in the middle', () => {
-    expect(unifiedDiff('a.txt', 'x\n', 'x\n')).toBe('');
-    const d = unifiedDiff('a.txt', 'a\nb\nc\nd\ne\nf\ng\nh\n', 'a\nb\nc\nd\nX\ne\nf\ng\nh\n');
-    expect(d).toContain('@@ -2,6 +2,7 @@');
-    expect(d).toContain('+X');
   });
 });

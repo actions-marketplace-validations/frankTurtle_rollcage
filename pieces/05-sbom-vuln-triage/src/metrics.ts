@@ -1,6 +1,6 @@
+import { daysBetween } from '@adl/shared';
 import type { HistoryEntry } from './history.js';
 import type { PrioritizedFinding } from './prioritize.js';
-import { daysBetween } from './types.js';
 import type { IsoDay } from './types.js';
 
 export interface MetricsOptions {

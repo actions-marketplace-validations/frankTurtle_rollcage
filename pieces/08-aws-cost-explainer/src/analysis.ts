@@ -1,4 +1,4 @@
-import { round1 } from '@adl/shared';
+import { daysBetween, round1 } from '@adl/shared';
 import type { AnalysisConfig, Anomaly, CostRow, DateRange } from './types.ts';
 import { UNTAGGED } from './types.ts';
 
@@ -57,8 +57,6 @@ const pctChange = (previous: number, delta: number): number | null =>
 
 const DAY_MS = 86_400_000;
 const utcDay = (iso: string): number => Date.parse(`${iso}T00:00:00Z`);
-const daysBetween = (from: string, to: string): number =>
-  Math.round((utcDay(to) - utcDay(from)) / DAY_MS);
 const isoDay = (ms: number): string => new Date(ms).toISOString().slice(0, 10);
 
 function lastDayOfMonth(iso: string): string {

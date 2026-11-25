@@ -197,8 +197,8 @@ before you schedule the function. This README states no price because it did not
 
 ### Verify before you deploy
 
-Nothing here has been deployed or run against AWS. Before relying on it, a maintainer should
-check, in a sandbox account:
+Fixture mode was deployed and invoked once on 2026-11-25 (see DEPLOY.md). Live mode has not run.
+Before relying on live mode, a maintainer should check, in a sandbox account:
 
 ```bash
 cd pieces/08-aws-cost-explainer

@@ -40,8 +40,9 @@ The fake `.env` prints in full, fake AWS key included.
 pnpm demo:02 run
 ```
 
-A table of ten tool calls: the `.env` read, a `cat .env`, a force-push, a write to `~/.bashrc`, a
-`curl` to an unlisted host and a WebFetch to one are blocked with the rule name; reading source,
+A table of eleven tool calls: the `.env` read, a `cat .env`, a force-push, a write to `~/.bashrc`, a
+`curl` to an unlisted host, an edit of the guard's own `.claude/settings.json` and a WebFetch to an
+unlisted host are blocked with the rule name; reading source,
 running tests and fetching docs from an allowed host go through. Show the one-line reason the agent
 sees for the `.env` read.
 

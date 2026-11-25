@@ -1,7 +1,9 @@
 # Deploying the AWS cost explainer
 
-Deploy this in a sandbox AWS account first. It has not been deployed or run against AWS. Everything
-below is infrastructure as code, so one command removes it.
+Deploy this in a sandbox AWS account first. It was deployed once in fixture mode on 2026-11-25, in
+us-east-1, and invoked by hand: it built the fixture report, used the deterministic summary (no
+model configured), and published to SNS. Live mode (real Cost Explorer calls) has not been run.
+Everything below is infrastructure as code, so one command removes it.
 
 ## What it creates
 
@@ -35,8 +37,12 @@ In fixture mode (the default) the function makes no Cost Explorer calls.
 
 ## Before you deploy, verify
 
-See "Verify before you deploy" in the README. In short: nothing here has run against AWS, and the
-Cost Explorer request shapes were written from the SDK types and documentation.
+See "Verify before you deploy" in the README. In short: fixture mode has run on AWS; live mode has
+not, and the Cost Explorer request shapes were written from the SDK types and documentation.
+
+The weekly schedule is an EventBridge Scheduler schedule. Scheduler schedules cannot carry tags, so
+it does not appear in a `project=rollcage` tag search, but it belongs to the stack and is deleted
+with it.
 
 ## Steps
 

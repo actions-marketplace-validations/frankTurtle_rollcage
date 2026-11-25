@@ -47,3 +47,61 @@ describe('completeStructured', () => {
     expect(r.reason).toBe('call failed');
   });
 });
+
+describe('completeStructured with .transform', () => {
+  const request = { prompt: 'p' };
+  const attempt = (candidate: z.ZodTypeAny) => {
+    const llm = new FakeLlm(['{"n":"1"}']);
+    return completeStructured(llm, request, candidate, () => ({}));
+  };
+
+  it('rejects a top-level transform before calling the model', async () => {
+    const llm = new FakeLlm(['{"n":"1"}']);
+    const t = z.object({ n: z.string() }).transform((v) => Number(v.n));
+    await expect(
+      completeStructured(llm, request, t as unknown as z.ZodType<number>, () => 0),
+    ).rejects.toThrow(/\.transform/);
+    expect(llm.calls).toHaveLength(0);
+  });
+
+  it('rejects a transform nested in objects, arrays, optionals, unions and pipelines', async () => {
+    const t = z.string().transform((v) => v.length);
+    const nested = [
+      z.object({ a: z.object({ b: t }) }),
+      z.object({ a: z.array(t) }),
+      z.object({ a: t.optional() }),
+      z.object({ a: t.nullable().default(null) }),
+      z.object({ a: z.union([z.number(), t]) }),
+      z.object({ a: z.record(t) }),
+      z.object({ a: z.tuple([z.string(), t]) }),
+      z.object({ a: z.string().pipe(t) }),
+      z.object({ a: z.intersection(z.object({ x: z.string() }), z.object({ y: t })) }),
+      z.discriminatedUnion('k', [z.object({ k: z.literal('a'), v: t })]),
+    ];
+    for (const schema of nested) {
+      await expect(attempt(schema)).rejects.toThrow(/\.transform/);
+    }
+  });
+
+  it('still accepts refine, default, coerce and preprocess', async () => {
+    const ok = z.object({
+      n: z.coerce.number().refine((v) => v > 0),
+      s: z.string().default('x'),
+      p: z.preprocess((v) => String(v), z.string()).optional(),
+    });
+    const llm = new FakeLlm(['{"n":"1"}']);
+    const r = await completeStructured(llm, request, ok, () => ({ n: 0, s: 'x', p: undefined }));
+    expect(r.source).toBe('model');
+    expect(r.value).toMatchObject({ n: 1, s: 'x' });
+  });
+
+  it('handles a recursive (lazy) schema without looping', async () => {
+    type Node = { name: string; kids?: Node[] };
+    const node: z.ZodType<Node> = z.lazy(() =>
+      z.object({ name: z.string(), kids: z.array(node).optional() }),
+    ) as unknown as z.ZodType<Node>;
+    const llm = new FakeLlm(['{"name":"a","kids":[{"name":"b"}]}']);
+    const r = await completeStructured(llm, request, node, () => ({ name: 'x' }));
+    expect(r.source).toBe('model');
+  });
+});

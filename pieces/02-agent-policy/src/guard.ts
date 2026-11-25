@@ -8,6 +8,7 @@ export type Rule =
   | 'secret-read'
   | 'force-push'
   | 'write-outside-repo'
+  | 'protected-path'
   | 'network-allowlist'
   | 'unparseable'
   | 'invalid-input'
@@ -115,6 +116,34 @@ function isWritable(abs: string, ctx: GuardContext): boolean {
   return [ctx.projectDir, ...extra].some((d) => insideDir(abs, d));
 }
 
+/**
+ * Protected globs as absolute patterns. A pattern with a `/` is relative to the repo root (or `~`
+ * or absolute); a bare name such as `CODEOWNERS` matches in any directory, like the secret globs.
+ */
+const protectedGlobs = (ctx: GuardContext): string[] =>
+  ctx.config.protected_paths.map((p) =>
+    p.includes('/') || p.startsWith('~') ? resolvePath(p, ctx.projectDir, ctx.home) : p,
+  );
+
+const isProtectedPath = (abs: string, ctx: GuardContext): boolean =>
+  matchesAny(abs, protectedGlobs(ctx));
+
+/** True if `abs` is, or contains, the fixed part of a protected glob (`rm -rf .claude`). */
+function containsProtectedPath(abs: string, ctx: GuardContext): boolean {
+  return protectedGlobs(ctx).some((g) => {
+    if (!g.startsWith('/')) return false;
+    const fixed = g.slice(0, g.search(/[*?[]/) === -1 ? undefined : g.search(/[*?[]/));
+    return insideDir(fixed.replace(/\/$/, ''), abs);
+  });
+}
+
+const denyProtected = (abs: string): Decision =>
+  deny(
+    'protected-path',
+    'This file configures or implements the agent guardrails, so an agent may not change it. Ask a human to edit it themselves.',
+    abs,
+  );
+
 const denySecret = (abs: string): Decision =>
   deny('secret-read', 'Secret and credential files are off limits to agents.', abs);
 const denyOutside = (abs: string): Decision =>
@@ -137,6 +166,7 @@ function checkWritePath(token: string, cwd: string, ctx: GuardContext): Decision
     );
   }
   const abs = resolvePath(token, cwd, ctx.home);
+  if (isProtectedPath(abs, ctx)) return denyProtected(abs);
   if (SAFE_SINKS.has(abs) || isWritable(abs, ctx)) return ALLOW;
   return denyOutside(abs);
 }
@@ -151,6 +181,7 @@ function checkFileTool(call: ToolCall, ctx: GuardContext): Decision {
     if (call.tool_name !== 'Glob' && isSecretPath(abs, ctx)) {
       return denySecret(abs);
     }
+    if (WRITE_TOOLS.has(call.tool_name) && isProtectedPath(abs, ctx)) return denyProtected(abs);
     if (WRITE_TOOLS.has(call.tool_name) && !isWritable(abs, ctx)) return denyOutside(abs);
   }
   const glob = str(input['glob']);
@@ -313,6 +344,17 @@ function findExecCommands(cmd: string, args: string[]): string[][] {
   return found.filter((w) => w.length > 0);
 }
 
+/** True if a `find` deletes what it matches: `-delete`, or `-exec` of a removing command. */
+function findRemoves(args: string[]): boolean {
+  return (
+    args.includes('-delete') ||
+    findExecCommands('find', args).some((w) => {
+      const { cmd } = commandOf(w);
+      return REMOVE_ALL.has(cmd) || cmd === 'mv';
+    })
+  );
+}
+
 /** The script string for `sh -c "..."` or `eval ...`, if this is one. */
 function shellScript(cmd: string, args: string[]): string | undefined {
   if (cmd === 'eval') return args.join(' ');
@@ -400,6 +442,8 @@ const WRITE_ALL = new Set([
 ]);
 const WRITE_AFTER_FIRST = new Set(['chmod', 'chown', 'chgrp']);
 const WRITE_LAST = new Set(['cp', 'install', 'ln', 'rsync']);
+/** Commands that delete or move away their operands (`mv` keeps its last one, the destination). */
+const REMOVE_ALL = new Set(['rm', 'rmdir', 'unlink', 'shred']);
 
 const positionals = (args: string[]): string[] => args.filter((a) => !a.startsWith('-'));
 
@@ -422,6 +466,25 @@ function checkWriteCommand(cmd: string, args: string[], cwd: string, ctx: GuardC
   for (const t of local) {
     const decision = checkWritePath(t, cwd, ctx);
     if (!decision.allow) return decision;
+  }
+  // Removing or moving a directory takes the protected files inside it too.
+  const removed = REMOVE_ALL.has(cmd)
+    ? positionals(args)
+    : cmd === 'mv'
+      ? positionals(args).slice(0, -1)
+      : [];
+  for (const t of removed) {
+    const abs = resolvePath(t, cwd, ctx.home);
+    if (containsProtectedPath(abs, ctx)) return denyProtected(abs);
+  }
+  // `find <start> -delete` or `-exec rm {}` reaches every file under its start paths.
+  if (cmd === 'find' && findRemoves(args)) {
+    const firstExpr = args.findIndex((a) => /^[-(!]/.test(a));
+    const starts = firstExpr === -1 ? args : args.slice(0, firstExpr);
+    for (const t of starts.length ? starts : ['.']) {
+      const abs = resolvePath(t, cwd, ctx.home);
+      if (containsProtectedPath(abs, ctx)) return denyProtected(abs);
+    }
   }
   return ALLOW;
 }
