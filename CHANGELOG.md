@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 (2026-11-25)
+
 - The installer is published to npm as `rollcage-init` (`npx rollcage-init`), with provenance via trusted
   publishing. The curl command still works as a fallback.
 
