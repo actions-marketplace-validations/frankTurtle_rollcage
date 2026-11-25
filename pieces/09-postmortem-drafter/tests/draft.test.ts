@@ -157,3 +157,19 @@ describe('AC-8 report in the draft', () => {
     expect(result.report.total).toBeGreaterThan(10);
   });
 });
+
+describe('large bundles', () => {
+  it('keeps the start and end of the timeline and says how many events were omitted', async () => {
+    const logs = Array.from({ length: 30 }, (_, i) => ({
+      timestamp: Date.parse('2026-03-04T14:00:00Z') + i * 1000,
+      message: `event ${i} ${'x'.repeat(i === 0 ? 600 : 1)}`,
+    }));
+    const big = parseBundleFiles({ ...sampleBundleFiles(), 'logs.json': JSON.stringify(logs) });
+    const llm = new FakeLlm([goodReply]);
+    await draftPostmortem(big, llm, { maxEvents: 10 });
+    const prompt = llm.calls[0]?.prompt ?? '';
+    expect(prompt).toMatch(/\(\d+ events omitted here\)/);
+    expect(prompt.split('\n').filter((l) => /^E\d+ \|/.test(l))).toHaveLength(10);
+    expect(prompt).toContain('...');
+  });
+});
