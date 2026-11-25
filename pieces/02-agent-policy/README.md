@@ -82,7 +82,17 @@ Claude Code docs on 2026-11-24 ([hooks](https://code.claude.com/docs/en/hooks),
 - Hooks live in `.claude/settings.json` as `hooks.<Event>[].{matcher, hooks[].{type, command, timeout}}`.
 - A hook receives JSON on stdin with `tool_name`, `tool_input`, `cwd`, `session_id`, `tool_use_id`.
 - Exit code 2 blocks the call and sends stderr to the model. Exit code 1 is not a block, so the hook
-  exits 2 on every error (fail closed).
+  exits 2 on every error it can catch. A hook that cannot start at all (missing file, missing
+  runtime) exits with another code, which would let the call run, so the PreToolUse entry also sets
+  `"onFailure": "block"` (a handler field in the hooks docs, from Claude Code 2.1.295; check your
+  version). `check` fails without it. The cost: if the hook is broken, every tool call is blocked
+  until you fix or remove the hook entry in `.claude/settings.json`. Edits made through the
+  agent are blocked too, so recover from outside the session: edit the file in an editor or a plain
+  terminal, or start Claude Code with `--settings '{"disableAllHooks": true}'`, which the hooks
+  docs say overrides project and local settings files (untested here).
+  To avoid the lockout in the first place, run `pnpm policy:selftest` after changing hook code and
+  before starting a session. It runs the configured PreToolUse command against a harmless call and a
+  `.env` read, and fails if the hook crashes or fails open. CI runs it too.
 - Exit 2 blocks even in `bypassPermissions` mode. A `PostToolUse` hook does not fire for a blocked
   call, so the blocking hook writes its own audit record.
 
@@ -144,6 +154,7 @@ pnpm --filter @adl/agent-policy agent-policy hook pre    # reads hook JSON on st
 pnpm --filter @adl/agent-policy agent-policy hook post
 pnpm --filter @adl/agent-policy agent-policy check --root .
 pnpm --filter @adl/agent-policy agent-policy metrics --log .claude/audit/agent.audit.jsonl
+pnpm policy:selftest    # runs the configured hook against two sample calls
 ```
 
 `pnpm policy:check` runs the CI check on this repository.

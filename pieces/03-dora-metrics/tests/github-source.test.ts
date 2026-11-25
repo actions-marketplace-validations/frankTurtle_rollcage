@@ -227,6 +227,53 @@ describe('AC-6 changes and incidents', () => {
   });
 });
 
+describe('review fixes: paging and large lists', () => {
+  const day = (n: number) => `2026-01-${String(n).padStart(2, '0')}T10:00:00Z`;
+  const old = Array.from({ length: 100 }, (_, i) => ({
+    id: i + 1,
+    sha: 's',
+    created_at: '2025-11-01T10:00:00Z',
+  }));
+
+  it('keeps paging when the first page is old but the list is not newest-first', async () => {
+    // A full first page of old deployments in ascending time order, then the in-range ones.
+    const ascendingOld = Array.from({ length: 100 }, (_, i) => ({
+      id: i + 1,
+      sha: 's',
+      created_at: new Date(Date.UTC(2025, 9, 1) + i * 3_600_000).toISOString(),
+    }));
+    const inRange = [{ id: 500, sha: 's', created_at: day(5) }];
+    const fetchImpl = async (url: string) => {
+      const u = new URL(url);
+      if (u.pathname.endsWith('/statuses')) {
+        return new Response(JSON.stringify([{ state: 'success', created_at: day(5) }]));
+      }
+      const page = u.searchParams.get('page');
+      const body = u.pathname.endsWith('/deployments')
+        ? page === '1'
+          ? ascendingOld
+          : inRange
+        : [];
+      return new Response(JSON.stringify(body));
+    };
+    const gh = new GitHubSource({ owner: 'o', name: 'r' }, 't', loadDoraConfig(''), fetchImpl);
+    const { data } = await gh.load(span);
+    expect(data.deployments.map((d) => d.id)).toEqual(['500']);
+  });
+
+  it('stops early on a newest-first list whose page is entirely old', async () => {
+    let pages = 0;
+    const fetchImpl = async (url: string) => {
+      const u = new URL(url);
+      if (u.pathname.endsWith('/deployments')) pages++;
+      return new Response(JSON.stringify(u.pathname.endsWith('/deployments') ? old : []));
+    };
+    const gh = new GitHubSource({ owner: 'o', name: 'r' }, 't', loadDoraConfig(''), fetchImpl);
+    await gh.load(span);
+    expect(pages).toBe(1);
+  });
+});
+
 describe('AC-6 concurrency', () => {
   it('never has more than five status requests in flight', async () => {
     const many = Array.from({ length: 12 }, (_, i) => ({

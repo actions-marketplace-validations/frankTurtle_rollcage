@@ -127,7 +127,7 @@ describe('AC-9 errors', () => {
     'an AWS failure at %s is audited as an error and stops what follows',
     async (where, done) => {
       const r = await run(event(), { failOn: where });
-      expect(decisions(r)).toContain('error');
+      expect(decisions(r)).toContain(where === 'notify' ? 'notify-failed' : 'error');
       expect([r.calls.deactivated.length, r.calls.tagged.length, r.calls.notified.length]).toEqual([
         done.deactivated,
         done.tagged,
@@ -141,5 +141,37 @@ describe('AC-9 errors', () => {
     const b = await run();
     expect(a.entries[0]?.inputHash).toBe(b.entries[0]?.inputHash);
     expect(a.calls.deactivated).toEqual(b.calls.deactivated);
+  });
+});
+
+describe('review fixes: retries, notification failures and unreadable alerts', () => {
+  it.each([false, true])(
+    'an already inactive key is left alone and recorded (dryRun=%s)',
+    async (dryRun) => {
+      const r = await run(event(), { active: false }, config({ dryRun }));
+      expect(decisions(r)).toEqual(['already-inactive']);
+      expect(r.calls.deactivated).toEqual([]);
+      expect(r.calls.tagged).toEqual([]);
+      expect(r.calls.notified).toEqual([]);
+      expect(r.entries[0]?.detail.user).toBe('leak-test');
+    },
+  );
+
+  it('a notification failure after deactivation is its own decision, not an error', async () => {
+    const r = await run(event(), { failOn: 'notify' });
+    expect(decisions(r)).toEqual(['deactivated', 'notify-failed']);
+    expect(r.calls.deactivated).toEqual([[KEY, 'leak-test']]);
+  });
+
+  it('a failed secret fetch still leaves an audit record', async () => {
+    const r = await run(event({ secret: null }), {
+      fetchSecret: async () => {
+        throw Object.assign(new Error(`token failure ${KEY}`), { name: 'TokenExpired' });
+      },
+    });
+    expect(decisions(r)).toEqual(['error']);
+    expect(r.entries[0]?.detail.error).toBe('TokenExpired');
+    expect(JSON.stringify(r.entries)).not.toContain(KEY);
+    expect(r.calls.deactivated).toEqual([]);
   });
 });

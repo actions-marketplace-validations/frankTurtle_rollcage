@@ -28,9 +28,16 @@ describe('AC-12 SAM template guardrails', () => {
   it('scopes the key-changing actions to the guarded user path', () => {
     const block = template.slice(template.indexOf('iam:GetUser'), template.indexOf('sns:Publish'));
     expect(block).toContain('iam:UpdateAccessKey');
+    expect(block).toContain('iam:ListAccessKeys');
     expect(block).toContain('iam:TagUser');
     expect(block).toContain('user${UserPath}*');
     expect(template.match(/Resource: '\*'/g)).toHaveLength(1);
+  });
+
+  it('deploys the bundle built by build:lambda, on a supported runtime', () => {
+    expect(template).toContain('CodeUri: dist/lambda');
+    expect(template).toMatch(/Runtime: nodejs(22|24)\.x/);
+    expect(read('scripts/build-lambda.mjs')).toContain("outfile: 'dist/lambda/index.mjs'");
   });
 
   it('uses the same default user path as the code', () => {
