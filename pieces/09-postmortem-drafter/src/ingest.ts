@@ -27,7 +27,12 @@ const time = z.union([z.string(), z.number()]).transform((v, ctx) => {
   }
 });
 
-function parseJson<T>(file: string, text: string, schema: z.ZodType<T, z.ZodTypeDef, unknown>): T {
+/** Parse a JSON file's text with a schema; errors name the file. */
+export function parseJson<T>(
+  file: string,
+  text: string,
+  schema: z.ZodType<T, z.ZodTypeDef, unknown>,
+): T {
   let json: unknown;
   try {
     json = JSON.parse(text);

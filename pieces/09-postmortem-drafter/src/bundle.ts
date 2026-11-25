@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parseChat, parseCloudWatch, parseDeploys, parseNotes } from './ingest.js';
+import { parseChat, parseCloudWatch, parseDeploys, parseJson, parseNotes } from './ingest.js';
 import { IncidentSchema } from './types.js';
 import type { Bundle } from './types.js';
 
@@ -13,19 +13,7 @@ export function parseBundleFiles(files: Record<string, string | undefined>): Bun
     if (text === undefined) throw new Error(`${name}: file is missing from the bundle`);
     return text;
   };
-  let raw: unknown;
-  try {
-    raw = JSON.parse(need('incident.json'));
-  } catch (error) {
-    if (error instanceof SyntaxError) throw new Error('incident.json: not valid JSON');
-    throw error;
-  }
-  const parsed = IncidentSchema.safeParse(raw);
-  if (!parsed.success) {
-    const issue = parsed.error.issues[0];
-    throw new Error(`incident.json: ${issue?.path.join('.')} ${issue?.message}`);
-  }
-  const incident = parsed.data;
+  const incident = parseJson('incident.json', need('incident.json'), IncidentSchema);
   const chat = files['chat.json'];
   const notes = files['notes.md'];
   if (chat === undefined && notes === undefined) {

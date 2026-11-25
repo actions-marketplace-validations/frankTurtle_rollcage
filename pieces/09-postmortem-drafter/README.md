@@ -19,8 +19,8 @@ should expect more incidents to learn from, not fewer.
 ### What this proves
 
 - A first draft exists when the bridge call ends, built from evidence the team already has.
-- The timeline is computed, not generated: merged, sorted, deduplicated and in UTC, so it does not
-  depend on a model getting times right.
+- The timeline is computed by code: merged, sorted, deduplicated and in UTC, so it does not depend
+  on a model getting times right.
 - Nothing sensitive leaves your environment. Emails, phone numbers, IP addresses, cloud keys,
   tokens, private keys and card-like numbers are replaced with stable placeholders before the
   model sees the text. A test asserts this on every payload the fake model receives.
@@ -55,7 +55,7 @@ request. The tool does not publish anything.
 
 ### Limits
 
-- It redacts patterns, not meaning. Personal names in free text, customer names and internal
+- It matches patterns and cannot judge meaning. Personal names in free text, customer names and internal
   hostnames are not detected. Known chat and deploy authors are replaced, other names are not.
   Review the bundle before you use live mode, and keep the redaction report with the draft.
 - Placeholders are not reversed. The draft refers to `[EMAIL_1]`, not to the address.
@@ -182,7 +182,7 @@ example key.
   aborts the run if it finds anything.
 - The model's output is redacted too, in case it invents a value.
 - The API key is read from the environment only. Live mode is opt-in.
-- Redaction is pattern based. Treat it as a strong filter, not a guarantee, and read the limits.
+- Redaction is pattern based. Treat it as a strong filter that can still miss things, and read the limits.
 
 ### Status
 
