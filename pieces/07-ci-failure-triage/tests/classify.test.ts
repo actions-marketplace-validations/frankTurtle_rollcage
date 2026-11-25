@@ -15,7 +15,6 @@ function run(log: string, opts: { passedOnRetry?: boolean; empty?: boolean } = {
     tests: extractTests(log),
     passedOnRetry: opts.passedOnRetry ?? false,
     history: opts.empty ? emptyHistory() : history,
-    workflow: 'ci',
     config: DEFAULT_CONFIG,
   });
 }
