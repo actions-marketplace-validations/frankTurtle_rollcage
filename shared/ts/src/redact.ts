@@ -53,6 +53,8 @@ const OCTET = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)';
 
 interface Rule {
   type: RedactionType;
+  /** A credential, as opposed to personal data. `redactSecrets` applies only these. */
+  secret?: true;
   pattern: RegExp;
   /** Capture group holding the secret when only part of the match is replaced (it ends the match). */
   group?: number;
@@ -64,22 +66,26 @@ interface Rule {
 const RULES: Rule[] = [
   {
     type: 'private-key',
+    secret: true,
     pattern: /-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g,
   },
   {
     type: 'bearer-token',
+    secret: true,
     pattern: /\bBearer\s+(?=[A-Za-z0-9\-._~+/]*[\d\-._~+/])[A-Za-z0-9\-._~+/]{8,}=*/gi,
   },
-  { type: 'jwt', pattern: /\beyJ[\w-]{5,}\.eyJ[\w-]{5,}\.[\w-]{5,}/g },
+  { type: 'jwt', secret: true, pattern: /\beyJ[\w-]{5,}\.eyJ[\w-]{5,}\.[\w-]{5,}/g },
   {
     type: 'github-token',
+    secret: true,
     pattern: /\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})\b/g,
   },
-  { type: 'slack-token', pattern: /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g },
-  { type: 'api-key', pattern: /\bsk-[A-Za-z0-9_-]{20,}\b/g },
-  { type: 'aws-access-key', pattern: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g },
+  { type: 'slack-token', secret: true, pattern: /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g },
+  { type: 'api-key', secret: true, pattern: /\bsk-[A-Za-z0-9_-]{20,}\b/g },
+  { type: 'aws-access-key', secret: true, pattern: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g },
   {
     type: 'credential-assignment',
+    secret: true,
     pattern:
       /(\b[\w-]*(?:password|passwd|pwd|secret|api[_-]?key|access[_-]?key|token)[\w-]*["']?\s*[=:]\s*["']?)(?!\[)([^\s"',;]{4,})/gi,
     group: 2,
@@ -111,28 +117,24 @@ const RULES: Rule[] = [
   },
 ];
 
-export interface RedactorOptions {
-  /** Only apply these rule types. Default: all. */
-  types?: readonly RedactionType[];
-  /** Build the replacement text. Default: `[EMAIL_1]` style placeholders. */
-  format?: (type: RedactionType, id: number) => string;
+/** Replace every match of one rule, keeping any text before the secret group. */
+function replaceRule(rule: Rule, text: string, placeholder: (value: string) => string): string {
+  return text.replace(rule.pattern, (...args: string[]) => {
+    const full = args[0] as string;
+    const value = rule.group ? (args[rule.group] as string) : full;
+    if (rule.accept && !rule.accept(value)) return full;
+    return full.slice(0, full.length - value.length) + placeholder(value);
+  });
 }
 
-/** The credential rule types: secrets only, no personal data such as emails or addresses. */
-export const SECRET_TYPES: readonly RedactionType[] = [
-  'private-key',
-  'bearer-token',
-  'jwt',
-  'github-token',
-  'slack-token',
-  'api-key',
-  'aws-access-key',
-  'credential-assignment',
-];
+const SECRET_RULES = RULES.filter((rule) => rule.secret);
 
 /** Replace secrets with `[REDACTED:type]` markers. Stateless: equal input gives equal output. */
 export function redactSecrets(text: string): string {
-  return new Redactor({ types: SECRET_TYPES, format: (type) => `[REDACTED:${type}]` }).redact(text);
+  return SECRET_RULES.reduce(
+    (out, rule) => replaceRule(rule, out, () => `[REDACTED:${rule.type}]`),
+    text,
+  );
 }
 
 /**
@@ -143,27 +145,11 @@ export function redactSecrets(text: string): string {
 export class Redactor {
   private readonly seen = new Map<RedactionType, Map<string, number>>();
   private readonly counts = new Map<RedactionType, number>();
-  private readonly rules: Rule[];
-  private readonly format: (type: RedactionType, id: number) => string;
-
-  constructor(options: RedactorOptions = {}) {
-    const types = options.types;
-    this.rules = types ? RULES.filter((r) => types.includes(r.type)) : RULES;
-    this.format = options.format ?? ((type, id) => `[${LABEL[type]}_${id}]`);
-  }
-
   redact(text: string): string {
-    let out = text;
-    for (const rule of this.rules) {
-      out = out.replace(rule.pattern, (...args: string[]) => {
-        const full = args[0] as string;
-        const value = rule.group ? (args[rule.group] as string) : full;
-        if (rule.accept && !rule.accept(value)) return full;
-        const placeholder = this.placeholder(rule.type, value);
-        return full.slice(0, full.length - value.length) + placeholder;
-      });
-    }
-    return out;
+    return RULES.reduce(
+      (out, rule) => replaceRule(rule, out, (value) => this.placeholder(rule.type, value)),
+      text,
+    );
   }
 
   private placeholder(type: RedactionType, value: string): string {
@@ -172,7 +158,7 @@ export class Redactor {
     let id = ids.get(value);
     if (id === undefined) ids.set(value, (id = ids.size + 1));
     this.counts.set(type, (this.counts.get(type) ?? 0) + 1);
-    return this.format(type, id);
+    return `[${LABEL[type]}_${id}]`;
   }
 
   report(): RedactionReport {

@@ -22,16 +22,12 @@ export interface ExecResult {
 }
 export type ExecFn = (file: string, args: string[]) => Promise<ExecResult>;
 
+const exec = execRunner({ throwOnStartError: true });
+
 /** Resolves with the exit code for a process that ran, rejects when it could not start. */
 const defaultExec: ExecFn = async (file, args) => {
-  const r = await execRunner({ timeoutMs: 0 })(file, args);
-  if (r.code === null) {
-    throw Object.assign(
-      new Error(r.error ?? 'could not start'),
-      r.errorCode ? { code: r.errorCode } : {},
-    );
-  }
-  return { stdout: r.stdout, stderr: r.stderr, code: r.code };
+  const r = await exec(file, args);
+  return { stdout: r.stdout, stderr: r.stderr, code: r.code ?? 1 };
 };
 
 export function createConftestRunner(exec: ExecFn = defaultExec): ConftestRunner {

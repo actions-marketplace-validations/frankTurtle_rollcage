@@ -23,29 +23,28 @@ const MAX_OUTPUT_BYTES = 64 * 1024 * 1024;
  */
 export function execRunner(
   options: {
+    /** Kill the program after this long. Default: no timeout. */
     timeoutMs?: number;
     env?: Record<string, string>;
-    cwd?: string;
+    /** Reject, with a Node-style `code` such as ENOENT, when the program cannot start. */
+    throwOnStartError?: boolean;
   } = {},
 ): CommandRunner {
-  const { timeoutMs = 60_000, env, cwd } = options;
+  const { timeoutMs, env, throwOnStartError = false } = options;
   return (cmd, args) =>
-    new Promise((resolve) => {
+    new Promise((resolve, reject) => {
       execFile(
         cmd,
         args,
-        {
-          timeout: timeoutMs,
-          maxBuffer: MAX_OUTPUT_BYTES,
-          ...(cwd ? { cwd } : {}),
-          env: { ...process.env, ...env },
-        },
+        { timeout: timeoutMs ?? 0, maxBuffer: MAX_OUTPUT_BYTES, env: { ...process.env, ...env } },
         (error, stdout, stderr) => {
           if (!error) return resolve({ code: 0, stdout, stderr });
           if (typeof error.code === 'number') return resolve({ code: error.code, stdout, stderr });
-          const reason = error.killed
-            ? `timed out after ${timeoutMs} ms (${error.message})`
-            : error.message;
+          if (throwOnStartError) return reject(error);
+          const reason =
+            error.killed && timeoutMs
+              ? `timed out after ${timeoutMs} ms (${error.message})`
+              : error.message;
           resolve({
             code: null,
             stdout,

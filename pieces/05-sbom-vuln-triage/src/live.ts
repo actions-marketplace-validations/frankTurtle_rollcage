@@ -12,12 +12,11 @@ export interface RunResult {
 /** Runs a program with a fixed argument list (no shell). Tests inject a fake. */
 export type Runner = (cmd: string, args: string[]) => Promise<RunResult>;
 
-/** The shared `execRunner`, reshaped: a program that cannot start rejects, as `run` expects. */
+const exec = execRunner({ throwOnStartError: true });
+
+/** The shared runner, reshaped: a program that cannot start rejects, as `run` expects. */
 export const spawnRunner: Runner = async (cmd, args) => {
-  const r = await execRunner({ timeoutMs: 0 })(cmd, args);
-  if (r.error !== undefined) {
-    throw Object.assign(new Error(r.error), r.errorCode ? { code: r.errorCode } : {});
-  }
+  const r = await exec(cmd, args);
   return { status: r.code, stdout: r.stdout, stderr: r.stderr };
 };
 

@@ -49,9 +49,11 @@ Done afterwards, as reviewed behavior changes:
 
 - Command runner: `execRunner` in `shared/ts` has the shape piece 10 had: it never throws, returns
   `code: null` plus `error` and `errorCode` when a program cannot start, and takes a timeout and
-  extra env. Piece 10 uses it directly. Pieces 05 and 06 wrap it so they still reject when a
-  program cannot start (`error.code === 'ENOENT'` still works). Change: piece 05 now collects
-  output through `execFile` with a 64 MB limit instead of streaming through `spawn`.
+  extra env. With `throwOnStartError` it rejects instead, with the Node error (`code === 'ENOENT'`),
+  which is what pieces 05 and 06 relied on. The default is no timeout; piece 10 passes 60 s.
+  Piece 10's own wrapper is gone and its callers use the shared function. Change: piece 05 now
+  collects output through `execFile` with a 64 MB limit instead of streaming through `spawn`.
+  Piece 12's runner is synchronous and stays local.
 - Redactor: piece 09's `Redactor` moved to `shared/ts` and gained Slack token and `sk-` API key
   rules, plus `types` and `format` options. Piece 07 uses `redactSecrets`, which applies only the
   secret rules. Changes to piece 07 output: every marker is `[REDACTED:<type>]` (the AWS key type

@@ -27,6 +27,14 @@ describe('execRunner', () => {
     expect(r.code).toBeNull();
     expect(r.error).toMatch(/timed out/);
   });
+  it('rejects with a Node error code when asked to', async () => {
+    await expect(
+      execRunner({ throwOnStartError: true })('definitely-not-a-program-xyz', []),
+    ).rejects.toMatchObject({ code: 'ENOENT' });
+    await expect(
+      execRunner({ throwOnStartError: true })(process.execPath, ['-e', 'process.exit(2)']),
+    ).resolves.toMatchObject({ code: 2 });
+  });
   it('passes extra env', async () => {
     const r = await execRunner({ env: { ADL_X: 'y' } })(process.execPath, [
       '-e',
