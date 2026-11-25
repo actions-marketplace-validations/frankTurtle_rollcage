@@ -36,8 +36,9 @@ when the sources do not say.
 pnpm demo:11 before
 ```
 
-Runs a plain text search for "approvals" across the sample repo and runbooks and prints every hit
-with no ranking and no answer. The reader still has to open files and decide.
+Runs a plain text search for "approval" across the sample repo and runbooks and prints each hit
+with its file and line. The sample is small, so there is one hit. In a real repository there would
+be dozens, with no ranking and no answer, and the reader still has to open files and decide.
 
 **Run: ask questions, including one the docs cannot answer.**
 
@@ -57,7 +58,8 @@ pnpm demo:11 after
 ```
 
 Grades all 22 eval questions, 6 of them refusals, and prints accuracy next to the committed
-baseline. It ends with PASS. Then say what happens when someone changes retrieval and accuracy
+baseline (77.3 percent, 17 of 22, from the offline stand-in). Point at the five FAIL lines and
+say the baseline is a floor, not a target. It ends with PASS. Then say what happens when someone changes retrieval and accuracy
 drops: the command exits 1 and CI fails.
 
 ## 5:30 to 6:30, the metric
