@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "tests": [
+    {
+      "id": "tests/legacy/sync.test.ts > retries on conflict",
+      "reason": "Quarantined 2025 by hand; owner to confirm.",
+      "owner": ""
+    }
+  ]
+}

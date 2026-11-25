@@ -1,0 +1,528 @@
+[
+  {
+    "id": 8017,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1022cceaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-02T07:00:00Z",
+    "completedAt": "2026-02-02T07:12:00Z"
+  },
+  {
+    "id": 8000,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1001eefaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-02T09:00:00Z",
+    "completedAt": "2026-02-02T09:12:00Z"
+  },
+  {
+    "id": 8000,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1001eefaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-02-02T11:18:00Z",
+    "completedAt": "2026-02-02T11:30:00Z"
+  },
+  {
+    "id": 8001,
+    "workflow": "ci",
+    "branch": "feat/cart",
+    "sha": "1003ddeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-03T14:00:00Z",
+    "completedAt": "2026-02-03T14:12:00Z"
+  },
+  {
+    "id": 8002,
+    "workflow": "ci",
+    "branch": "feat/cart",
+    "sha": "1005ccdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-04T07:48:00Z",
+    "completedAt": "2026-02-04T08:00:00Z"
+  },
+  {
+    "id": 8018,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1024bbdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-04T09:00:00Z",
+    "completedAt": "2026-02-04T09:12:00Z"
+  },
+  {
+    "id": 8003,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1007bbcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-05T10:00:00Z",
+    "completedAt": "2026-02-05T10:12:00Z"
+  },
+  {
+    "id": 8003,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1007bbcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-02-05T11:18:00Z",
+    "completedAt": "2026-02-05T11:30:00Z"
+  },
+  {
+    "id": 8004,
+    "workflow": "ci",
+    "branch": "feat/api",
+    "sha": "1009aabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-06T16:00:00Z",
+    "completedAt": "2026-02-06T16:12:00Z"
+  },
+  {
+    "id": 8004,
+    "workflow": "ci",
+    "branch": "feat/api",
+    "sha": "1009aabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "failure",
+    "startedAt": "2026-02-06T20:00:00Z",
+    "completedAt": "2026-02-06T20:12:00Z"
+  },
+  {
+    "id": 8004,
+    "workflow": "ci",
+    "branch": "feat/api",
+    "sha": "1009aabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 3,
+    "conclusion": "success",
+    "startedAt": "2026-02-07T13:48:00Z",
+    "completedAt": "2026-02-07T14:00:00Z"
+  },
+  {
+    "id": 8005,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "100b99aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-09T08:30:00Z",
+    "completedAt": "2026-02-09T08:42:00Z"
+  },
+  {
+    "id": 8005,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "100b99aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-02-09T11:18:00Z",
+    "completedAt": "2026-02-09T11:30:00Z"
+  },
+  {
+    "id": 8006,
+    "workflow": "ci",
+    "branch": "feat/ui",
+    "sha": "100d889aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-10T13:00:00Z",
+    "completedAt": "2026-02-10T13:12:00Z"
+  },
+  {
+    "id": 8019,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1026aacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-11T09:00:00Z",
+    "completedAt": "2026-02-11T09:12:00Z"
+  },
+  {
+    "id": 8007,
+    "workflow": "ci",
+    "branch": "feat/ui",
+    "sha": "100f778aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-11T14:48:00Z",
+    "completedAt": "2026-02-11T15:00:00Z"
+  },
+  {
+    "id": 8008,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1011667aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-12T11:00:00Z",
+    "completedAt": "2026-02-12T11:12:00Z"
+  },
+  {
+    "id": 8008,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1011667aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-02-12T12:48:00Z",
+    "completedAt": "2026-02-12T13:00:00Z"
+  },
+  {
+    "id": 8009,
+    "workflow": "ci",
+    "branch": "feat/cart",
+    "sha": "1013556aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-16T15:00:00Z",
+    "completedAt": "2026-02-16T15:12:00Z"
+  },
+  {
+    "id": 8010,
+    "workflow": "ci",
+    "branch": "feat/cart",
+    "sha": "1015445aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-16T21:48:00Z",
+    "completedAt": "2026-02-16T22:00:00Z"
+  },
+  {
+    "id": 8020,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "102899baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-17T09:00:00Z",
+    "completedAt": "2026-02-17T09:12:00Z"
+  },
+  {
+    "id": 8011,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1017334aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-18T09:30:00Z",
+    "completedAt": "2026-02-18T09:42:00Z"
+  },
+  {
+    "id": 8011,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1017334aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-02-18T13:48:00Z",
+    "completedAt": "2026-02-18T14:00:00Z"
+  },
+  {
+    "id": 8012,
+    "workflow": "ci",
+    "branch": "chore/deps",
+    "sha": "1019223aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-20T12:00:00Z",
+    "completedAt": "2026-02-20T12:12:00Z"
+  },
+  {
+    "id": 8013,
+    "workflow": "ci",
+    "branch": "chore/deps",
+    "sha": "101b112aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-21T17:48:00Z",
+    "completedAt": "2026-02-21T18:00:00Z"
+  },
+  {
+    "id": 8021,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "102a88aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-23T09:00:00Z",
+    "completedAt": "2026-02-23T09:12:00Z"
+  },
+  {
+    "id": 8014,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "101d001aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-24T10:00:00Z",
+    "completedAt": "2026-02-24T10:12:00Z"
+  },
+  {
+    "id": 8014,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "101d001aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-02-24T12:18:00Z",
+    "completedAt": "2026-02-24T12:30:00Z"
+  },
+  {
+    "id": 8015,
+    "workflow": "ci",
+    "branch": "feat/api",
+    "sha": "101eef0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-02-26T14:00:00Z",
+    "completedAt": "2026-02-26T14:12:00Z"
+  },
+  {
+    "id": 8016,
+    "workflow": "ci",
+    "branch": "feat/api",
+    "sha": "1020ddfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-27T01:48:00Z",
+    "completedAt": "2026-02-27T02:00:00Z"
+  },
+  {
+    "id": 8022,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "102c779aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-02-27T09:00:00Z",
+    "completedAt": "2026-02-27T09:12:00Z"
+  },
+  {
+    "id": 8023,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "102e668aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-01T20:00:00Z",
+    "completedAt": "2026-03-01T20:12:00Z"
+  },
+  {
+    "id": 8028,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1043aadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-02T09:00:00Z",
+    "completedAt": "2026-03-02T09:12:00Z"
+  },
+  {
+    "id": 8029,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "104599caaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-04T09:00:00Z",
+    "completedAt": "2026-03-04T09:12:00Z"
+  },
+  {
+    "id": 8030,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "104788baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-09T09:00:00Z",
+    "completedAt": "2026-03-09T09:12:00Z"
+  },
+  {
+    "id": 8031,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "104977aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-11T09:00:00Z",
+    "completedAt": "2026-03-11T09:12:00Z"
+  },
+  {
+    "id": 8032,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "104b669aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-13T09:00:00Z",
+    "completedAt": "2026-03-13T09:12:00Z"
+  },
+  {
+    "id": 9001,
+    "workflow": "ci",
+    "branch": "feat/discount",
+    "sha": "1030557aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-03-17T09:10:00Z",
+    "completedAt": "2026-03-17T09:16:00Z",
+    "logFile": "logs/run-9001-regression.log"
+  },
+  {
+    "id": 8024,
+    "workflow": "ci",
+    "branch": "feat/discount",
+    "sha": "1032446aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-17T14:10:00Z",
+    "completedAt": "2026-03-17T14:22:00Z"
+  },
+  {
+    "id": 9002,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1034335aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-03-18T11:38:00Z",
+    "completedAt": "2026-03-18T11:44:00Z",
+    "logFile": "logs/run-9002-disk.log"
+  },
+  {
+    "id": 8025,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1036224aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-18T18:08:00Z",
+    "completedAt": "2026-03-18T18:20:00Z"
+  },
+  {
+    "id": 9003,
+    "workflow": "ci",
+    "branch": "chore/deps",
+    "sha": "1038113aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-03-19T08:00:00Z",
+    "completedAt": "2026-03-19T08:06:00Z",
+    "logFile": "logs/run-9003-lockfile.log"
+  },
+  {
+    "id": 8026,
+    "workflow": "ci",
+    "branch": "chore/deps",
+    "sha": "103a002aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-19T10:00:00Z",
+    "completedAt": "2026-03-19T10:12:00Z"
+  },
+  {
+    "id": 9004,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "103bef1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-03-20T15:19:00Z",
+    "completedAt": "2026-03-20T15:25:00Z",
+    "logFile": "logs/run-9004-flaky.log"
+  },
+  {
+    "id": 9004,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "103bef1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-03-20T15:55:00Z",
+    "completedAt": "2026-03-20T16:07:00Z"
+  },
+  {
+    "id": 8033,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "104d558aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-23T09:00:00Z",
+    "completedAt": "2026-03-23T09:12:00Z"
+  },
+  {
+    "id": 9006,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "103dde0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-03-24T13:04:00Z",
+    "completedAt": "2026-03-24T13:10:00Z",
+    "logFile": "logs/run-9006-ratelimit.log"
+  },
+  {
+    "id": 9006,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "103dde0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 2,
+    "conclusion": "success",
+    "startedAt": "2026-03-24T14:16:00Z",
+    "completedAt": "2026-03-24T14:28:00Z"
+  },
+  {
+    "id": 9007,
+    "workflow": "ci",
+    "branch": "feat/export",
+    "sha": "103fccfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "failure",
+    "startedAt": "2026-03-25T10:28:00Z",
+    "completedAt": "2026-03-25T10:34:00Z",
+    "logFile": "logs/run-9007-compile.log"
+  },
+  {
+    "id": 8027,
+    "workflow": "ci",
+    "branch": "feat/export",
+    "sha": "1041bbeaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-25T13:28:00Z",
+    "completedAt": "2026-03-25T13:40:00Z"
+  },
+  {
+    "id": 8034,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "104f447aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-27T09:00:00Z",
+    "completedAt": "2026-03-27T09:12:00Z"
+  },
+  {
+    "id": 8035,
+    "workflow": "ci",
+    "branch": "main",
+    "sha": "1051336aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "attempt": 1,
+    "conclusion": "success",
+    "startedAt": "2026-03-29T18:00:00Z",
+    "completedAt": "2026-03-29T18:12:00Z"
+  }
+]

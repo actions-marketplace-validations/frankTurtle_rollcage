@@ -1,0 +1,9 @@
+# CI failure triage thresholds. These defaults are this tool's own choices, not industry figures.
+flaky:
+  min_observations: 10 # commits the test must have been seen on before history can mark it flaky
+  min_flip_commits: 3 # commits where it both failed and passed
+  flip_rate_threshold: 0.15 # flip commits / observed commits
+log:
+  max_error_lines: 3 # distinct error lines kept in a signature
+  excerpt_lines: 12 # lines of context sent to the model, after redaction
+min_samples: 5 # metrics for fewer failed runs than this are flagged as a small sample
