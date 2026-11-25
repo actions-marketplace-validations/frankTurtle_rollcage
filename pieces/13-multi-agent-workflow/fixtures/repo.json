@@ -1,0 +1,4 @@
+{
+  "README.md": "# greeter\n\nA tiny fixture repository for the demo.\n",
+  "src/greet.ts": "export function greet(name: string): string {\n  return 'Hello, ' + name;\n}\n"
+}

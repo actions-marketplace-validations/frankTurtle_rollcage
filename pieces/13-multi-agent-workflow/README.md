@@ -141,7 +141,7 @@ agent name are rejected. Approvals and blocked attempts are written to the audit
 ```bash
 pnpm install
 pnpm --filter @adl/multi-agent-workflow workflow run --task "Add a --json flag" \
-  --replies fixtures/replies-clean.json --out demo/out
+  --run-id demo-clean --replies fixtures/replies-clean.json --out demo/out
 pnpm --filter @adl/multi-agent-workflow workflow approve demo/out/run-demo-clean.json --by alice
 pnpm --filter @adl/multi-agent-workflow workflow commit demo/out/run-demo-clean.json
 pnpm --filter @adl/multi-agent-workflow workflow replay demo/out/run-demo-clean.json
