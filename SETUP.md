@@ -48,7 +48,7 @@ Other pieces (07, 08, 09, 11, 13, 14) are not set up by this command; see
 
    Options (add after `node -`):
    - `--pieces 01,04,05` enables only those pieces. `--without 03,10` removes some from the default.
-   - `--ref v0.3.0` picks the Rollcage release. It is resolved to a commit SHA and every reference
+   - `--ref v0.4.0` picks the Rollcage release. It is resolved to a commit SHA and every reference
      is pinned to that SHA.
    - `--owner <login>` and `--repo <name>` if there is no `origin` remote on GitHub.
    - `--no-build` skips building the piece 02 hook.
