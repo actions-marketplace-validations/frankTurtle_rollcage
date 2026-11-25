@@ -78,7 +78,7 @@ flowchart LR
 
 ```bash
 pnpm install
-pnpm --filter @adl/golden-path-template scaffold ../../payments-api \
+pnpm --filter @adl/golden-path-template scaffold ~/code/payments-api \
   --name payments-api --owner my-org --ref v0.1.0
 ```
 
@@ -163,7 +163,7 @@ To turn the tag into a SHA before you rely on it:
 
 ```bash
 git ls-remote https://github.com/frankTurtle/rollcage refs/tags/v0.1.0
-pnpm --filter @adl/golden-path-template scaffold ../../payments-api \
+pnpm --filter @adl/golden-path-template scaffold ~/code/payments-api \
   --name payments-api --owner my-org --ref <sha>
 ```
 
