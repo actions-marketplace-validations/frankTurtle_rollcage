@@ -1,0 +1,1813 @@
+{
+  "_note": "Real `grype -o json` output (grype 0.122.1, DB v6.1.10 built 2026-11-25) for demo/apps/node-app via syft 1.57.2 -> cyclonedx-json. Trimmed to the fields the parser reads plus shape-relevant ones: descriptions, urls, cvss, advisories, locations and the descriptor were dropped.",
+  "descriptor": {
+    "name": "grype",
+    "version": "0.122.1"
+  },
+  "matches": [
+    {
+      "vulnerability": {
+        "id": "GHSA-hrpp-h998-j3pp",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2022-24999",
+            "epss": 0.20035,
+            "percentile": 0.97489,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["6.7.3"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "6.7.3",
+              "date": "2022-12-07",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2022-24999"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/qs@6.7.0?package-id=10870089c6edc31f",
+        "name": "qs",
+        "version": "6.7.0",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/qs@6.7.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-35jh-r3h4-6jhm",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2021-23337",
+            "epss": 0.20158,
+            "percentile": 0.97505,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.17.21"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.17.21",
+              "date": "2021-05-07",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2021-23337"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/lodash@4.17.15?package-id=70059750020cd564",
+        "name": "lodash",
+        "version": "4.17.15",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/lodash@4.17.15"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-pjwm-pj3p-43mv",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-44492",
+            "epss": 0.1228,
+            "percentile": 0.96256,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.32.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.32.0",
+              "date": "2026-05-29",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-44492"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-cph5-m8f7-6c5x",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2021-3749",
+            "epss": 0.08515,
+            "percentile": 0.95123,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.21.2"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.21.2",
+              "date": "2021-09-09",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2021-3749"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-xvch-5gv4-984h",
+        "severity": "Critical",
+        "epss": [
+          {
+            "cve": "CVE-2021-44906",
+            "epss": 0.04581,
+            "percentile": 0.91765,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["1.2.6"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "1.2.6",
+              "date": "2022-03-24",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2021-44906"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/minimist@1.2.5?package-id=3338a0ed79172aeb",
+        "name": "minimist",
+        "version": "1.2.5",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/minimist@1.2.5"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-hfxv-24rg-xrqf",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-44496",
+            "epss": 0.05405,
+            "percentile": 0.92803,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.32.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.32.0",
+              "date": "2026-06-04",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-44496"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-p6mc-m468-83gw",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2020-8203",
+            "epss": 0.05213,
+            "percentile": 0.92619,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.17.19"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.17.19",
+              "date": "2020-07-28",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2020-8203"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/lodash@4.17.15?package-id=70059750020cd564",
+        "name": "lodash",
+        "version": "4.17.15",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/lodash@4.17.15"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-29mw-wpgm-hmr9",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2020-28500",
+            "epss": 0.07424,
+            "percentile": 0.94526,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.17.21"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.17.21",
+              "date": "2022-01-07",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2020-28500"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/lodash@4.17.15?package-id=70059750020cd564",
+        "name": "lodash",
+        "version": "4.17.15",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/lodash@4.17.15"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-r5fr-rjxr-66jc",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-4800",
+            "epss": 0.0287,
+            "percentile": 0.87043,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.18.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.18.0",
+              "date": "2026-04-02",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-4800"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/lodash@4.17.15?package-id=70059750020cd564",
+        "name": "lodash",
+        "version": "4.17.15",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/lodash@4.17.15"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-43fc-jf86-j433",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-25639",
+            "epss": 0.02759,
+            "percentile": 0.86515,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.30.3"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.30.3",
+              "date": "2026-03-04",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-25639"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-r683-j2x4-v87g",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2022-0235",
+            "epss": 0.01778,
+            "percentile": 0.7868,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["2.6.7"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "2.6.7",
+              "date": "2022-01-23",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2022-0235"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/node-fetch@2.6.1?package-id=11595f08509565ae",
+        "name": "node-fetch",
+        "version": "2.6.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/node-fetch@2.6.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-xxjr-mmjv-4gpg",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2025-13465",
+            "epss": 0.01823,
+            "percentile": 0.7921,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.17.23"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.17.23",
+              "date": "2026-01-22",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2025-13465"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/lodash@4.17.15?package-id=70059750020cd564",
+        "name": "lodash",
+        "version": "4.17.15",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/lodash@4.17.15"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-fvcv-3m26-pcqx",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-40175",
+            "epss": 0.01979,
+            "percentile": 0.80944,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.0",
+              "date": "2026-04-14",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-40175"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-pf86-5x62-jrwf",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-42033",
+            "epss": 0.00899,
+            "percentile": 0.60371,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42033"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-3p68-rc4w-qgx5",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2025-62718",
+            "epss": 0.01207,
+            "percentile": 0.68973,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.0",
+              "date": "2026-04-16",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2025-62718"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-3g43-6gmg-66jw",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-44495",
+            "epss": 0.00854,
+            "percentile": 0.59066,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-29",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-44495"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-jr5f-v2jv-69x6",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2025-27152",
+            "epss": 0.00792,
+            "percentile": 0.57081,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.30.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.30.0",
+              "date": "2025-03-29",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2025-27152"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-p92q-9vqr-4j8v",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-44487",
+            "epss": 0.00689,
+            "percentile": 0.53484,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.32.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.32.0",
+              "date": "2026-06-04",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-44487"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-pmwg-cvhr-8vh7",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-42043",
+            "epss": 0.00724,
+            "percentile": 0.54782,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42043"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-62hf-57xw-28j9",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-42039",
+            "epss": 0.00802,
+            "percentile": 0.57406,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42039"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-rv95-896h-c2vc",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2024-29041",
+            "epss": 0.00786,
+            "percentile": 0.56877,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.19.2"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.19.2",
+              "date": "2024-03-26",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2024-29041"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/express@4.17.1?package-id=9f2408009d712d29",
+        "name": "express",
+        "version": "4.17.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/express@4.17.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-wf5p-g6vw-rhxx",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2023-45857",
+            "epss": 0.00729,
+            "percentile": 0.54977,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.28.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.28.0",
+              "date": "2024-02-21",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2023-45857"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-j5f8-grm9-p9fc",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-44486",
+            "epss": 0.00552,
+            "percentile": 0.46772,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.32.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.32.0",
+              "date": "2026-06-04",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-44486"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-8cf7-32gw-wr33",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2022-23539",
+            "epss": 0.00524,
+            "percentile": 0.45054,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["9.0.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "9.0.0",
+              "date": "2022-12-23",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2022-23539"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/jsonwebtoken@8.5.1?package-id=1751c203d0e356b9",
+        "name": "jsonwebtoken",
+        "version": "8.5.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/jsonwebtoken@8.5.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-hjrf-2m68-5959",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2022-23541",
+            "epss": 0.0081,
+            "percentile": 0.57665,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["9.0.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "9.0.0",
+              "date": "2022-12-23",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2022-23541"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/jsonwebtoken@8.5.1?package-id=1751c203d0e356b9",
+        "name": "jsonwebtoken",
+        "version": "8.5.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/jsonwebtoken@8.5.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-w9j2-pvgh-6h63",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-42041",
+            "epss": 0.0068,
+            "percentile": 0.53166,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42041"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-qwph-4952-7xr6",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2022-23540",
+            "epss": 0.00572,
+            "percentile": 0.47947,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["9.0.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "9.0.0",
+              "date": "2022-12-23",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2022-23540"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/jsonwebtoken@8.5.1?package-id=1751c203d0e356b9",
+        "name": "jsonwebtoken",
+        "version": "8.5.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/jsonwebtoken@8.5.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-6chq-wfr3-2hj9",
+        "severity": "High",
+        "epss": [
+          {
+            "cve": "CVE-2026-42035",
+            "epss": 0.00417,
+            "percentile": 0.3655,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42035"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-mmx7-hfxf-jppx",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-67316",
+            "epss": 0.00424,
+            "percentile": 0.37216,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.33.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.33.0",
+              "date": "2026-07-21",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-67316"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-6rw7-vpxm-498p",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2025-15284",
+            "epss": 0.0045,
+            "percentile": 0.39562,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["6.14.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "6.14.1",
+              "date": "2026-01-01",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2025-15284"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/qs@6.7.0?package-id=10870089c6edc31f",
+        "name": "qs",
+        "version": "6.7.0",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/qs@6.7.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-4mjr-xmp4-gh2g",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-82417",
+            "epss": 0.00396,
+            "percentile": 0.34288,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["6.16.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "6.16.0",
+              "date": "2026-09-02",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-82417"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/qs@6.7.0?package-id=10870089c6edc31f",
+        "name": "qs",
+        "version": "6.7.0",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/qs@6.7.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-6pq8-jhm2-2vcw",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-110816",
+            "epss": 0.00368,
+            "percentile": 0.31075,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["6.16.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "6.16.1",
+              "date": "2026-10-27",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-110816"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/qs@6.7.0?package-id=10870089c6edc31f",
+        "name": "qs",
+        "version": "6.7.0",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/qs@6.7.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-m7pr-hjqh-92cm",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-42038",
+            "epss": 0.00336,
+            "percentile": 0.27289,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42038"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-7q8q-rj6j-mhjq",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-67319",
+            "epss": 0.00318,
+            "percentile": 0.24943,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.33.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.33.0",
+              "date": "2026-07-21",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-67319"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-w7fw-mjwx-w883",
+        "severity": "Low",
+        "epss": [
+          {
+            "cve": "CVE-2026-2391",
+            "epss": 0.00534,
+            "percentile": 0.45722,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["6.14.2"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "6.14.2",
+              "date": "2026-03-04",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-2391"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/qs@6.7.0?package-id=10870089c6edc31f",
+        "name": "qs",
+        "version": "6.7.0",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/qs@6.7.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-5c9x-8gcm-mpgx",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-42034",
+            "epss": 0.0034,
+            "percentile": 0.27753,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42034"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-vf2m-468p-8v99",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-42036",
+            "epss": 0.0034,
+            "percentile": 0.27753,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42036"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-898c-q2cr-xwhg",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-44490",
+            "epss": 0.00332,
+            "percentile": 0.2671,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.32.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.32.0",
+              "date": "2026-05-29",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-44490"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-qw6h-vgh9-j6wx",
+        "severity": "Low",
+        "epss": [
+          {
+            "cve": "CVE-2024-43796",
+            "epss": 0.00486,
+            "percentile": 0.42417,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["4.20.0"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "4.20.0",
+              "date": "2024-09-11",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2024-43796"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/express@4.17.1?package-id=9f2408009d712d29",
+        "name": "express",
+        "version": "4.17.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/express@4.17.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-xx6v-rp6x-q39c",
+        "severity": "Medium",
+        "epss": [
+          {
+            "cve": "CVE-2026-42042",
+            "epss": 0.00218,
+            "percentile": 0.1211,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42042"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "GHSA-xhjh-pmcv-23jw",
+        "severity": "Low",
+        "epss": [
+          {
+            "cve": "CVE-2026-42040",
+            "epss": 0.00225,
+            "percentile": 0.13105,
+            "date": "2026-11-24"
+          }
+        ],
+        "fix": {
+          "versions": ["0.31.1"],
+          "state": "fixed",
+          "available": [
+            {
+              "version": "0.31.1",
+              "date": "2026-05-05",
+              "kind": "first-observed"
+            }
+          ]
+        }
+      },
+      "relatedVulnerabilities": [
+        {
+          "id": "CVE-2026-42040"
+        }
+      ],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "javascript-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "pkg:npm/axios@0.21.1?package-id=aca1e3e2c0a9fc57",
+        "name": "axios",
+        "version": "0.21.1",
+        "type": "npm",
+        "language": "javascript",
+        "purl": "pkg:npm/axios@0.21.1"
+      }
+    }
+  ]
+}
