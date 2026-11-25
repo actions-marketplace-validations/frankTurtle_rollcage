@@ -1,0 +1,19 @@
+{
+  "name": "@adl/golden-path-template",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scaffold": "tsx src/bin.ts scaffold",
+    "check": "tsx src/bin.ts check",
+    "pipeline": "tsx src/bin.ts pipeline",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "demo": "bash demo/demo.sh",
+    "demo:reset": "rm -rf demo/out"
+  },
+  "dependencies": {
+    "tsx": "^4.23.15"
+  }
+}
