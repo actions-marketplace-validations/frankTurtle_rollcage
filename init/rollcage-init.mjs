@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // One-command Rollcage setup for an existing repository.
 //
-//   curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node - [options]
+//   npx rollcage-init [options]
+//   (or) curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node - [options]
 //
 // It detects the repo, then writes the files for the production-proven pieces (01 PR risk gate,
 // 02 agent policy, 03 DORA metrics, 04 secrets guard, 05 SBOM and CVE triage, 06 policy gates and a

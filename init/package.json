@@ -1,0 +1,34 @@
+{
+  "name": "rollcage-init",
+  "version": "0.5.0",
+  "description": "One-command Rollcage setup: adds PR risk gate, agent policy, DORA, secrets guard, SBOM triage and policy gates to a repository",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "rollcage-init": "rollcage-init.mjs"
+  },
+  "files": [
+    "rollcage-init.mjs"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankTurtle/rollcage.git",
+    "directory": "init"
+  },
+  "homepage": "https://github.com/frankTurtle/rollcage#readme",
+  "bugs": "https://github.com/frankTurtle/rollcage/issues",
+  "keywords": [
+    "devsecops",
+    "ai-agents",
+    "supply-chain",
+    "provenance",
+    "ci"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,6 +1,7 @@
 # Adopting Rollcage in a real project
 
-Short on time? `curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -`
+Short on time? `npx rollcage-init`
+(or `curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -`)
 writes the proven pieces for you (see [SETUP.md](../SETUP.md)). The rest of this guide explains
 what it wrote and why.
 

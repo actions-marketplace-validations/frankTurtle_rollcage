@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- The installer is published to npm as `rollcage-init` (`npx rollcage-init`), with provenance via trusted
+  publishing. The curl command still works as a fallback.
+
 ## 0.4.1 (2026-11-25)
 
 - The scaffold, `init` and docs default to the v0.4.0 release. Piece 10 attestation proven on a real run.
