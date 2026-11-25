@@ -1,0 +1,4 @@
+{
+  "text": "{\"explanation\":\"A tag can be moved to different code after you reviewed it, so the workflow could run changed code without any diff in this repository.\",\"assumptions\":[\"The action is maintained by someone outside your team.\"]}",
+  "model": "hand-written-fixture"
+}

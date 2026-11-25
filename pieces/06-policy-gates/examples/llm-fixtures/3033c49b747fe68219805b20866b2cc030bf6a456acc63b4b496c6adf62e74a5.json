@@ -1,0 +1,4 @@
+{
+  "text": "{\"explanation\":\"With no permissions block the job token gets the repository default, which may include write access it does not use.\",\"assumptions\":[\"The repository default token permission is read and write.\"]}",
+  "model": "hand-written-fixture"
+}

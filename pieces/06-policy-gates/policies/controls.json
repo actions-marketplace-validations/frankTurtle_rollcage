@@ -1,0 +1,36 @@
+{
+  "label": "illustrative mapping, not a compliance attestation",
+  "standard": "NIST SP 800-171 Revision 2",
+  "rules": {
+    "PG001": {
+      "title": "No public S3 buckets",
+      "controls": ["3.1.3", "3.1.22", "3.13.1"],
+      "remediation": "Use a private ACL and set all four public access block settings to true."
+    },
+    "PG002": {
+      "title": "Encryption at rest",
+      "controls": ["3.13.16"],
+      "remediation": "Add a server-side encryption configuration for the bucket, or set encrypted or storage_encrypted to true."
+    },
+    "PG003": {
+      "title": "No wildcard IAM actions or resources",
+      "controls": ["3.1.1", "3.1.5"],
+      "remediation": "List the specific actions and resource ARNs the role needs instead of * or service:*."
+    },
+    "PG004": {
+      "title": "Actions pinned by commit SHA",
+      "controls": ["3.4.1", "3.4.8"],
+      "remediation": "Replace the tag or branch with the full 40 character commit SHA and keep the version in a comment."
+    },
+    "PG005": {
+      "title": "Least-privilege workflow permissions",
+      "controls": ["3.1.5"],
+      "remediation": "Add a permissions block with contents: read and grant extra scopes only to the job that needs them."
+    },
+    "PG006": {
+      "title": "OIDC instead of static cloud keys",
+      "controls": ["3.5.2", "3.13.10"],
+      "remediation": "Grant id-token: write and assume a cloud role through OIDC with role-to-assume instead of stored keys."
+    }
+  }
+}

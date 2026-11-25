@@ -1,0 +1,53 @@
+name: piece-06-policy-gates
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      ['pieces/06-policy-gates/**', 'shared/ts/**', '.github/workflows/piece-06-policy-gates.yml']
+  pull_request:
+    paths:
+      ['pieces/06-policy-gates/**', 'shared/ts/**', '.github/workflows/piece-06-policy-gates.yml']
+
+permissions:
+  contents: read
+
+env:
+  OPA_VERSION: 1.22.4
+  CONFTEST_VERSION: 0.71.1
+
+jobs:
+  test-and-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install opa and conftest (pinned versions, checksums verified)
+        run: |
+          bin="$RUNNER_TEMP/bin"
+          mkdir -p "$bin"
+          opa_url="https://github.com/open-policy-agent/opa/releases/download/v${OPA_VERSION}/opa_linux_amd64_static"
+          curl -fsSL -o "$bin/opa" "$opa_url"
+          curl -fsSL -o "$bin/opa.sha256" "$opa_url.sha256"
+          echo "$(awk '{print $1}' "$bin/opa.sha256")  $bin/opa" | sha256sum --check --strict -
+          chmod +x "$bin/opa"
+          base="https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}"
+          archive="conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz"
+          curl -fsSL -o "$bin/$archive" "$base/$archive"
+          curl -fsSL -o "$bin/checksums.txt" "$base/checksums.txt"
+          (cd "$bin" && grep " $archive\$" checksums.txt | sha256sum --check --strict -)
+          tar -xzf "$bin/$archive" -C "$bin" conftest
+          echo "$bin" >> "$GITHUB_PATH"
+      - name: Rego unit tests with coverage floor
+        run: pnpm --filter @adl/policy-gates test:rego
+      - run: pnpm --filter @adl/policy-gates typecheck
+      - run: pnpm --filter @adl/policy-gates coverage
+      - name: Demo runs offline end to end
+        run: pnpm demo:06
