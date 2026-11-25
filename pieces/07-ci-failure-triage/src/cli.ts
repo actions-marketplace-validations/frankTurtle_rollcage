@@ -173,8 +173,8 @@ async function triage(argv: string[], deps: CliDeps): Promise<number> {
 
   if (values['update-history'] && values.history) {
     const failedTests = new Map(
-      loaded.items.flatMap((i) =>
-        i.run ? [[attemptKey(i.run), runs.find((r) => r.id === i.id)?.tests ?? []] as const] : [],
+      loaded.items.flatMap((item, i) =>
+        item.run ? [[attemptKey(item.run), runs[i]?.tests ?? []] as const] : [],
       ),
     );
     history = recordRuns(history, loaded.runs, failedTests);

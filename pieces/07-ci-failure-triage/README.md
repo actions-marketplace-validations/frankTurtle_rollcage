@@ -16,7 +16,7 @@ What this proves.
 
 - Every failed run gets a category, the evidence lines behind it, and a confidence level, decided
   by rules in code and by run history. The model does not choose the category.
-- Flaky tests are measured instead of argued about. Each test has a flip rate: how often it both
+- Each test gets a flip rate: how often it both
   failed and passed on the same commit.
 - A test that crosses your thresholds gets a quarantine proposal (a patch and a PR body). A
   person reviews and merges it. The tool never merges anything and, in this piece, never opens the
