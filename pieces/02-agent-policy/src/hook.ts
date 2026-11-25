@@ -10,7 +10,7 @@ import { AUDIT_ACTOR } from './audit-schema.js';
 
 const HookInput = z.object({
   tool_name: z.string().min(1),
-  tool_input: z.record(z.unknown()).default({}),
+  tool_input: z.record(z.string(), z.unknown()).default({}),
   cwd: z.string().optional(),
   session_id: z.string().optional(),
   tool_use_id: z.string().optional(),

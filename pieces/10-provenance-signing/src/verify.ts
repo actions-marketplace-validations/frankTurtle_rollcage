@@ -56,7 +56,7 @@ const GhOutputSchema = z
     z.object({
       verificationResult: z.object({
         statement: z.object({
-          subject: z.array(z.object({ digest: z.record(z.string()) })),
+          subject: z.array(z.object({ digest: z.record(z.string(), z.string()) })),
         }),
       }),
     }),

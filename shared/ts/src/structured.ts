@@ -1,5 +1,4 @@
-import { z } from 'zod';
-import type { ZodType } from 'zod';
+import type { z, ZodType } from 'zod';
 import type { LlmClient, LlmRequest } from './llm.js';
 
 export interface StructuredResult<T> {
@@ -18,40 +17,58 @@ export function extractJson(text: string): unknown {
   return JSON.parse(candidate);
 }
 
-/** True when the schema, or any schema inside it, applies a `.transform`. */
-function hasTransform(schema: z.ZodTypeAny, seen = new Set<z.ZodTypeAny>()): boolean {
+type Schema = z.core.$ZodType;
+type Def = { type: string } & Record<string, unknown>;
+
+/**
+ * True when the schema, or any schema inside it, applies a `.transform`. A bare transform as the
+ * input side of a pipe is `z.preprocess`, which changes the input and not the output, so it is
+ * allowed; its output side is still checked.
+ */
+function hasTransform(schema: Schema, seen = new Set<Schema>(), preprocess = false): boolean {
   if (seen.has(schema)) return false;
   seen.add(schema);
-  const walk = (inner: z.ZodTypeAny): boolean => hasTransform(inner, seen);
-  if (schema instanceof z.ZodEffects) {
-    return schema._def.effect.type === 'transform' || walk(schema._def.schema);
+  // Optional members (an object's catchall, a tuple's rest) may be absent.
+  const walk = (inner: unknown): boolean => !!inner && hasTransform(inner as Schema, seen);
+  const def = schema._zod.def as Def;
+  switch (def.type) {
+    case 'transform':
+      return !preprocess;
+    case 'pipe': {
+      const input = def.in as Schema;
+      const isPreprocess = (input._zod.def as Def).type === 'transform';
+      return hasTransform(input, seen, isPreprocess) || walk(def.out);
+    }
+    case 'object':
+      return Object.values(def.shape as Record<string, unknown>).some(walk) || walk(def.catchall);
+    case 'array':
+      return walk(def.element);
+    case 'tuple':
+      return (def.items as unknown[]).some(walk) || walk(def.rest);
+    case 'record':
+      return walk(def.valueType);
+    case 'map':
+      return walk(def.keyType) || walk(def.valueType);
+    case 'set':
+      return walk(def.valueType);
+    case 'union':
+      return (def.options as unknown[]).some(walk);
+    case 'intersection':
+      return walk(def.left) || walk(def.right);
+    case 'lazy':
+      return walk((def.getter as () => unknown)());
+    case 'optional':
+    case 'nullable':
+    case 'nonoptional':
+    case 'default':
+    case 'prefault':
+    case 'catch':
+    case 'readonly':
+    case 'promise':
+      return walk(def.innerType);
+    default:
+      return false;
   }
-  if (schema instanceof z.ZodObject) {
-    return Object.values<z.ZodTypeAny>(schema.shape).some(walk) || walk(schema._def.catchall);
-  }
-  if (schema instanceof z.ZodArray) return walk(schema.element);
-  if (schema instanceof z.ZodTuple) {
-    const rest = schema._def.rest as z.ZodTypeAny | null;
-    return schema.items.some(walk) || (rest !== null && walk(rest));
-  }
-  if (schema instanceof z.ZodRecord) return walk(schema._def.valueType);
-  if (schema instanceof z.ZodUnion) return (schema.options as z.ZodTypeAny[]).some(walk);
-  if (schema instanceof z.ZodDiscriminatedUnion) {
-    return (schema.options as z.ZodTypeAny[]).some(walk);
-  }
-  if (schema instanceof z.ZodIntersection) {
-    return walk(schema._def.left) || walk(schema._def.right);
-  }
-  if (schema instanceof z.ZodPipeline) return walk(schema._def.in) || walk(schema._def.out);
-  if (schema instanceof z.ZodLazy) return walk(schema.schema);
-  if (schema instanceof z.ZodOptional || schema instanceof z.ZodNullable) {
-    return walk(schema.unwrap());
-  }
-  if (schema instanceof z.ZodDefault) return walk(schema.removeDefault());
-  if (schema instanceof z.ZodCatch) return walk(schema.removeCatch());
-  if (schema instanceof z.ZodBranded) return walk(schema.unwrap());
-  if (schema instanceof z.ZodReadonly) return walk(schema._def.innerType);
-  return false;
 }
 
 /**

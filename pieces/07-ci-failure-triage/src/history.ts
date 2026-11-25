@@ -18,6 +18,7 @@ export type Observation = z.infer<typeof ObservationSchema>;
 const HistorySchema = z.object({
   version: z.literal(1),
   tests: z.record(
+    z.string(),
     z.object({ workflow: z.string().min(1), observations: z.array(ObservationSchema) }),
   ),
 });
