@@ -39,7 +39,7 @@ CI and a demo script.
 ## Quickstart
 
 ```bash
-git clone <repo-url> && cd rollcage
+git clone https://github.com/frankTurtle/rollcage.git && cd rollcage
 pnpm install
 pnpm check        # lint, format check, typecheck, tests with coverage
 ```
@@ -95,7 +95,10 @@ Compliance mappings in this repo are illustrative mappings, not compliance attes
 
 ## About the author
 
-_Placeholder: to be written by the maintainer._
+Rollcage is maintained by Barret "Bear" Nobel ([frankTurtle](https://github.com/frankTurtle)).
+Each piece gets a short video walkthrough that solves one problem; the Video column links them
+as they are recorded. To contribute, read [CONTRIBUTING.md](CONTRIBUTING.md). To report a
+vulnerability, follow [SECURITY.md](SECURITY.md).
 
 ## License
 

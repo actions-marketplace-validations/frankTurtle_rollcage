@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.0 (2026-11-25)
 
 - Piece 04 deployed to AWS (us-east-1) and tested with signed webhooks and a canary IAM user. The
   live test found that tagging a user with `#` in the value fails; the tag separator is now `:`,
