@@ -16,7 +16,7 @@ Do these before the pilot starts. Once the pilot starts, the decision rule is fi
 3. Write down the decision rule below in the pilot log, with the date. Do not change it later
    without writing down why.
 4. Copy `dora.example.yml` from piece 03 to `dora.yml`. Set `min_samples: 10` for the pilot. This is
-   this plan's choice, not a statistical threshold. Keep the other keys as the team's labels
+   this plan's choice, and no statistical threshold. Keep the other keys as the team's labels
    require: `incident_label`, `hotfix_labels`, `revert_title_prefix`.
 5. Choose one deployment source, `deployments-api`, `releases` or `workflow-runs`, and use it for
    both windows. Do not switch sources in the middle.
@@ -60,18 +60,19 @@ pnpm --filter @adl/dora-metrics exec tsx src/bin.ts report \
 Write the output to `out/pilot`, and keep `dora.json` and `summary.md` with the pilot log.
 
 If the tool reached people in stages, set day 0 to the day most of the team had it, and say so in
-the log. A staged rollout is not a clean split, and the pilot log must say that.
+the log. A staged rollout blurs the split, and the pilot log has to say so.
 
 ## Sample size caveats
 
 - `min_samples` is a floor. Piece 03 reports a metric with fewer data points as insufficient data,
-  not as a number. The plan sets 10 for this pilot. That value is a choice, not the result of a
-  power calculation. This plan does not claim statistical significance for any result.
+  as a number. The plan sets 10 for this pilot, a choice made without a power calculation. This
+  plan does not claim statistical significance for any result.
 - A small team deploys few times in 30 days. Report the count of data points next to each metric,
-  for both windows. A median from 6 deployments is not a trend.
+  for both windows. Six deployments cannot show a trend in a median.
 - One team and one repository give one before and one after. Nothing here is a control group. If
   another team with the same deployment process stays without the tool, run piece 03 on its
-  repository for the same windows. That comparison is still not a controlled experiment.
+  repository for the same windows. That comparison is still observational, not a controlled
+  experiment.
 - Write down other changes in the pilot log: team changes, incidents, large releases, process
   changes, holidays. A before and after difference can come from any of them.
 - Do not compare pilot numbers from one team with numbers from another team as if they were
@@ -100,7 +101,7 @@ call meaningful. This plan does not supply one.
 ## After day 30
 
 1. Re-score the measured productivity criteria (E1 to E3) from the pilot numbers. Use the rubric's
-   levels, not the vendor's claims.
+   levels against the pilot numbers. Vendor claims do not count as pilot evidence.
 2. Score your own scorecard with the script, which reads the same `weights.json`:
 
    ```bash

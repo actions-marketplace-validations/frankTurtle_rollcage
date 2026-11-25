@@ -11,7 +11,7 @@ pnpm demo:14         # the whole demo end to end
 ```
 
 The demo uses **placeholder** tools, A, B and C, and made-up scores. Say so on camera. It shows
-how the scoring reads, not which tool to buy.
+how the scoring reads. It does not say which tool to buy.
 
 ## 0:00 to 0:20, the problem
 

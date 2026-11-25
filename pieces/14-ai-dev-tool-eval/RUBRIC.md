@@ -80,6 +80,6 @@ column in the same change. Write down why you changed them.
 
 ## Evidence limits
 
-- A level describes a document or a test. A vendor's marketing page is evidence of what it claims,
-  not of what its terms say. Score from the terms, the admin documentation and your own test.
+- A level describes a document or a test. A vendor's marketing page shows what the vendor claims.
+  Score from the terms, the admin documentation and your own test.
 - Rubric criteria say nothing about model quality. Measure that in your own tasks, if you need it.

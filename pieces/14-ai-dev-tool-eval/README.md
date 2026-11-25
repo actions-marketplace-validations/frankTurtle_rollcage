@@ -52,10 +52,10 @@ write down why.
 
 - The rubric records evidence as of the day you read it. Vendor terms and plans change often, so
   re-read them before each decision.
-- A before and after comparison shows what changed, not why. A tool rollout is rarely the only
+- A before and after comparison shows what changed. It does not show why. A tool rollout is rarely the only
   change in a month (see piece 03's limits).
 - A small team gives few deployments per period. Piece 03 reports those periods as insufficient
-  data, and the decision rule in PILOT.md treats that as "no decision yet", not as a pass.
+  data, and the decision rule in PILOT.md records that as "no decision yet".
 - The script checks arithmetic and structure. It cannot check whether a score is honest.
 
 ## Quickstart
@@ -79,8 +79,8 @@ decide with the rule in PILOT.md.
 
 - Deterministic decisions. Weights, gates, scores and the ranking are code. Nothing here calls a
   model.
-- Fail closed. A missing score, an out-of-range score or an unknown criterion is an error, not a
-  zero, and the script exits non-zero.
+- Fail closed. A missing score, an out-of-range score or an unknown criterion is an error. The
+  script never reads it as zero, and it exits non-zero.
 - No network by default. The link checker reads external URLs only when you pass `--live`. Tests
   never do.
 - No secrets. The example scorecard and fixtures contain placeholder names and numbers only.
