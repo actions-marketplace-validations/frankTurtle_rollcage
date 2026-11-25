@@ -20,7 +20,7 @@ Manager secrets (the Slack webhook URL, the model key) are yours and are not cre
 
 ## What it costs
 
-Small, but not zero, and I did not read AWS's current price pages, so check them:
+Small, not zero. I did not read AWS's current price pages, so check them:
 
 - Cost Explorer API requests are billed per request. A run makes four `GetCostAndUsage` calls and
   one `GetAnomalies` call, plus extra pages if a result is large. Price:
