@@ -126,6 +126,16 @@ export async function checkLinks(options: CheckOptions): Promise<LinkReport> {
   if (options.live && !options.fetcher) throw new Error('live mode needs a fetcher');
   const fetcher = options.fetcher;
   const report: LinkReport = { checked: 0, external: 0, skipped: 0, broken: [] };
+  // Each target file is read once, however many links point at it.
+  const slugCache = new Map<string, Set<string>>();
+  const slugsOf = (path: string): Set<string> => {
+    let slugs = slugCache.get(path);
+    if (!slugs) {
+      slugs = headingSlugs(readFileSync(path, 'utf8'));
+      slugCache.set(path, slugs);
+    }
+    return slugs;
+  };
   const pending: Array<{ file: string; line: number; url: string }> = [];
 
   for (const file of options.files) {
@@ -138,6 +148,7 @@ export async function checkLinks(options: CheckOptions): Promise<LinkReport> {
       continue;
     }
     const ownSlugs = headingSlugs(text);
+    slugCache.set(path, ownSlugs);
 
     for (const link of extractLinks(text)) {
       const kind = classify(link.target);
@@ -159,8 +170,7 @@ export async function checkLinks(options: CheckOptions): Promise<LinkReport> {
         if (!existsSync(target)) {
           fail(`file not found: ${decoded}`);
         } else if (fragment && target.endsWith('.md')) {
-          const slugs = headingSlugs(readFileSync(target, 'utf8'));
-          if (!slugs.has(slugify(decode(fragment)))) {
+          if (!slugsOf(target).has(slugify(decode(fragment)))) {
             fail(`no heading matches #${fragment} in ${decoded}`);
           }
         }
