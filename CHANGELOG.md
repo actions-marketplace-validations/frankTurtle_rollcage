@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 (2026-11-25)
 
 - Piece 13 moves to Escapement 0.3.0: the four agents run as an Escapement `pipeline()` with linked
   ledgers, model turns go through `textProvider`, tool handlers are typed from their schemas, and
@@ -14,6 +14,9 @@
   and `daysBetween`; `completeStructured` rejects zod schemas that use `.transform`.
 - Piece 05's feed parsers are pinned to real KEV and EPSS responses; piece 08 was deployed once in
   fixture mode.
+- `docs/adopting.md`: a guide for adopting the library in a real project, with an example project
+  that pins a release tag.
+- Docs: unconfirmed statistics removed from `docs/sources.md`, and ADR 0011 recorded as never issued.
 
 ## 0.2.0 (2026-11-25)
 
