@@ -1,0 +1,4 @@
+{
+  "text": "{\"explanation\":\"The bucket ACL grants read access to everyone on the internet, so anyone can list and download its objects.\",\"assumptions\":[\"The bucket is not meant to serve public content.\"]}",
+  "model": "hand-written-fixture"
+}

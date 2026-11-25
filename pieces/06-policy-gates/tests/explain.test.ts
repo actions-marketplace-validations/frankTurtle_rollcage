@@ -65,7 +65,7 @@ describe('buildExplainRequest', () => {
     expect(request.prompt).toContain('aws_s3_bucket.assets');
     expect(request.prompt).toContain('plan.json');
     expect(request.prompt).toContain('3.1.3');
-    expect(request.system).toMatch(/does not decide/i);
+    expect(request.system).toMatch(/do not decide/i);
     expect(request.system).toMatch(/assumption/i);
   });
 

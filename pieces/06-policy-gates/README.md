@@ -72,14 +72,14 @@ model, when enabled, adds an explanation under each violation and has no input t
 
 ### Rules
 
-| Rule  | Input     | What it flags                                                                | NIST SP 800-171 (illustrative) |
-| ----- | --------- | ---------------------------------------------------------------------------- | ------------------------------ |
-| PG001 | Terraform | S3 bucket with a public ACL, or a public access block with any setting false | 3.1.3, 3.1.22, 3.13.1          |
-| PG002 | Terraform | S3 bucket without a server-side encryption resource, unencrypted EBS or RDS  | 3.13.16                        |
+| Rule  | Input     | What it flags                                                                 | NIST SP 800-171 (illustrative) |
+| ----- | --------- | ----------------------------------------------------------------------------- | ------------------------------ |
+| PG001 | Terraform | S3 bucket with a public ACL, or a public access block with any setting false  | 3.1.3, 3.1.22, 3.13.1          |
+| PG002 | Terraform | S3 bucket without a server-side encryption resource, unencrypted EBS or RDS   | 3.13.16                        |
 | PG003 | Terraform | IAM policy statement that allows `*` or `service:*` actions, or `*` resources | 3.1.1, 3.1.5                   |
-| PG004 | Workflow  | `uses:` not pinned to a 40 character commit SHA (or a docker digest)         | 3.4.1, 3.4.8                   |
-| PG005 | Workflow  | No `permissions` at workflow or job level, or `write-all`                    | 3.1.5                          |
-| PG006 | Workflow  | Static cloud credentials in `env` or `with` instead of OIDC                  | 3.5.2, 3.13.10                 |
+| PG004 | Workflow  | `uses:` not pinned to a 40 character commit SHA (or a docker digest)          | 3.4.1, 3.4.8                   |
+| PG005 | Workflow  | No `permissions` at workflow or job level, or `write-all`                     | 3.1.5                          |
+| PG006 | Workflow  | Static cloud credentials in `env` or `with` instead of OIDC                   | 3.5.2, 3.13.10                 |
 
 Control IDs follow NIST SP 800-171 Revision 2. Check them against the current revision before
 you rely on them. The rule ID is the prefix of each Rego message (`PG003: ...`), which is how the
@@ -175,6 +175,9 @@ Acceptance criteria and where each is tested:
 ### Security notes
 
 - Tests and the default demo make no network calls. The model is reached only with `--live`.
+- The recorded explanations in `examples/llm-fixtures` are hand-written stand-ins in the record
+  and replay format, not real model output. Re-record them with `DEMO_LIVE=1` and
+  `pnpm --filter @adl/policy-gates exec tsx demo/record-fixtures.ts`.
 - The model gets the rule ID, message, file and resource address. It gets no file contents and
   no credentials.
 - Model output is JSON checked with zod. Invalid output retries once, then the CLI prints the

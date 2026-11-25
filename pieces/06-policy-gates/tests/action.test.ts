@@ -32,8 +32,10 @@ describe('composite action contract (used by piece 12)', () => {
   });
 
   it('runs the check command, which exits non-zero on any violation', () => {
-    const check = runs.find((r) => /bin\.ts check/.test(r));
+    const check = runs.find((r) => /src\/bin\.ts/.test(r));
     expect(check).toBeDefined();
+    expect(check).toMatch(/args=\(check /);
+    expect(check).toMatch(/exit "\$\{PIPESTATUS\[0\]\}"/);
     expect(check).not.toMatch(/--no-fail|\|\| true|continue-on-error/);
   });
 
