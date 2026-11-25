@@ -11,7 +11,7 @@ it does not replace a human reading the primary source.
 - Claims to support, with status:
   - 90% use AI at work, and over 80% believe it raised their productivity. **Read on 2026-11-25** in DORA's own post https://dora.dev/insights/balancing-ai-tensions/ (March 10, 2026). Not yet checked in the report PDF.
   - Higher AI adoption is associated with higher throughput and higher delivery instability. **Read on 2026-11-25** in https://dora.dev/insights/balancing-ai-tensions/ and https://dora.dev/insights/dora-2025-year-in-review/ ("AI improves throughput, but often at the cost of stability if your foundation isn't solid"). This is an association, so say "associated with", not "causes".
-- Dropped on 2026-11-25: a "about 30% little or no trust" figure and an "AI doesn't fix a team; it amplifies" quote, neither of which could be confirmed. Neither is used in the repo. DORA's own wording is that the report's primary role is as an amplifier of an organization's existing strengths and weaknesses.
+- Dropped on 2026-11-25, unconfirmed and unused: "about 30% little or no trust" and the "AI doesn't fix a team; it amplifies" quote. DORA's wording is that the report's "primary role is as an amplifier".
 - Status: VERIFY BEFORE PUBLISHING. Read the full report before citing any number.
 
 ## Stack Overflow Developer Survey 2025, AI section
@@ -115,7 +115,7 @@ person has read them.
 
 ## SLSA build levels and GitHub artifact attestations (piece 10)
 
-- https://slsa.dev/spec/v1.0/levels (marked Retired on 2026-11-25; v1.2 is current, see https://slsa.dev/spec/v1.2/levels, whose level names were not re-read) and
+- https://slsa.dev/spec/v1.0/levels (marked Retired on 2026-11-25; v1.2 is the current version and its level names were not re-read) and
   https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations
 - Read on 2026-11-25. GitHub's page
   https://docs.github.com/en/actions/concepts/security/artifact-attestations says artifact
