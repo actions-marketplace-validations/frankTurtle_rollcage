@@ -3,30 +3,28 @@
 **The AI DevSecOps Library: making AI-accelerated delivery safe to ship, and measurable.**
 
 A roll cage lets a car go fast and survive the crash. This repository does the same for
-AI-assisted software delivery: guardrails you can adopt, and numbers that prove they work.
+AI-assisted software delivery: working code, tests and CI for guardrails you can adopt, and
+numbers that show whether AI is paying off.
 
-Working code, tests and CI for making AI-assisted software delivery safe to ship, and for
-measuring whether it is paying off.
-
-> Status: Phase 0 (skeleton). The pieces below are planned; none are built yet.
+> Status: Phase 0 (skeleton) is done. Pieces 01 to 04 (the MVP) are done. The rest are planned.
 
 ## For engineering leaders
 
-**The problem.** AI coding tools raise how much code a team produces. The same research that
-reports the gains also reports that AI amplifies whatever a team already does, good or bad,
-and developers say they do not fully trust the output (see [docs/sources.md](docs/sources.md);
-figures there are flagged VERIFY BEFORE PUBLISHING). Review, security and compliance
-checks have to keep up, and you need numbers to show whether they do.
+AI coding tools raise how much code a team produces. The same research that reports the gains
+also reports that AI amplifies whatever a team already does, good or bad, and that developers
+say they do not fully trust the output (see [docs/sources.md](docs/sources.md); figures there
+are flagged VERIFY BEFORE PUBLISHING). Review, security and compliance checks have to keep up,
+and you need numbers to show whether they do.
 
-Each piece below solves one problem you probably already have. Each ships as code with tests and
-CI, and each has a demo script.
+Each piece below solves a problem you probably already have. Each ships as code with tests,
+CI and a demo script.
 
 | # | Piece | Problem | What it proves | Metric | Status | Video |
 |---|-------|---------|----------------|--------|--------|-------|
-| 01 | pr-risk-gate | Risky AI-assisted changes merge without extra scrutiny | High-risk PRs without tests are blocked, with cited reasons | Change failure rate; % high-risk PRs shipped with tests | MVP, planned | TBD |
-| 02 | agent-policy | Engineers already use coding agents with no written rules | A one-page policy backed by enforced guardrails and an audit trail | Blocked risky actions per week; % sessions with complete audit trail | MVP, planned | TBD |
-| 03 | dora-metrics | No proof AI is paying off | Delivery metrics before and after an AI rollout date | DORA metrics | MVP, planned | TBD |
-| 04 | secrets-guard | A leaked cloud key can be abused within hours | Three layers: pre-commit, CI scan, automatic key deactivation | Leaks blocked pre-commit; time from leak to deactivation | MVP, planned | TBD |
+| 01 | [pr-risk-gate](pieces/01-pr-risk-gate/README.md) | Risky AI-assisted changes merge without extra scrutiny | High-risk PRs without tests are blocked, with cited reasons | Change failure rate; % high-risk PRs shipped with tests | MVP, done | TBD |
+| 02 | [agent-policy](pieces/02-agent-policy/README.md) | Engineers already use coding agents with no written rules | A one-page policy backed by enforced guardrails and an audit trail | Blocked risky actions per week; % sessions with complete audit trail | MVP, done | TBD |
+| 03 | [dora-metrics](pieces/03-dora-metrics/README.md) | No proof AI is paying off | Delivery metrics before and after an AI rollout date | The five DORA metrics | MVP, done | TBD |
+| 04 | [secrets-guard](pieces/04-secrets-guard/README.md) | A leaked cloud key can be abused within hours | Three layers: pre-commit, CI scan, automatic key deactivation | Leaks blocked pre-commit; time from leak to deactivation | MVP, done | TBD |
 | 05 | sbom-vuln-triage | Hundreds of CVEs, few that matter | Evidence-based prioritization | Open criticals; mean time to remediate | backlog | TBD |
 | 06 | policy-gates | Compliance issues found after deployment | Policy as code in the pipeline | Violations caught pre-merge vs after deploy | backlog | TBD |
 | 07 | ci-failure-triage | Teams cannot tell code failures from pipeline failures | Classified failures and flaky-test quarantine proposals | Time to green; flaky-test rate | backlog | TBD |
@@ -41,13 +39,20 @@ CI, and each has a demo script.
 ## Quickstart
 
 ```bash
-git clone <repo-url> && cd rollcage
+git clone https://github.com/frankTurtle/rollcage.git && cd rollcage
 pnpm install
 pnpm check        # lint, format check, typecheck, tests with coverage
 ```
 
-Requires Node 24 or newer and pnpm. Per-piece demos (`pnpm demo:<piece>`) arrive with each
-piece and run offline from recorded responses by default.
+Requires Node 24 or newer and pnpm. The demos run offline and are deterministic:
+
+```bash
+pnpm demo:01   # PR risk gate: three PRs, before and after the gate
+pnpm demo:02   # agent policy: blocked tool calls and the audit trail
+pnpm demo:03   # DORA metrics: five numbers before and after a (synthetic) rollout
+pnpm demo:04   # secrets guard: pre-commit block and the webhook handler (needs gitleaks)
+pnpm demo:0N:reset   # restore the before state for another take
+```
 
 ## How to adopt
 
@@ -57,17 +62,30 @@ piece and run offline from recorded responses by default.
 
 ## Principles
 
-- **Deterministic decisions, AI explanations.** Thresholds, pass/fail and policy live in code.
-  The model classifies, summarizes and drafts; its output is schema-validated, with a
-  deterministic fallback.
-- **Fail closed.** If the model is unavailable, high-risk categories are blocked, not waved through.
-- **Every action is logged.** Decisions append to a hash-chained JSONL audit log.
-- **No secrets in code.** gitleaks runs pre-commit and in CI. Tests never touch the network.
-- **AI output states its assumptions** and does not claim confirmation without evidence.
+- Code makes the decisions and the model explains them. Thresholds, pass/fail and policy live
+  in code. The model classifies, summarizes and drafts, and its output is schema-validated with
+  a deterministic fallback.
+- When the model is unavailable, high-risk categories are blocked.
+- Decisions append to a hash-chained JSONL audit log.
+- gitleaks runs pre-commit and in CI, and tests never touch the network.
+- AI output states its assumptions and does not claim confirmation without evidence.
 
 Compliance mappings in this repo are illustrative mappings, not compliance attestations.
 
-## What is in Phase 0
+## What is built
+
+- `pieces/04-secrets-guard`: three secret-leak layers: a gitleaks pre-commit wrapper that records
+  blocks, a CI scan template, and a SAM app that verifies a GitHub secret scanning webhook and
+  deactivates (never deletes) a leaked AWS key. Dry run by default; deployed and tested once against a canary IAM user.
+- `pieces/03-dora-metrics`: the five DORA metrics from the GitHub API, a before and after split
+  around an AI rollout date, a JSON report, a single-file HTML dashboard and a CFO summary.
+- `pieces/02-agent-policy`: a one-page AI coding agent policy, Claude Code hooks that block
+  secret reads, force-pushes, writes outside the repo and unlisted hosts, an audit log, a CI check
+  and metrics.
+- `pieces/01-pr-risk-gate`: PR risk scoring, cited model review, test and approval rules, one
+  updating PR comment, audit log, GitHub Action and Claude Code skill.
+
+### Phase 0 foundation
 
 - `shared/ts`: LLM client interface, scripted fake, record/replay fixtures, a fetch-based
   Anthropic client, a schema-validated structured-output helper, and the audit logger.
@@ -77,7 +95,10 @@ Compliance mappings in this repo are illustrative mappings, not compliance attes
 
 ## About the author
 
-_Placeholder: to be written by the maintainer._
+Rollcage is maintained by Barret "Bear" Nobel ([frankTurtle](https://github.com/frankTurtle)).
+Each piece gets a short video walkthrough that solves one problem; the Video column links them
+as they are recorded. To contribute, read [CONTRIBUTING.md](CONTRIBUTING.md). To report a
+vulnerability, follow [SECURITY.md](SECURITY.md).
 
 ## License
 

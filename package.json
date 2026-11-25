@@ -16,7 +16,17 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm -r --if-present test",
     "coverage": "pnpm -r --if-present coverage",
-    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm coverage"
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm coverage",
+    "demo:01": "pnpm --filter @adl/pr-risk-gate demo",
+    "demo:01:reset": "pnpm --filter @adl/pr-risk-gate demo:reset",
+    "policy:check": "pnpm --filter @adl/agent-policy exec tsx src/bin.ts check --root ../..",
+    "demo:02": "pnpm --filter @adl/agent-policy demo",
+    "demo:02:reset": "pnpm --filter @adl/agent-policy demo:reset",
+    "demo:03": "pnpm --filter @adl/dora-metrics demo",
+    "demo:03:reset": "pnpm --filter @adl/dora-metrics demo:reset",
+    "demo:04": "pnpm --filter @adl/secrets-guard demo",
+    "demo:04:reset": "pnpm --filter @adl/secrets-guard demo:reset",
+    "policy:selftest": "pnpm --filter @adl/agent-policy exec tsx src/bin.ts selftest --root ../.."
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -24,8 +34,15 @@
     "@vitest/coverage-v8": "^3.0.0",
     "eslint": "^9.0.0",
     "prettier": "^3.0.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.6.0",
     "typescript-eslint": "^8.0.0",
     "vitest": "^3.0.0"
-  }
+  },
+  "author": "Barret Nobel (https://github.com/frankTurtle)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankTurtle/rollcage.git"
+  },
+  "homepage": "https://github.com/frankTurtle/rollcage#readme"
 }
