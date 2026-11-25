@@ -208,4 +208,4 @@ ANTHROPIC_API_KEY=... pnpm --filter @adl/multi-agent-workflow workflow run --liv
 pnpm --filter @adl/multi-agent-workflow workflow replay /tmp/rollcage-live/run-*.json
 ```
 
-See [INTEGRATION.md](INTEGRATION.md) for what the Escapement library did not cover.
+See [docs/follow-ups.md](../../docs/follow-ups.md) for what the Escapement library did not cover.

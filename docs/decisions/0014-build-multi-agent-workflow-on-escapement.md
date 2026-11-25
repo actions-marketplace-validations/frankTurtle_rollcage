@@ -16,5 +16,5 @@ What the piece adds around it:
 - The human approval gate, which Escapement does not have.
 
 Consequences: the piece has one runtime dependency with no dependencies of its own. Gaps in the
-library that the piece works around are listed in `pieces/13-multi-agent-workflow/INTEGRATION.md`
+library that the piece works around are listed in `docs/follow-ups.md`
 for the maintainer.
