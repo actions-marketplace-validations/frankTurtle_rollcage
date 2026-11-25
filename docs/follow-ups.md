@@ -19,21 +19,26 @@ Collected from each piece's integration notes. Nothing here blocks the demos.
 - Piece 02: the guard now blocks agents from editing its own config and source
   (`protected_paths`).
 
+## Proven live on 2026-11-25
+
+See [live-proof-report.md](live-proof-report.md) for commands and results. Pieces 05, 06, 07, 09,
+11, 12 and 13 were run against the real tools and the real model; their fixtures now come from
+real output where the format allows (Grype, syft, Terraform plans, a GitHub job log, piece 11's
+model responses). Fixes found by doing so: piece 06 PG002 matches an encryption resource by
+reference, piece 05 and 08 token limits, piece 07 byte order mark, piece 12 template formatting.
+
 ## Not yet proven against the real service
 
-- Piece 05: Grype JSON fixtures are hand-authored in Grype's shape; syft and grype were not run end
-  to end through the action.
-- Piece 06: the Terraform plan fixtures were not produced by a Terraform run.
-- Piece 07: the live GitHub path (log redirects, `updated_at` as finish time).
-- Piece 08: live mode; Cost Explorer request shapes come from SDK types; whether `ce:*` can be
-  scoped below `*`.
+- Piece 05: the composite action on a GitHub runner (the tools and the command it runs were
+  proven locally).
+- Piece 08: live mode with Cost Explorer (no scoped read-only profile); request shapes come from
+  SDK types; whether `ce:*` can be scoped below `*`.
 - Piece 10: the `gh attestation verify --format json` output shape (checkable after the first
   manual attestation run on `main`).
-- Piece 11: the ONNX embedder and live Anthropic paths; eval accuracy is 77.3% against scripted
-  model responses, which is the committed baseline.
-- Piece 12: `pnpm install` on a generated project; the branch-protection `gh api` command.
-- Piece 13: `--live` mode; the committer is a dry run.
-- Every piece: recorded model responses are scripted stand-ins, not real model output.
+- Piece 13: `approve` and `commit` after a live run; the committer is a dry run.
+- Pieces 05, 06, 08, 09, 13: recorded model responses other than piece 11's are still scripted
+  stand-ins. Live runs worked; the fixture formats there were not re-recorded.
+- Escapement: the model's JSON turn format is fragile (1 of 3 live runs halted on repair turns).
 
 ## Candidates for `shared/ts`
 
