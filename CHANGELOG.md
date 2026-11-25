@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.1 (2026-11-25)
+
 - The scaffold, `init` and docs default to the v0.4.0 release. Piece 10 attestation proven on a real run.
 
 ## 0.4.0 (2026-11-25)
