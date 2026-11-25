@@ -59,10 +59,11 @@ violation; the output names the control.
 
 ## Phase 2: trust what you deploy
 
-**[Piece 10, provenance](../pieces/10-provenance-signing/README.md).** Start with `verify` on an
-existing build output, with `signer-workflow` set so only your build workflow satisfies it. Add the
-`attest` step when you have a release artifact. Attestation is manual by design because it writes a
-public Sigstore entry on public repos. The example has only the verify half so far.
+**[Piece 10, provenance](../pieces/10-provenance-signing/README.md).** The gate verifies one file,
+so ship the build as a tarball. Attest it in a manual workflow, then verify it with `signer-workflow`
+set so only your build workflow satisfies the gate. Do not run it on pull requests: nothing is
+attested yet, and attestation writes a public Sigstore entry on public repos. The example's
+`provenance.yml` does both steps on `workflow_dispatch`.
 
 ## Later, as needed
 
