@@ -9,7 +9,7 @@ everything else, and not before the items marked Blocker are done.**
 
 | Area | State | Notes |
 | ---- | ----- | ----- |
-| Install path | Ready | `init/rollcage-init.mjs` adds the proven pieces to an existing repo, new files only, pinned to a commit SHA (see [SETUP.md](../SETUP.md)). Not yet run against a throwaway GitHub repo. |
+| Install path | Ready | `npx rollcage-init` (published to npm as [rollcage-init](https://www.npmjs.com/package/rollcage-init)) adds the proven pieces to an existing repo, new files only, pinned to a commit SHA (see [SETUP.md](../SETUP.md)). Not yet run against a throwaway GitHub repo. |
 | Agent path | Ready | [SETUP.md](../SETUP.md) and `llms.txt` give a coding agent the same steps at a stable URL. Not yet tried with a real agent on a real repo. |
 | PR guardrails on GitHub | Proven | The same workflows run green in `rollcage-example`: `risk-gate / gate`, `secrets / gitleaks`, `sbom / sbom`, `policy / policy`. `init` writes the same files under `rollcage-*` names; a repository set up that way has not run yet. |
 | Live paths | Mostly proven | See [live-proof-report.md](live-proof-report.md). Unproven: piece 05's composite action on a runner (the command it runs was proven), piece 08 live Cost Explorer, piece 10 attestation. |
