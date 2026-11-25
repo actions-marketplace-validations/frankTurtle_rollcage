@@ -25,11 +25,23 @@ runs:
     - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: 24
+    - id: syft
+      uses: anchore/sbom-action/download-syft@dfcb83b97731532d72be422cbc51ee64adb6fd56 # v0.24.4
+    - id: grype
+      uses: anchore/scan-action/download-grype@11983a512817154c80a9db660c1a184be7513ed6 # v7.4.3
+    - name: Put syft and grype on PATH
+      shell: bash
+      env:
+        SYFT_CMD: ${{ steps.syft.outputs.cmd }}
+        GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
+      run: |
+        dirname "$SYFT_CMD" >> "$GITHUB_PATH"
+        dirname "$GRYPE_CMD" >> "$GITHUB_PATH"
     - name: Check scanners are installed
       shell: bash
       run: |
         for tool in syft grype; do
-          command -v "$tool" >/dev/null || { echo "::error::$tool is not on PATH. Install it in an earlier step, pinned by commit SHA."; exit 1; }
+          command -v "$tool" >/dev/null || { echo "::error::$tool is not on PATH after the install steps."; exit 1; }
         done
     - name: Install dependencies
       shell: bash

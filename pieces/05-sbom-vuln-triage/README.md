@@ -194,9 +194,9 @@ expired waiver (expires on or before `--as-of`) is ignored and the report says s
 
 The action runs Syft on `path`, scans the SBOM with Grype, runs `sbom-triage gate` and fails the
 job when an unresolved finding at or above `fail-on` is in KEV or above the EPSS threshold. The
-job summary gets the prioritized table. Syft and Grype must already be on the runner's `PATH`; the
-action stops with a clear message if they are not. Install them in an earlier step, pinned by
-commit SHA.
+job summary gets the prioritized table. The action installs Syft and Grype itself with Anchore's
+`download-syft` and `download-grype` actions, pinned by commit SHA, and stops with a clear message
+if either is missing afterwards.
 
 ```yaml
 permissions:
