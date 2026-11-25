@@ -123,6 +123,31 @@ importers:
         specifier: ^2.6.0
         version: 2.9.1
 
+  pieces/08-aws-cost-explainer:
+    dependencies:
+      '@adl/shared':
+        specifier: workspace:*
+        version: link:../../shared/ts
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+    devDependencies:
+      '@aws-sdk/client-cost-explorer':
+        specifier: ^3.1177.0
+        version: 3.1177.0
+      '@aws-sdk/client-secrets-manager':
+        specifier: ^3.1177.0
+        version: 3.1177.0
+      '@aws-sdk/client-sns':
+        specifier: ^3.1177.0
+        version: 3.1177.0
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
+
   shared/ts:
     dependencies:
       yaml:
@@ -137,6 +162,10 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
+
+  '@aws-sdk/client-cost-explorer@3.1177.0':
+    resolution: {integrity: sha512-dHmJzfDMldS1EfB5ov7wB0hwsDs1u2aSz3TDlY6gw6jkUiM0zcxIhiOfSfgtBkCNBXqhzcS5Lvn2nUmQsqXOQg==}
+    engines: {node: '>=20.0.0'}
 
   '@aws-sdk/client-dynamodb@3.1177.0':
     resolution: {integrity: sha512-wf4wO/ANS6z8r929K25Y+/0+KP96I6DbE7At6FpxKfuRjMmRWYsLzYw6EcPc/qsfB5lZVQbZfql1eNI0Z7skrQ==}
@@ -1460,6 +1489,17 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
+
+  '@aws-sdk/client-cost-explorer@3.1177.0':
+    dependencies:
+      '@aws-sdk/core': 3.981.2
+      '@aws-sdk/credential-provider-node': 3.972.99
+      '@aws-sdk/types': 3.975.1
+      '@smithy/core': 3.41.1
+      '@smithy/fetch-http-handler': 5.8.1
+      '@smithy/node-http-handler': 4.14.2
+      '@smithy/types': 4.20.0
+      tslib: 2.9.1
 
   '@aws-sdk/client-dynamodb@3.1177.0':
     dependencies:
