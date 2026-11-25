@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { redact } from '../src/redact.ts';
+import { redactSecrets as redact } from '@adl/shared';
 import { excerpt, extractSignature, extractTests, normalizeLine } from '../src/signature.ts';
 import { gh, readLog } from './helpers.ts';
 

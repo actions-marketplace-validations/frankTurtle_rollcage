@@ -3,6 +3,8 @@ export type RedactionType =
   | 'bearer-token'
   | 'jwt'
   | 'github-token'
+  | 'slack-token'
+  | 'api-key'
   | 'aws-access-key'
   | 'credential-assignment'
   | 'email'
@@ -22,6 +24,8 @@ const LABEL: Record<RedactionType, string> = {
   'bearer-token': 'BEARER_TOKEN',
   jwt: 'JWT',
   'github-token': 'GITHUB_TOKEN',
+  'slack-token': 'SLACK_TOKEN',
+  'api-key': 'API_KEY',
   'aws-access-key': 'AWS_ACCESS_KEY',
   'credential-assignment': 'SECRET',
   email: 'EMAIL',
@@ -71,6 +75,8 @@ const RULES: Rule[] = [
     type: 'github-token',
     pattern: /\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})\b/g,
   },
+  { type: 'slack-token', pattern: /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g },
+  { type: 'api-key', pattern: /\bsk-[A-Za-z0-9_-]{20,}\b/g },
   { type: 'aws-access-key', pattern: /\b(?:AKIA|ASIA)[0-9A-Z]{16}\b/g },
   {
     type: 'credential-assignment',
@@ -105,6 +111,30 @@ const RULES: Rule[] = [
   },
 ];
 
+export interface RedactorOptions {
+  /** Only apply these rule types. Default: all. */
+  types?: readonly RedactionType[];
+  /** Build the replacement text. Default: `[EMAIL_1]` style placeholders. */
+  format?: (type: RedactionType, id: number) => string;
+}
+
+/** The credential rule types: secrets only, no personal data such as emails or addresses. */
+export const SECRET_TYPES: readonly RedactionType[] = [
+  'private-key',
+  'bearer-token',
+  'jwt',
+  'github-token',
+  'slack-token',
+  'api-key',
+  'aws-access-key',
+  'credential-assignment',
+];
+
+/** Replace secrets with `[REDACTED:type]` markers. Stateless: equal input gives equal output. */
+export function redactSecrets(text: string): string {
+  return new Redactor({ types: SECRET_TYPES, format: (type) => `[REDACTED:${type}]` }).redact(text);
+}
+
 /**
  * Replaces PII and secrets with stable placeholders such as `[EMAIL_1]`. The same value always
  * gets the same placeholder within one instance. It keeps counts and a value-to-placeholder map
@@ -113,10 +143,18 @@ const RULES: Rule[] = [
 export class Redactor {
   private readonly seen = new Map<RedactionType, Map<string, number>>();
   private readonly counts = new Map<RedactionType, number>();
+  private readonly rules: Rule[];
+  private readonly format: (type: RedactionType, id: number) => string;
+
+  constructor(options: RedactorOptions = {}) {
+    const types = options.types;
+    this.rules = types ? RULES.filter((r) => types.includes(r.type)) : RULES;
+    this.format = options.format ?? ((type, id) => `[${LABEL[type]}_${id}]`);
+  }
 
   redact(text: string): string {
     let out = text;
-    for (const rule of RULES) {
+    for (const rule of this.rules) {
       out = out.replace(rule.pattern, (...args: string[]) => {
         const full = args[0] as string;
         const value = rule.group ? (args[rule.group] as string) : full;
@@ -134,7 +172,7 @@ export class Redactor {
     let id = ids.get(value);
     if (id === undefined) ids.set(value, (id = ids.size + 1));
     this.counts.set(type, (this.counts.get(type) ?? 0) + 1);
-    return `[${LABEL[type]}_${id}]`;
+    return this.format(type, id);
   }
 
   report(): RedactionReport {

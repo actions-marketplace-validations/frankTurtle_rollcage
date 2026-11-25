@@ -1,7 +1,7 @@
 import type { TriageConfig } from './config.js';
 import { flipStats, isFlaky } from './history.js';
 import type { FlipStats, History } from './history.js';
-import { redact } from './redact.js';
+import { redactSecrets as redact } from '@adl/shared';
 import { cleanLine } from './signature.js';
 import type { Signature } from './signature.js';
 

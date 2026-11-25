@@ -1,4 +1,4 @@
-import { execFile } from 'node:child_process';
+import { execRunner } from '@adl/shared';
 import { z } from 'zod';
 import type { Mapping } from './mapping.js';
 import type { Violation } from './types.js';
@@ -23,13 +23,16 @@ export interface ExecResult {
 export type ExecFn = (file: string, args: string[]) => Promise<ExecResult>;
 
 /** Resolves with the exit code for a process that ran, rejects when it could not start. */
-const defaultExec: ExecFn = (file, args) =>
-  new Promise((resolve, reject) => {
-    execFile(file, args, { maxBuffer: 64 * 1024 * 1024 }, (error, stdout, stderr) => {
-      if (error && typeof error.code !== 'number') reject(error);
-      else resolve({ stdout, stderr, code: error ? (error.code as number) : 0 });
-    });
-  });
+const defaultExec: ExecFn = async (file, args) => {
+  const r = await execRunner({ timeoutMs: 0 })(file, args);
+  if (r.code === null) {
+    throw Object.assign(
+      new Error(r.error ?? 'could not start'),
+      r.errorCode ? { code: r.errorCode } : {},
+    );
+  }
+  return { stdout: r.stdout, stderr: r.stderr, code: r.code };
+};
 
 export function createConftestRunner(exec: ExecFn = defaultExec): ConftestRunner {
   return {

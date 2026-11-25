@@ -17,3 +17,5 @@ export * from './llm-select.js';
 export * from './diff.js';
 export * from './dates.js';
 export * from './links.js';
+export * from './exec.js';
+export * from './redact.js';

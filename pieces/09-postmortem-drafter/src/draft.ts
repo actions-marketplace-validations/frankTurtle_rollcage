@@ -1,8 +1,8 @@
 import { completeStructured } from '@adl/shared';
 import type { LlmClient } from '@adl/shared';
 import { z } from 'zod';
-import { Redactor, assertClean } from './redact.js';
-import type { RedactionReport } from './redact.js';
+import { Redactor, assertClean } from '@adl/shared';
+import type { RedactionReport } from '@adl/shared';
 import { buildTimeline } from './timeline.js';
 import type { Bundle, Incident, TimelineEvent } from './types.js';
 

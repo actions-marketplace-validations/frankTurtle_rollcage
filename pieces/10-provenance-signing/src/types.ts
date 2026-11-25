@@ -1,14 +1,4 @@
-export interface CommandResult {
-  /** Exit code, or null when the process never ran to completion (not found, timeout). */
-  code: number | null;
-  stdout: string;
-  stderr: string;
-  /** Set when the process could not start or was killed. */
-  error?: string;
-}
-
-/** Runs an external tool. Never throws for a failing tool; tests inject a fake. */
-export type CommandRunner = (cmd: string, args: string[]) => Promise<CommandResult>;
+export type { CommandResult, CommandRunner } from '@adl/shared';
 
 export type VerifyMode = 'key' | 'cosign-keyless' | 'github-attestation';
 

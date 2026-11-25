@@ -1,5 +1,5 @@
 import { sha256Hex } from '@adl/shared';
-import { redact } from './redact.js';
+import { redactSecrets as redact } from '@adl/shared';
 
 // Built from a string so the escape character is explicit and the control-character lint rule stays on.
 const ANSI = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');

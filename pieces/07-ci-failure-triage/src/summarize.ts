@@ -3,7 +3,7 @@ import type { LlmClient } from '@adl/shared';
 import { z } from 'zod';
 import type { Category, Classification } from './classify.js';
 import type { TriageConfig } from './config.js';
-import { redact } from './redact.js';
+import { redactSecrets as redact } from '@adl/shared';
 
 export interface SummaryInput {
   classification: Classification;
