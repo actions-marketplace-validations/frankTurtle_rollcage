@@ -37,7 +37,24 @@ CI and a demo script.
 | 13 | [multi-agent-workflow](pieces/13-multi-agent-workflow/README.md) | Agent changes are hard to review | Every handoff logged and replayable | % agent changes with a complete trace | done | TBD |
 | 14 | [ai-dev-tool-eval](pieces/14-ai-dev-tool-eval/README.md) | No consistent way to compare AI dev tools | Rubric and pilot plan tied to measured results | Weighted score; pilot before/after | done | TBD |
 
-## Quickstart
+## Set it up in your repo
+
+From the root of your repository, on a new branch:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -
+```
+
+It detects the repo, writes the workflows, policy files and agent hook for the pieces proven in CI
+(01 to 06, plus a manual 10 provenance workflow), pins every Rollcage reference to a commit SHA,
+never overwrites a file, and prints what is left for you (secrets, branch protection). Add
+`--dry-run` to preview. Options and the full steps are in [SETUP.md](SETUP.md).
+
+Using a coding agent? Point it at
+`https://raw.githubusercontent.com/frankTurtle/rollcage/main/SETUP.md` and ask it to set up Rollcage
+in the repo. The page is written for agents.
+
+## Quickstart (developing Rollcage)
 
 ```bash
 git clone https://github.com/frankTurtle/rollcage.git && cd rollcage
