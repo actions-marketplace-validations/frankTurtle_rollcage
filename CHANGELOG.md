@@ -2,7 +2,12 @@
 
 ## Unreleased
 
+## 0.4.1 (2026-11-25)
+
 - The scaffold, `init` and docs default to the v0.4.0 release. Piece 10 attestation proven on a real run.
+- `SETUP.md`: states the `origin` remote and first-commit requirements, uses full links, and says how to
+  test the hook by hand. Found by testing the installer on a fresh repository.
+- Dependencies: zod 4 (clears the high advisory) and vitest 4.1.12.
 
 ## 0.4.0 (2026-11-25)
 
