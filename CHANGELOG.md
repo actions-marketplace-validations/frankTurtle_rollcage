@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Piece 10's attestation job is enabled for manual runs (`workflow_dispatch`) only.
+
 ## 0.2.0 (2026-11-25)
 
 - Pieces 05 to 14, built in parallel and in review: SBOM and vulnerability triage (Syft, Grype,
