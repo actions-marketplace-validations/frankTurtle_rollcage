@@ -16,7 +16,7 @@
   "dependencies": {
     "@adl/shared": "workspace:*",
     "tsx": "^4.23.15",
-    "zod": "^3.23.0"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@aws-sdk/client-cost-explorer": "^3.1177.0",

@@ -78,11 +78,11 @@ const SecondApproval = z.object({
 const ConfigSchema = z
   .object({
     mode: z.enum(['enforce', 'observe']).default('enforce'),
-    risk_paths: z.record(Category).default(DEFAULT_RISK_PATHS),
+    risk_paths: z.record(z.string(), Category).default(DEFAULT_RISK_PATHS),
     test_paths: z.array(z.string().min(1)).default(DEFAULT_TEST_PATHS),
     doc_paths: z.array(z.string().min(1)).default(DEFAULT_DOC_PATHS),
-    thresholds: Thresholds.default({}),
-    second_approval: SecondApproval.default({}),
+    thresholds: Thresholds.prefault({}),
+    second_approval: SecondApproval.prefault({}),
     max_diff_chars: z.number().int().positive().default(60000),
   })
   .strict()
