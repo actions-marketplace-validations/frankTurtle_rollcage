@@ -1,0 +1,4 @@
+{
+  "text": "{\"summary\":\"The test \\\"creates an order\\\" timed out. The same commit passed on a later run, and this test has failed and passed on the same commit before, so it looks flaky rather than broken.\",\"next_step\":\"Review the quarantine proposal for this test and assign an owner to fix the timing. Re-run is safe if the change is urgent.\",\"assumptions\":[\"Assumed the timeout comes from a slow dependency in the test, not from this change.\",\"The flaky call is a heuristic from run history; the cause is not confirmed.\"]}",
+  "model": "scripted"
+}

@@ -1,0 +1,12 @@
+{
+  "_fixtureNote": "Example waiver list. A waiver needs an owner, a reason and an expiry date. An expired waiver is ignored.",
+  "waivers": [
+    {
+      "id": "CVE-2024-23342",
+      "package": "ecdsa",
+      "reason": "No fixed version exists. The library is used for signature verification only, which the advisory does not cover. Revisit when a replacement is chosen.",
+      "owner": "platform-team",
+      "expires": "2027-02-01"
+    }
+  ]
+}

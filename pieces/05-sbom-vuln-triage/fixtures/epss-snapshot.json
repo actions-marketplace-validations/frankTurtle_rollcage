@@ -1,0 +1,27 @@
+{
+  "status": "OK",
+  "_fixtureNote": "SYNTHETIC snapshot in the shape of the FIRST EPSS API response. Scores are made up to exercise the code. They are not real EPSS values. Fetch real scores with --live-feeds.",
+  "total": 20,
+  "data": [
+    { "cve": "CVE-2020-14343", "epss": "0.45000", "percentile": "0.97000", "date": "2026-11-01" },
+    { "cve": "CVE-2020-28493", "epss": "0.00500", "percentile": "0.40000", "date": "2026-11-01" },
+    { "cve": "CVE-2020-28500", "epss": "0.01000", "percentile": "0.55000", "date": "2026-11-01" },
+    { "cve": "CVE-2020-8203", "epss": "0.04000", "percentile": "0.85000", "date": "2026-11-01" },
+    { "cve": "CVE-2021-23337", "epss": "0.30000", "percentile": "0.96000", "date": "2026-11-01" },
+    { "cve": "CVE-2021-23437", "epss": "0.01000", "percentile": "0.60000", "date": "2026-11-01" },
+    { "cve": "CVE-2021-25287", "epss": "0.02000", "percentile": "0.75000", "date": "2026-11-01" },
+    { "cve": "CVE-2021-33503", "epss": "0.12000", "percentile": "0.93000", "date": "2026-11-01" },
+    { "cve": "CVE-2021-3749", "epss": "0.03000", "percentile": "0.80000", "date": "2026-11-01" },
+    { "cve": "CVE-2021-44906", "epss": "0.21000", "percentile": "0.95000", "date": "2026-11-01" },
+    { "cve": "CVE-2022-0235", "epss": "0.05000", "percentile": "0.88000", "date": "2026-11-01" },
+    { "cve": "CVE-2022-22817", "epss": "0.60000", "percentile": "0.98000", "date": "2026-11-01" },
+    { "cve": "CVE-2022-23529", "epss": "0.15000", "percentile": "0.94000", "date": "2026-11-01" },
+    { "cve": "CVE-2022-24999", "epss": "0.06000", "percentile": "0.90000", "date": "2026-11-01" },
+    { "cve": "CVE-2023-32681", "epss": "0.01000", "percentile": "0.58000", "date": "2026-11-01" },
+    { "cve": "CVE-2023-43804", "epss": "0.02000", "percentile": "0.72000", "date": "2026-11-01" },
+    { "cve": "CVE-2023-45857", "epss": "0.01000", "percentile": "0.57000", "date": "2026-11-01" },
+    { "cve": "CVE-2024-22195", "epss": "0.00300", "percentile": "0.30000", "date": "2026-11-01" },
+    { "cve": "CVE-2024-23342", "epss": "0.03000", "percentile": "0.82000", "date": "2026-11-01" },
+    { "cve": "CVE-2024-29041", "epss": "0.00200", "percentile": "0.20000", "date": "2026-11-01" }
+  ]
+}

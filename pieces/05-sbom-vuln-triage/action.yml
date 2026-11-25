@@ -1,0 +1,77 @@
+name: SBOM and vulnerability triage
+description: Scan a directory with Syft and Grype, prioritize the findings, and fail when an unresolved finding at or above a severity is in KEV or above an EPSS threshold.
+author: rollcage
+
+inputs:
+  path:
+    description: Directory to scan, relative to the workspace.
+    default: '.'
+  fail-on:
+    description: Severity threshold (critical, high, medium or low). The job fails for an unresolved finding at or above it that is in KEV or above the EPSS threshold.
+    default: critical
+  epss-threshold:
+    description: An EPSS score above this value counts as likely exploited.
+    default: '0.1'
+  waivers:
+    description: Path to a waivers JSON file, relative to the workspace. Empty means none.
+    default: ''
+  live-feeds:
+    description: Fetch KEV from CISA and EPSS from FIRST. Set false to use the committed snapshots, which are synthetic demo data.
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 24
+    - id: syft
+      uses: anchore/sbom-action/download-syft@dfcb83b97731532d72be422cbc51ee64adb6fd56 # v0.24.4
+    - id: grype
+      uses: anchore/scan-action/download-grype@11983a512817154c80a9db660c1a184be7513ed6 # v7.4.3
+    - name: Put syft and grype on PATH
+      shell: bash
+      env:
+        SYFT_CMD: ${{ steps.syft.outputs.cmd }}
+        GRYPE_CMD: ${{ steps.grype.outputs.cmd }}
+      run: |
+        dirname "$SYFT_CMD" >> "$GITHUB_PATH"
+        dirname "$GRYPE_CMD" >> "$GITHUB_PATH"
+    - name: Check scanners are installed
+      shell: bash
+      run: |
+        for tool in syft grype; do
+          command -v "$tool" >/dev/null || { echo "::error::$tool is not on PATH after the install steps."; exit 1; }
+        done
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}/../..
+      run: |
+        corepack enable
+        pnpm install --frozen-lockfile --filter "@adl/sbom-vuln-triage..."
+    - name: Scan, triage and gate
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        SCAN_PATH: ${{ github.workspace }}/${{ inputs.path }}
+        FAIL_ON: ${{ inputs.fail-on }}
+        EPSS_THRESHOLD: ${{ inputs.epss-threshold }}
+        WAIVERS: ${{ inputs.waivers }}
+        LIVE_FEEDS: ${{ inputs.live-feeds }}
+        OUT_DIR: ${{ runner.temp }}/sbom-triage
+      run: |
+        args=(gate --live --path "$SCAN_PATH" --fail-on "$FAIL_ON" --epss-threshold "$EPSS_THRESHOLD" --show table,metrics,gate --out "$OUT_DIR")
+        [ -n "$WAIVERS" ] && args+=(--waivers "$GITHUB_WORKSPACE/$WAIVERS")
+        [ "$LIVE_FEEDS" = "true" ] && args+=(--live-feeds)
+        set +e
+        pnpm exec tsx src/bin.ts "${args[@]}"
+        code=$?
+        [ -f "$OUT_DIR/report.md" ] && cat "$OUT_DIR/report.md" >> "$GITHUB_STEP_SUMMARY"
+        exit "$code"
+    - name: Upload report
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      with:
+        name: sbom-triage-${{ github.run_id }}
+        path: ${{ runner.temp }}/sbom-triage
+        if-no-files-found: ignore

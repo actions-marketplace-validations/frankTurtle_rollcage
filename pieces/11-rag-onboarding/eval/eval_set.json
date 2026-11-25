@@ -1,0 +1,112 @@
+[
+  {
+    "id": "a01",
+    "question": "How many approvals does a pull request need?",
+    "path": "sample-repo/CONTRIBUTING.md",
+    "line": 9
+  },
+  {
+    "id": "a02",
+    "question": "How should I name my branch?",
+    "path": "sample-repo/CONTRIBUTING.md",
+    "line": 6
+  },
+  {
+    "id": "a03",
+    "question": "What is the max discount percent?",
+    "path": "sample-repo/src/orders/pricing.py",
+    "line": 3
+  },
+  {
+    "id": "a04",
+    "question": "How many minutes does the canary run?",
+    "path": "runbooks/deploy.md",
+    "line": 15
+  },
+  {
+    "id": "a05",
+    "question": "Can I deploy on Fridays?",
+    "path": "runbooks/deploy.md",
+    "line": 8
+  },
+  {
+    "id": "a06",
+    "question": "Which header do I need when creating an order?",
+    "path": "sample-repo/src/orders/api.py",
+    "line": 12
+  },
+  {
+    "id": "a07",
+    "question": "Which port does the service listen on locally?",
+    "path": "sample-repo/README.md",
+    "line": 16
+  },
+  {
+    "id": "a08",
+    "question": "What do I do with a poison message in the dead-letter queue?",
+    "path": "runbooks/queue-backlog.md",
+    "line": 15
+  },
+  {
+    "id": "a09",
+    "question": "How often should the payment webhook secret be rotated?",
+    "path": "runbooks/secrets-rotation.md",
+    "line": 3
+  },
+  {
+    "id": "a10",
+    "question": "Can I run a down migration in production?",
+    "path": "runbooks/rollback.md",
+    "line": 20
+  },
+  {
+    "id": "a11",
+    "question": "How long until an unpaid stock reservation is released?",
+    "path": "sample-repo/src/orders/config.py",
+    "line": 19
+  },
+  {
+    "id": "a12",
+    "question": "What is the flat shipping fee in cents?",
+    "path": "sample-repo/src/orders/pricing.py",
+    "line": 5
+  },
+  {
+    "id": "a13",
+    "question": "Who do I page when the primary database is down?",
+    "path": "runbooks/database-failover.md",
+    "line": 13
+  },
+  {
+    "id": "a14",
+    "question": "Do commit messages need to follow Conventional Commits?",
+    "path": "sample-repo/CONTRIBUTING.md",
+    "line": 13
+  },
+  {
+    "id": "a15",
+    "question": "What if nobody reviews my pull request after two working days?",
+    "path": "sample-repo/CONTRIBUTING.md",
+    "line": 18
+  },
+  {
+    "id": "a16",
+    "question": "What is the maximum number of line items in an order?",
+    "path": "sample-repo/src/orders/api.py",
+    "line": 17
+  },
+  { "id": "r01", "question": "What is the CEO's salary?", "refuse": true },
+  {
+    "id": "r02",
+    "question": "How do I configure Kubernetes autoscaling for the orders service?",
+    "refuse": true
+  },
+  { "id": "r03", "question": "What is the wifi password for the office?", "refuse": true },
+  { "id": "r04", "question": "How do I rotate the Stripe API key?", "refuse": true },
+  {
+    "id": "r05",
+    "question": "Which AWS region do we run in?",
+    "refuse": true
+  },
+  { "id": "r06", "question": "Who won the 2022 World Cup?", "refuse": true }
+]

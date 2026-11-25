@@ -1,0 +1,21 @@
+2026-03-17T09:14:02.1034521Z ##[group]Run pnpm test
+2026-03-17T09:14:02.1036112Z pnpm test
+2026-03-17T09:14:02.1037001Z ##[endgroup]
+2026-03-17T09:14:03.4410021Z
+2026-03-17T09:14:03.4411230Z > shop@1.0.0 test /home/runner/work/shop/shop
+2026-03-17T09:14:03.4412118Z > vitest run
+2026-03-17T09:14:04.9021133Z
+2026-03-17T09:14:04.9022310Z  RUN  v3.0.5 /home/runner/work/shop/shop
+2026-03-17T09:14:06.2031187Z  ✓ tests/cart/total.test.ts (6 tests) 12ms
+2026-03-17T09:14:06.4410091Z  ❯ tests/cart/discount.test.ts (4 tests | 1 failed) 31ms
+2026-03-17T09:14:06.4411044Z    × caps percent at 100 4ms
+2026-03-17T09:14:06.4421007Z  FAIL  tests/cart/discount.test.ts > caps percent at 100
+2026-03-17T09:14:06.4430412Z AssertionError: expected -20 to be 0
+2026-03-17T09:14:06.4431009Z  ❯ tests/cart/discount.test.ts:48:23
+2026-03-17T09:14:06.4432215Z     46|   it('caps percent at 100', () => {
+2026-03-17T09:14:06.4433019Z     47|     const total = applyDiscount(100, { percent: 120 });
+2026-03-17T09:14:06.4433880Z     48|     expect(total).toBe(0);
+2026-03-17T09:14:06.4500101Z  Test Files  1 failed | 1 passed (2)
+2026-03-17T09:14:06.4500802Z       Tests  1 failed | 9 passed (10)
+2026-03-17T09:14:06.5210556Z  ELIFECYCLE  Test failed. See above for more details.
+2026-03-17T09:14:06.5322011Z ##[error]Process completed with exit code 1.

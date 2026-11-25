@@ -1,0 +1,4 @@
+{
+  "text": "{\"explanation\":\"The policy grants more access than a deploy role needs, so a leaked role could act on every resource in the account.\",\"assumptions\":[\"The role is only used by one deploy job.\"]}",
+  "model": "hand-written-fixture"
+}

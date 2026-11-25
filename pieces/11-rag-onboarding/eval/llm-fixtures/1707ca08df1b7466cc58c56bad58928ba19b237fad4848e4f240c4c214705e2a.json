@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"3. Wait for the canary step. It sends 5 percent of traffic to the new version for 10 minutes.\", \"citations\": [{\"chunk_id\": \"runbooks/deploy.md:13-19\", \"quote\": \"3. Wait for the canary step. It sends 5 percent of traffic to the new version for 10 minutes.\"}]}",
+  "model": "offline-generator"
+}

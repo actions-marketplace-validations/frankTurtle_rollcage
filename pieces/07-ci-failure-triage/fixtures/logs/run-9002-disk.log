@@ -1,0 +1,14 @@
+2026-03-18T11:40:10.2201934Z ##[group]Run docker build -t shop:ci .
+2026-03-18T11:40:10.2203301Z docker build -t shop:ci .
+2026-03-18T11:40:10.2204012Z ##[endgroup]
+2026-03-18T11:40:11.0031200Z #5 [3/6] RUN pnpm install --frozen-lockfile
+2026-03-18T11:41:48.7710344Z #5 94.50 Progress: resolved 812, reused 790, downloaded 22, added 801
+2026-03-18T11:41:52.1103345Z #5 98.20 ENOSPC: no space left on device, write
+2026-03-18T11:41:52.1104001Z #5 ERROR: process "/bin/sh -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
+2026-03-18T11:41:52.3301234Z ------
+2026-03-18T11:41:52.3302211Z  > [3/6] RUN pnpm install --frozen-lockfile:
+2026-03-18T11:41:52.3303412Z 98.20 ENOSPC: no space left on device, write
+2026-03-18T11:41:52.3304100Z ------
+2026-03-18T11:41:52.3410022Z ERROR: failed to solve: process "/bin/sh -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
+2026-03-18T11:41:52.3512190Z System.IO.IOException: No space left on device : '/home/runner/runners/2.321.0/_diag/Worker_20260318-114152-utc.log'
+2026-03-18T11:41:52.3601001Z ##[error]Process completed with exit code 1.

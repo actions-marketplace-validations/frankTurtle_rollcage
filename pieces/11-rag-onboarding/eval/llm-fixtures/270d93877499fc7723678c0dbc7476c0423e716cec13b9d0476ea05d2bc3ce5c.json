@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"- No deploys on Fridays after 14:00 local time unless the on-call engineer agrees.\", \"citations\": [{\"chunk_id\": \"runbooks/deploy.md:1-8\", \"quote\": \"- No deploys on Fridays after 14:00 local time unless the on-call engineer agrees.\"}]}",
+  "model": "offline-generator"
+}

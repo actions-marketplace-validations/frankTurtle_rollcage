@@ -1,0 +1,25 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: aws-actions/configure-aws-credentials@0123456789abcdef0123456789abcdef01234567 # example pin
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/rollcage-demo-deploy
+          aws-region: us-east-1
+      - name: Deploy
+        run: aws s3 sync ./site s3://rollcage-demo-assets

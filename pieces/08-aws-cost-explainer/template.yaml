@@ -1,0 +1,134 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Weekly AWS cost explainer. Compares last week's spend with the week before, in code, then posts
+  a plain-English summary to SNS email and/or a Slack webhook. Read-only on cost data. Starts on
+  bundled fixture data; live mode is opt-in.
+
+Parameters:
+  DataSource:
+    Type: String
+    Default: fixture
+    AllowedValues: [fixture, live]
+    Description: fixture reports made-up data. live reads Cost Explorer (read-only).
+  Schedule:
+    Type: String
+    Default: 'cron(0 8 ? * MON *)'
+    Description: EventBridge schedule expression. Default is Mondays at 08:00 UTC.
+  TagKey:
+    Type: String
+    Default: team
+    Description: Cost allocation tag to group by. It must be activated in the Billing console.
+  MinDeltaUsd:
+    Type: Number
+    Default: 25
+    MinValue: 0
+    Description: A change is material only if it is at least this many dollars.
+  MinDeltaPct:
+    Type: Number
+    Default: 20
+    MinValue: 0
+    Description: and at least this percent of the previous week (new spend is exempt).
+  ExpectedChanges:
+    Type: String
+    Default: ''
+    Description: Comma-separated service names whose increase is expected, for example "AWS Lambda".
+  NotifyEmail:
+    Type: String
+    Default: ''
+    Description: Address for the SNS email. Leave empty to skip the subscription.
+  SlackWebhookSecretArn:
+    Type: String
+    Default: ''
+    Description: Secrets Manager secret whose value is a Slack incoming webhook URL. Empty means no Slack.
+  AnthropicKeySecretArn:
+    Type: String
+    Default: ''
+    Description: Secrets Manager secret holding a model API key. Empty means no model call (deterministic summary).
+  AnthropicModel:
+    Type: String
+    Default: ''
+    Description: Model id. Empty uses the library default.
+
+Conditions:
+  HasEmail: !Not [!Equals [!Ref NotifyEmail, '']]
+  HasSlack: !Not [!Equals [!Ref SlackWebhookSecretArn, '']]
+  HasModelKey: !Not [!Equals [!Ref AnthropicKeySecretArn, '']]
+  HasSecrets: !Or [!Condition HasSlack, !Condition HasModelKey]
+
+Resources:
+  ReportTopic:
+    Type: AWS::SNS::Topic
+
+  ReportEmail:
+    Type: AWS::SNS::Subscription
+    Condition: HasEmail
+    Properties:
+      TopicArn: !Ref ReportTopic
+      Protocol: email
+      Endpoint: !Ref NotifyEmail
+
+  ExplainerLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 90
+
+  ExplainerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # Built by `pnpm --filter @adl/aws-cost-explainer build:lambda` (see DEPLOY.md).
+      CodeUri: dist/lambda
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 120
+      ReservedConcurrentExecutions: 1
+      LoggingConfig:
+        LogGroup: !Ref ExplainerLogs
+      Events:
+        Weekly:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: !Ref Schedule
+            ScheduleExpressionTimezone: UTC
+      Environment:
+        Variables:
+          DATA_SOURCE: !Ref DataSource
+          TAG_KEY: !Ref TagKey
+          MIN_DELTA_USD: !Ref MinDeltaUsd
+          MIN_DELTA_PCT: !Ref MinDeltaPct
+          EXPECTED_CHANGES: !Ref ExpectedChanges
+          TOPIC_ARN: !Ref ReportTopic
+          SLACK_WEBHOOK_SECRET_ARN: !Ref SlackWebhookSecretArn
+          ANTHROPIC_KEY_SECRET_ARN: !Ref AnthropicKeySecretArn
+          ANTHROPIC_MODEL: !Ref AnthropicModel
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            # Cost Explorer read actions only. They take no resource scoping that was verified, so
+            # they stay on '*' (see DEPLOY.md).
+            - Effect: Allow
+              Action:
+                - ce:GetCostAndUsage
+                - ce:GetAnomalies
+              Resource: '*'
+            - Effect: Allow
+              Action: sns:Publish
+              Resource: !Ref ReportTopic
+            - !If
+              - HasSecrets
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource:
+                  - !If [HasSlack, !Ref SlackWebhookSecretArn, !Ref 'AWS::NoValue']
+                  - !If [HasModelKey, !Ref AnthropicKeySecretArn, !Ref 'AWS::NoValue']
+              - !Ref 'AWS::NoValue'
+
+Outputs:
+  TopicArn:
+    Description: SNS topic the report is published to.
+    Value: !Ref ReportTopic
+  FunctionName:
+    Description: Invoke it once by hand to see a report without waiting for Monday.
+    Value: !Ref ExplainerFunction

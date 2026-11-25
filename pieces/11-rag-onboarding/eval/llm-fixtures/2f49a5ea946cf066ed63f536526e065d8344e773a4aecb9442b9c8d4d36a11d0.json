@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"2. Branch from `main` and name the branch `<your-handle>/<short-topic>`.\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:1-8\", \"quote\": \"2. Branch from `main` and name the branch `<your-handle>/<short-topic>`.\"}]}",
+  "model": "offline-generator"
+}

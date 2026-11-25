@@ -1,0 +1,4 @@
+{
+  "text": "{\"summary\":\"The Docker build ran out of disk space while installing packages, so the job stopped. This points at the runner, not at the change.\",\"next_step\":\"Free disk space before the build (prune images, clear caches) or move the job to a larger runner, then re-run.\",\"assumptions\":[\"Assumed the disk filled up from the image layers and package cache.\"]}",
+  "model": "scripted"
+}

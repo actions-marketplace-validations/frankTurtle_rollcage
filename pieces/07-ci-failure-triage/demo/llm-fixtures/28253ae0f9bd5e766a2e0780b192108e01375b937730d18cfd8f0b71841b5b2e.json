@@ -1,0 +1,4 @@
+{
+  "text": "{\"summary\":\"Docker Hub answered 429 Too Many Requests while the build pulled the node base image, so the build never started. This is a pull rate limit, not a code problem.\",\"next_step\":\"Authenticate the Docker pull in the workflow or use a mirrored base image, then re-run.\",\"assumptions\":[\"Assumed the pull was anonymous, as the log message says.\"]}",
+  "model": "scripted"
+}

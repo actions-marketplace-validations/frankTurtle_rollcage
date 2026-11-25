@@ -1,0 +1,4 @@
+{
+  "text": "{\"explanation\":\"Stored cloud keys are long lived and can leak from logs or forks. OIDC gives each run a short lived credential instead.\",\"assumptions\":[\"The cloud account can trust the GitHub OIDC provider.\"]}",
+  "model": "hand-written-fixture"
+}

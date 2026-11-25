@@ -1,0 +1,14 @@
+# Folders to index. The folder name is the first part of each citation.
+sources:
+  - demo/sample-repo
+  - demo/runbooks
+chunk_lines: 8
+chunk_overlap: 2
+top_k: 4
+# Tuned for the offline hashed embedder. Re-tune with the eval set before using ONNX.
+min_score: 0.15
+min_coverage: 0.6
+index_dir: demo/out/chroma
+fixtures_dir: eval/llm-fixtures
+eval_set: eval/eval_set.json
+baseline: eval/baseline.json
