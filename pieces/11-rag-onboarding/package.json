@@ -1,0 +1,13 @@
+{
+  "name": "@adl/rag-onboarding",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Python piece. These scripts only shell out to uv; see README.md.",
+  "scripts": {
+    "typecheck": "bash scripts/uv.sh run ruff check . && bash scripts/uv.sh run ruff format --check . && bash scripts/uv.sh run mypy",
+    "test": "bash scripts/uv.sh run pytest -q",
+    "coverage": "bash scripts/uv.sh run pytest -q --cov --cov-report=term-missing",
+    "demo": "bash demo/demo.sh",
+    "demo:reset": "rm -rf demo/out"
+  }
+}

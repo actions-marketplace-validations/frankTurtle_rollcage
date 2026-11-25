@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"return 422, {\\\"error\\\": f\\\"an order can have at most {MAX_LINE_ITEMS} line items\\\"}\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/api.py:13-20\", \"quote\": \"        return 422, {\\\"error\\\": f\\\"an order can have at most {MAX_LINE_ITEMS} line items\\\"}\"}]}",
+  "model": "offline-generator"
+}

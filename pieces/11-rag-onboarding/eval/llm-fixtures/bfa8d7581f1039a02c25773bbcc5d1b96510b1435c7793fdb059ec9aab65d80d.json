@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"Install dependencies with `make setup`. Start the service with `make dev`. It listens on port\", \"citations\": [{\"chunk_id\": \"sample-repo/README.md:14-19\", \"quote\": \"Install dependencies with `make setup`. Start the service with `make dev`. It listens on port\"}]}",
+  "model": "offline-generator"
+}

@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"\\\"\\\"\\\"Return the discount for a subtotal. The percentage is capped at MAX_DISCOUNT_PERCENT.\\\"\\\"\\\"\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/pricing.py:8-12\", \"quote\": \"    \\\"\\\"\\\"Return the discount for a subtotal. The percentage is capped at MAX_DISCOUNT_PERCENT.\\\"\\\"\\\"\"}]}",
+  "model": "offline-generator"
+}
