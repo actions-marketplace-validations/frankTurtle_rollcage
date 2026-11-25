@@ -85,3 +85,48 @@ describe('AC7: deterministic ranking', () => {
     expect(rankTools(realCriteria, t)).toEqual(rankTools(realCriteria, t));
   });
 });
+
+describe('weightedScore and parseScorecard edge cases', () => {
+  it('throws when a criterion has no score', () => {
+    expect(() => weightedScore(small, { A1: 3 })).toThrow('no score for criterion B1');
+  });
+
+  it('orders equal scores by name in both directions, and keeps ties stable', () => {
+    const csv = 'criterion_id,B,A,C\nA1,2,2,2\nB1,2,2,2';
+    expect(rankTools(small, table(csv)).map((r) => r.tool)).toEqual(['A', 'B', 'C']);
+    expect(rankTools(small, table('criterion_id,A,B\nA1,1,1\nB1,1,1')).map((r) => r.tool)).toEqual([
+      'A',
+      'B',
+    ]);
+  });
+
+  it('ranks a tool that is missing from the score map as having no gate failures', () => {
+    const gated: Criterion[] = small.map((c) => ({ ...c, gate: c.id === 'A1' }));
+    const ranked = rankTools(gated, { tools: ['X'], scores: { X: { A1: 0, B1: 1 } } });
+    expect(ranked[0]).toMatchObject({ tool: 'X', blocked: true, blockedBy: ['A1'] });
+    expect(() => rankTools(gated, { tools: ['X'], scores: {} })).toThrow('no score');
+  });
+
+  it('reports a bad header, empty and duplicate tools, and bad rows', () => {
+    const run = (csv: string): string[] => {
+      try {
+        table(csv);
+      } catch (err) {
+        return (err as { errors: string[] }).errors;
+      }
+      return [];
+    };
+    expect(run('id,X\nA1,1\nB1,1').join('\n')).toContain('first column must be criterion_id');
+    expect(run('criterion_id\nA1\nB1').join('\n')).toContain('no tools');
+    const dup = run('criterion_id,X,X,\nA1,1,1,1\nB1,1,1,1').join('\n');
+    expect(dup).toContain('duplicate tool name "X"');
+    expect(dup).toContain('empty tool name');
+    const rows = run('criterion_id,X\r\nA1,1\r\nA1,2\r\nZ9,1\r\n,1\r\nB1\r\n').join('\n');
+    expect(rows).toContain('duplicate criterion A1');
+    expect(rows).toContain('unknown criterion Z9');
+    expect(rows).toContain('unknown criterion (blank)');
+    expect(rows).toContain('expected 2 cells, found 1');
+    expect(run('criterion_id,X\nA1,\nB1,9').join('\n')).toContain('missing score');
+    expect(run('').join('\n')).toContain('first column must be criterion_id');
+  });
+});
