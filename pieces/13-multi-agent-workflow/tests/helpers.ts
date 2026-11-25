@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AuditLogger, FakeLlm } from '@adl/shared';
 import { loadRoleAgents } from '../src/agents.js';
-import { LlmModelProvider } from '../src/provider.js';
+import { llmModelProvider } from '../src/provider.js';
 import { runWorkflow, type RunRecord, type WorkflowOptions } from '../src/workflow.js';
 import { markerTestRunner, Workspace } from '../src/workspace.js';
 
@@ -43,7 +43,7 @@ export function world(
   const dir = tmp();
   const auditPath = join(dir, 'audit.jsonl');
   const llm = new FakeLlm(raw);
-  const provider = new LlmModelProvider(llm);
+  const provider = llmModelProvider(llm);
   const options: WorkflowOptions = {
     runId,
     task: 'Make greet() fall back to "world" when the name is empty',

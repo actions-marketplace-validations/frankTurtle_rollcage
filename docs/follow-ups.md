@@ -54,15 +54,22 @@ Skipped, with the reason:
   piece 07's output, and moving 07 onto 09's is a behavior change to review on its own.
 - A `must()` test helper (08); it is a test-only one-liner.
 
-## Escapement 0.2.0 gaps found by piece 13
+## Escapement gaps found by piece 13
 
-Being worked on in the Escapement repository itself, on its own branch.
+Seven gaps were logged against Escapement 0.2.0. Version 0.3.0 closes all seven in the library, and
+piece 13 now runs on it. Six are adopted; one is available but deliberately not used.
 
-1. No multi-agent topology: one `run()` is one agent, so the piece chains four runs.
-2. No suspended or approval phase; the human checkpoint lives outside the state machine.
-3. `replay(ledger)` replays the reducer only, not tools or the model.
-4. No `caseFromLedger(ledger, graders)` for building eval cases from recorded runs.
-5. `scriptedProvider` generates its own tool call ids, so it cannot reproduce another provider's
-   ledger byte for byte.
-6. Tool handlers need casts on `args`; a schema-typed `tool()` overload would help.
-7. `ModelProvider` assumes native tool calls; text-only clients need a JSON turn format.
+1. No multi-agent topology. Closed by `pipeline()` (ADR-0020). The workflow runs as a pipeline.
+2. No suspended or approval phase. Closed by `requiresApproval` and `resume()` (ADR-0019), **not
+   adopted**: the piece's gate approves a change hash for the orchestrator's commit, and agents hold
+   no commit tool, so there is no model-issued call to suspend on.
+3. `replay(ledger)` replays the reducer only. Closed by `reexecute`, `replayProvider` and
+   `recordedTools` (ADR-0018). Piece 13 uses `replayProvider`; its own workflow-level re-execution
+   stays because the routing code is the piece's.
+4. No `caseFromLedger`. Closed (ADR-0018); the evals use it.
+5. `scriptedProvider` generated its own call ids. Closed: ledger-derived scripts keep recorded ids.
+6. Tool handlers needed casts on `args`. Closed by `defineTool` (ADR-0021); the casts are gone.
+7. `ModelProvider` assumed native tool calls. Closed by `textProvider` (ADR-0022); the piece's own
+   JSON turn protocol and retry are gone. A malformed reply is now repaired inside the run and
+   counts against `max_steps`, not retried once outside it.
+

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Piece 13 moves to Escapement 0.3.0: the four agents run as an Escapement `pipeline()` with linked
+  ledgers, model turns go through `textProvider`, tool handlers are typed from their schemas, and
+  replay and evals use `replayProvider` and `caseFromLedger`. `LlmModelProvider` is now the
+  function `llmModelProvider`, and a malformed model reply is repaired inside the run instead of
+  retried once outside it.
 - Piece 10's attestation job is enabled for manual runs (`workflow_dispatch`) only, and its SLSA
   level claims are sourced.
 - Piece 02 blocks agents from editing the guard's own config and source (`protected_paths`).
