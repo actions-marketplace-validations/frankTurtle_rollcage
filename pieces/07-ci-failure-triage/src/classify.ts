@@ -1,7 +1,7 @@
 import type { TriageConfig } from './config.js';
 import { flipStats, isFlaky } from './history.js';
 import type { FlipStats, History } from './history.js';
-import { redact } from './redact.js';
+import { redactSecrets } from '@adl/shared';
 import { cleanLine } from './signature.js';
 import type { Signature } from './signature.js';
 
@@ -162,7 +162,7 @@ export function classify(input: ClassifyInput): Classification {
     const line = firstMatch(rule, log);
     if (line) {
       return result(rule.category, rule.weak ? 'medium' : 'high', rule.id, [
-        `${rule.description}: ${redact(line).slice(0, 160)}`,
+        `${rule.description}: ${redactSecrets(line).slice(0, 160)}`,
         ...retryNote,
       ]);
     }

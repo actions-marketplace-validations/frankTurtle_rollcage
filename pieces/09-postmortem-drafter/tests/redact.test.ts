@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Redactor, assertClean, luhnValid } from '../src/redact.js';
+import { Redactor, assertClean, luhnValid } from '@adl/shared';
 import { PLANTED } from '../src/sample-bundle.js';
 
 describe('AC-3 every redaction type is detected', () => {

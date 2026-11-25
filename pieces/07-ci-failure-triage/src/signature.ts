@@ -1,5 +1,4 @@
-import { sha256Hex } from '@adl/shared';
-import { redact } from './redact.js';
+import { redactSecrets, sha256Hex } from '@adl/shared';
 
 // Built from a string so the escape character is explicit and the control-character lint rule stays on.
 const ANSI = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
@@ -17,7 +16,7 @@ const hasDigitAndLetter = (s: string): boolean => /\d/.test(s) && /[a-f]/i.test(
  * hashes, durations, addresses, long numbers and line numbers are replaced with placeholders.
  */
 export function normalizeLine(raw: string): string {
-  return redact(cleanLine(raw))
+  return redactSecrets(cleanLine(raw))
     .replace(/^(?:#\d+\s+)?(?:\d+\.\d+\s+)?/, '')
     .replace(/\b\d{4}-\d\d-\d\d[T ][\d:.]+Z?/g, '<TS>')
     .replace(/\b\d{2}:\d{2}:\d{2}(?:\.\d+)?\b/g, '<TS>')
@@ -110,5 +109,5 @@ export function extractTests(log: string): string[] {
 export function excerpt(log: string, count: number): string[] {
   return candidates(log)
     .lines.slice(0, count)
-    .map((l) => redact(l.trim()).slice(0, MAX_LINE));
+    .map((l) => redactSecrets(l.trim()).slice(0, MAX_LINE));
 }

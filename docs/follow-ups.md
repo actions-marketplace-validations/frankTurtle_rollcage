@@ -43,16 +43,24 @@ Done: `selectLlm` / `UnavailableLlm` / `parseLlmMode`, `unifiedDiff`, the markdo
 
 Skipped, with the reason:
 
-- A command runner with an injectable exec (pieces 05, 06, 10). The three copies differ in
-  behavior: 05 uses `spawn` and returns `status` (null on a signal) but rejects when the program
-  cannot start; 06 uses `execFile`, returns `code`, rejects on a missing program and callers read
-  `error.code === 'ENOENT'`; 10 never throws, returns `code: null` plus an `error` string, and adds
-  a timeout and extra env. Unifying them would change error handling in two pieces.
-- A redactor (pieces 07, 09). They are not the same function. Piece 09's `Redactor` is stable
-  per-value placeholders, a report, `assertClean`, and covers JWT, email, card (Luhn), IPs and
-  phone; piece 07's `redact` uses fixed markers and a smaller pattern set. Sharing one would change
-  piece 07's output, and moving 07 onto 09's is a behavior change to review on its own.
 - A `must()` test helper (08); it is a test-only one-liner.
+
+Done afterwards, as reviewed behavior changes:
+
+- Command runner: `execRunner` in `shared/ts` has the shape piece 10 had: it never throws, returns
+  `code: null` plus `error` and `errorCode` when a program cannot start, and takes a timeout and
+  extra env. With `throwOnStartError` it rejects instead, with the Node error (`code === 'ENOENT'`),
+  which is what pieces 05 and 06 relied on. The default is no timeout; piece 10 passes 60 s.
+  Piece 10's own wrapper is gone and its callers use the shared function. Change: piece 05 now
+  collects output through `execFile` with a 64 MB limit instead of streaming through `spawn`.
+  Piece 12's runner is synchronous and stays local.
+- Redactor: piece 09's `Redactor` moved to `shared/ts` and gained Slack token and `sk-` API key
+  rules, plus `types` and `format` options. Piece 07 uses `redactSecrets`, which applies only the
+  secret rules. Changes to piece 07 output: every marker is `[REDACTED:<type>]` (the AWS key type
+  is `aws-access-key`, not `aws-key`; bearer tokens and `NAME=value` secrets no longer keep
+  `Bearer [REDACTED]` or `NAME=[REDACTED]`, the name stays and the value is replaced); a bearer
+  token must contain a digit or symbol to match; and a credential value ends at whitespace, a
+  quote, a comma or a semicolon.
 
 ## Escapement 0.2.0 gaps found by piece 13
 
