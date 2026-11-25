@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { basename, dirname, join } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   AnthropicLlm,
@@ -60,17 +60,18 @@ const readJson = <T>(path: string): T => JSON.parse(readFileSync(path, 'utf8')) 
 const auditPathFor = (recordPath: string): string => join(dirname(recordPath), 'audit.jsonl');
 const short = (hash: string): string => hash.slice(0, 8);
 
-function setup(flags: Map<string, string>) {
+function configFrom(flags: Map<string, string>) {
   const configPath = flags.get('config');
-  const config = loadConfig(configPath ? readFileSync(configPath, 'utf8') : undefined);
-  const agentsDir =
-    flags.has('config') || flags.has('agents-dir')
-      ? (flags.get('agents-dir') ?? config.agents_dir)
-      : join(PIECE, config.agents_dir);
+  return loadConfig(configPath ? readFileSync(configPath, 'utf8') : undefined);
+}
+
+/** Config, the four agents (agents_dir is relative to the piece folder) and the starting files. */
+function setup(flags: Map<string, string>) {
+  const config = configFrom(flags);
   const repo = readJson<Record<string, string>>(
     flags.get('repo') ?? join(PIECE, 'fixtures', 'repo.json'),
   );
-  return { config, agents: loadRoleAgents(agentsDir), repo };
+  return { config, agents: loadRoleAgents(resolve(PIECE, config.agents_dir)), repo };
 }
 
 export async function runCli(argv: string[], io: CliIo): Promise<number> {
@@ -154,11 +155,10 @@ function loadRecord(path: string | undefined): { record: RunRecord; path: string
 }
 
 function gateFor(path: string, flags: Map<string, string>): ApprovalGate {
-  const { config, agents } = setup(flags);
   return new ApprovalGate({
     auditPath: auditPathFor(path),
-    agentBranches: config.agent_branches,
-    agentNames: ROLES.map((r) => agents[r].name),
+    agentBranches: configFrom(flags).agent_branches,
+    agentNames: [...ROLES],
   });
 }
 

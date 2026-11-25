@@ -155,7 +155,7 @@ Anthropic with `ANTHROPIC_API_KEY`; opt-in). Live mode was not exercised in this
 
 | Key                 | Default                       | Meaning                                                                 |
 | ------------------- | ----------------------------- | ----------------------------------------------------------------------- |
-| `agents_dir`        | `agents`                      | Where the agent markdown files are read from.                           |
+| `agents_dir`        | `agents`                      | Where the agent files are read from, relative to the piece folder.      |
 | `agent_branches`    | `["agent/*"]`                 | Branches a commit may land on without approval. Everything else needs it. |
 | `max_rework_rounds` | `1`                           | Review or test rejections allowed before the run halts.                 |
 | `max_steps`         | `8`                           | Escapement step budget per agent run.                                   |
