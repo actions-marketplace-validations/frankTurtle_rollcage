@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"## Commit messages\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:7-14\", \"quote\": \"## Commit messages\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"Yes. The contributing guide says to use Conventional Commits, for example `fix(pricing): round discounts down`, and states that the commit-msg hook rejects any commit message that doesn't follow that format. This applies to the repository whose CONTRIBUTING.md is excerpted (sample-repo), so I'm assuming that is the repo you're working in.\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:7-14\", \"quote\": \"Use Conventional Commits, for example `fix(pricing): round discounts down`. The commit-msg hook\"}, {\"chunk_id\": \"sample-repo/CONTRIBUTING.md:13-19\", \"quote\": \"rejects anything else.\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

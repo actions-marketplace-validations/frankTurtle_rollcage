@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"def create_order(headers: dict[str, str], body: dict) -> tuple[int, dict]:\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/api.py:7-14\", \"quote\": \"def create_order(headers: dict[str, str], body: dict) -> tuple[int, dict]:\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"You need the `Idempotency-Key` header when creating an order (POST /orders). The header name is defined by the constant IDEMPOTENCY_HEADER, and `create_order` returns a 400 with the error \\\"missing Idempotency-Key header\\\" if it is absent. The code comment says the key is mandatory so that retried requests don't create two orders. The excerpts only show the presence check, so I can't say what format or value the key should have.\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/api.py:1-7\", \"quote\": \"IDEMPOTENCY_HEADER = \\\"Idempotency-Key\\\"\"}, {\"chunk_id\": \"sample-repo/src/orders/api.py:7-14\", \"quote\": \"if IDEMPOTENCY_HEADER not in headers:\"}, {\"chunk_id\": \"sample-repo/src/orders/api.py:7-14\", \"quote\": \"# Retried requests must not create two orders, so the key is mandatory.\"}, {\"chunk_id\": \"sample-repo/src/orders/api.py:7-14\", \"quote\": \"return 400, {\\\"error\\\": \\\"missing Idempotency-Key header\\\"}\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

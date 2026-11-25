@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"Reviewers answer within one working day. If nobody has looked after two working days, post in\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:13-19\", \"quote\": \"Reviewers answer within one working day. If nobody has looked after two working days, post in\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"If nobody has looked at your pull request after two working days, post in the `#orders-dev` channel and tag the on-call engineer. The same document says reviewers are expected to answer within one working day, so a two-day wait is past the normal expectation.\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:13-19\", \"quote\": \"Reviewers answer within one working day. If nobody has looked after two working days, post in\"}, {\"chunk_id\": \"sample-repo/CONTRIBUTING.md:13-19\", \"quote\": \"the `#orders-dev` channel and tag the on-call engineer.\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

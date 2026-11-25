@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"# A reservation that is not paid within this time is released back to stock.\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/config.py:15-20\", \"quote\": \"        # A reservation that is not paid within this time is released back to stock.\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"An unpaid stock reservation is released back to stock after 900 seconds (15 minutes) by default. This comes from the `stock_reservation_ttl_seconds` setting, which is read from the `ORDERS_RESERVATION_TTL` environment variable and falls back to 900 if that variable is not set. If a deployment overrides `ORDERS_RESERVATION_TTL`, the actual time will differ from the default.\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/config.py:19-25\", \"quote\": \"# A reservation that is not paid within this time is released back to stock.\"}, {\"chunk_id\": \"sample-repo/src/orders/config.py:19-25\", \"quote\": \"stock_reservation_ttl_seconds=int(os.environ.get(\\\"ORDERS_RESERVATION_TTL\\\", \\\"900\\\")),\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"3. Wait for the canary step. It sends 5 percent of traffic to the new version for 10 minutes.\", \"citations\": [{\"chunk_id\": \"runbooks/deploy.md:13-19\", \"quote\": \"3. Wait for the canary step. It sends 5 percent of traffic to the new version for 10 minutes.\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"The canary runs for 10 minutes. During that time it sends 5 percent of traffic to the new version, and if the error rate stays under 1 percent the workflow promotes to 100 percent. This is the canary step in the production `release` workflow; the rollback runbook notes it can be skipped with incident commander approval.\", \"citations\": [{\"chunk_id\": \"runbooks/deploy.md:13-19\", \"quote\": \"3. Wait for the canary step. It sends 5 percent of traffic to the new version for 10 minutes.\"}, {\"chunk_id\": \"runbooks/deploy.md:13-19\", \"quote\": \"4. If the canary error rate stays under 1 percent, the workflow promotes to 100 percent.\"}, {\"chunk_id\": \"runbooks/rollback.md:7-14\", \"quote\": \"3. Choose \\\"skip canary\\\" only if the incident commander approves it.\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

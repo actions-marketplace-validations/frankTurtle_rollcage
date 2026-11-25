@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"\\\"\\\"\\\"Return the discount for a subtotal. The percentage is capped at MAX_DISCOUNT_PERCENT.\\\"\\\"\\\"\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/pricing.py:8-12\", \"quote\": \"    \\\"\\\"\\\"Return the discount for a subtotal. The percentage is capped at MAX_DISCOUNT_PERCENT.\\\"\\\"\\\"\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"The maximum discount percent is 30. It is defined as the constant MAX_DISCOUNT_PERCENT = 30 in the orders pricing module, and discount_cents caps any requested percentage at this value using min(percent, MAX_DISCOUNT_PERCENT).\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/pricing.py:1-8\", \"quote\": \"MAX_DISCOUNT_PERCENT = 30\"}, {\"chunk_id\": \"sample-repo/src/orders/pricing.py:8-12\", \"quote\": \"capped = min(percent, MAX_DISCOUNT_PERCENT)\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

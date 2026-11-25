@@ -106,7 +106,11 @@ def test_fixtures_command_records_what_eval_replays(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     fixtures = tmp_path / "fx"
-    cfg = str(write_cfg(tmp_path, fixtures_dir=str(fixtures)))
+    # The offline generator is naive (77.3 percent), so grade it against its own floor, not the
+    # committed baseline, which was measured with real model responses.
+    floor = tmp_path / "floor.json"
+    floor.write_text(json.dumps({"accuracy": 0.77, "total": 22}))
+    cfg = str(write_cfg(tmp_path, fixtures_dir=str(fixtures), baseline=str(floor)))
     code, out, _ = run(["fixtures", "--config", cfg], capsys)
     assert code == 0 and "recorded" in out
     assert any(fixtures.glob("*.json"))
