@@ -44,9 +44,12 @@ lines, mostly "High" and "Critical", no order of work.
 pnpm demo:05 run
 ```
 
-Prints the table by tier. Point at P0: four findings, two of them on the (synthetic) KEV list.
-Point at the evidence column. Pillow shows `unknown`: the search found no import, and the tool
-says so rather than "not reachable". PyYAML shows a `file:line` where `yaml.load` is called.
+Prints the table by tier: 4 in P0, 3 in P1, 6 in P2, 6 in P3, with 1 more waived. Point at P0:
+two of the four are on the (synthetic) KEV list. Point at the `code:` line under each finding.
+Pillow shows `unknown`: the search found no import, and the tool says so rather than "not
+reachable". PyYAML shows `file:line` for the import and for the `yaml.load` call. Below the table
+are the short reachability notes for the findings that need a human, each citing only those
+`file:line` values.
 
 **After: the leadership note, the SBOM diff and the gate.**
 
