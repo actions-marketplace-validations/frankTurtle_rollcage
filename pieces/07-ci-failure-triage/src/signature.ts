@@ -17,8 +17,8 @@ const hasDigitAndLetter = (s: string): boolean => /\d/.test(s) && /[a-f]/i.test(
  * hashes, durations, addresses, long numbers and line numbers are replaced with placeholders.
  */
 export function normalizeLine(raw: string): string {
-  return cleanLine(raw)
-    .replace(/^#\d+\s+(?:\d+(?:\.\d+)?\s+)?/, '')
+  return redact(cleanLine(raw))
+    .replace(/^(?:#\d+\s+)?(?:\d+\.\d+\s+)?/, '')
     .replace(/\b\d{4}-\d\d-\d\d[T ][\d:.]+Z?/g, '<TS>')
     .replace(/\b\d{2}:\d{2}:\d{2}(?:\.\d+)?\b/g, '<TS>')
     .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '<UUID>')

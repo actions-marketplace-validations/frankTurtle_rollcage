@@ -62,6 +62,11 @@ Limits.
   do not appear.
 - The GitHub path is verified against recorded response shapes only. See "Verify before you
   deploy".
+- The flaky failure rate counts any failed run whose commit later passed, so an infrastructure
+  blip that clears on re-run is included. The category breakdown in `triage.md` separates them
+  when logs are available.
+- The time to green uses each run's last update time as its finish time when it comes from the
+  GitHub API, so it is approximate.
 - One repository at a time. No per-team view.
 
 ## For engineers
@@ -130,6 +135,13 @@ Flags for `triage`: `--runs FILE`, `--repo OWNER/NAME` with `--since` and `--unt
 `--config FILE`, `--llm auto|live|replay|none`, `--llm-fixtures DIR`, `--out DIR`.
 `--llm auto` uses the live model only when `ANTHROPIC_API_KEY` is set; otherwise it uses the
 fixed fallback text. The model id comes from `ANTHROPIC_MODEL` through the shared config.
+
+### GitHub Action
+
+`action.yml` runs `triage --repo` for the current repository, appends `triage.md` to the job
+summary and uploads the report as an artifact. Inputs: `days`, `history`, `update-history`,
+`quarantine`, `config`, `llm` (default `none`), `anthropic-api-key`, `github-token`. See
+`examples/ci-triage-weekly.yml`. It needs `actions: read` only.
 
 ### Config reference (`triage.yml`)
 

@@ -1,0 +1,4 @@
+{
+  "text": "{\"summary\":\"The type check failed in src/export/csv.ts: a string or undefined value is passed where a string is required, and a number is assigned to a string.\",\"next_step\":\"Handle the undefined case at the call site and fix the number-to-string assignment, then run pnpm typecheck.\",\"assumptions\":[\"Assumed both errors come from the same recent edit to csv.ts.\"]}",
+  "model": "scripted"
+}

@@ -88,6 +88,14 @@ describe('failing test ids', () => {
 });
 
 describe('redaction and excerpts', () => {
+  it('redacts secrets before normalizing, so signatures never carry them', () => {
+    const sig = extractSignature(
+      gh('Error: auth failed with AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE'),
+    );
+    expect(sig.text).not.toContain('AKIAIOSFODNN7EXAMPLE');
+    expect(sig.text).toContain('[REDACTED');
+  });
+
   it('redacts known token shapes', () => {
     const ghToken = `ghp_${'a'.repeat(36)}`;
     const text = [

@@ -1,0 +1,22 @@
+# Copy to .github/workflows/ci-triage-weekly.yml in the repository you want to triage.
+name: ci-triage-weekly
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@<sha> # pin by commit SHA
+      - uses: <owner>/rollcage/pieces/07-ci-failure-triage@<sha>
+        with:
+          days: '14'
+          history: .ci-triage/history.json
+          update-history: 'false' # set to 'true' on a branch that commits the history file

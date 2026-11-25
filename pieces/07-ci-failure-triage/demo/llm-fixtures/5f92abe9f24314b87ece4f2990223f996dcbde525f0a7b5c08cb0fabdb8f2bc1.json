@@ -1,0 +1,4 @@
+{
+  "text": "{\"summary\":\"pnpm refused to install because pnpm-lock.yaml does not match package.json: the lockfile has zod ^3.23.0 and the manifest has ^3.24.0.\",\"next_step\":\"Run pnpm install locally, commit the updated pnpm-lock.yaml, and push.\",\"assumptions\":[\"Assumed the manifest edit was intended and the lockfile was simply not committed.\"]}",
+  "model": "scripted"
+}

@@ -1,0 +1,4 @@
+{
+  "text": "{\"summary\":\"The test \\\"caps percent at 100\\\" expects a total of 0 but gets -20, so a discount above 100 percent is not being clamped. The same test has not failed and passed on one commit before.\",\"next_step\":\"Clamp the percent in applyDiscount to 100, then run tests/cart/discount.test.ts.\",\"assumptions\":[\"Assumed this branch changed the discount code; the log alone does not show which commit did.\"]}",
+  "model": "scripted"
+}
