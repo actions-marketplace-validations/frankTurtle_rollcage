@@ -27,7 +27,7 @@ describe('pins (AC4)', () => {
   });
 
   it('every uses line in the generated workflows is local, a SHA, or the rollcage ref', () => {
-    const result = checkPins(workflows, 'v0.1.0');
+    const result = checkPins(workflows, 'v0.2.0');
     expect(result.errors).toEqual([]);
     expect(result.warnings.length).toBeGreaterThan(0);
   });
@@ -42,22 +42,22 @@ describe('pins (AC4)', () => {
   });
 
   it('flags an unpinned third-party action', () => {
-    const result = checkPins({ 'a.yml': 'steps:\n  - uses: actions/checkout@v4\n' }, 'v0.1.0');
+    const result = checkPins({ 'a.yml': 'steps:\n  - uses: actions/checkout@v4\n' }, 'v0.2.0');
     expect(result.errors).toEqual(['a.yml:2 actions/checkout@v4 is not pinned to a commit SHA']);
   });
 
   it('flags a rollcage reference that does not use the configured ref', () => {
     const result = checkPins(
       { 'a.yml': '  - uses: frankTurtle/rollcage/pieces/01-pr-risk-gate@main\n' },
-      'v0.1.0',
+      'v0.2.0',
     );
-    expect(result.errors[0]).toMatch(/does not use the configured ref v0.1.0/);
+    expect(result.errors[0]).toMatch(/does not use the configured ref v0.2.0/);
   });
 
   it('flags a docker reference and a missing version', () => {
     const result = checkPins(
       { 'a.yml': '  - uses: docker://alpine:3\n  - uses: actions/checkout\n' },
-      'v0.1.0',
+      'v0.2.0',
     );
     expect(result.errors).toHaveLength(2);
   });
@@ -115,17 +115,17 @@ describe('ci.yml wiring (AC6)', () => {
 
   it('wires pieces 01, 05, 06 and 10 by the agreed contract with one ref', () => {
     expect(workflows['gate-pr-risk.yml']).toContain(
-      'frankTurtle/rollcage/pieces/01-pr-risk-gate@v0.1.0',
+      'frankTurtle/rollcage/pieces/01-pr-risk-gate@v0.2.0',
     );
     const sbom = workflows['sbom-vuln.yml'] ?? '';
-    expect(sbom).toContain('frankTurtle/rollcage/pieces/05-sbom-vuln-triage@v0.1.0');
+    expect(sbom).toContain('frankTurtle/rollcage/pieces/05-sbom-vuln-triage@v0.2.0');
     expect(sbom).toMatch(/path: /);
     expect(sbom).toMatch(/fail-on: /);
     const policy = workflows['policy-gates.yml'] ?? '';
-    expect(policy).toContain('frankTurtle/rollcage/pieces/06-policy-gates@v0.1.0');
+    expect(policy).toContain('frankTurtle/rollcage/pieces/06-policy-gates@v0.2.0');
     expect(policy).toMatch(/path: /);
     const prov = workflows['provenance.yml'] ?? '';
-    expect(prov).toContain('frankTurtle/rollcage/pieces/10-provenance-signing@v0.1.0');
+    expect(prov).toContain('frankTurtle/rollcage/pieces/10-provenance-signing@v0.2.0');
     expect(prov).toMatch(/artifact: /);
     expect(prov).toMatch(/mode: /);
   });

@@ -6,8 +6,8 @@ A roll cage lets a car go fast and survive the crash. This repository does the s
 AI-assisted software delivery: working code, tests and CI for guardrails you can adopt, and
 numbers that show whether AI is paying off.
 
-> Status: Phase 0 and pieces 01 to 04 (the MVP) are released as 0.1.0. Pieces 05 to 14 are built and
-> in review.
+> Status: all 14 pieces are built. 0.1.0 shipped Phase 0 and the MVP (pieces 01 to 04); 0.2.0 adds
+> pieces 05 to 14.
 
 ## For engineering leaders
 
@@ -26,16 +26,16 @@ CI and a demo script.
 | 02 | [agent-policy](pieces/02-agent-policy/README.md) | Engineers already use coding agents with no written rules | A one-page policy backed by enforced guardrails and an audit trail | Blocked risky actions per week; % sessions with complete audit trail | MVP, done | TBD |
 | 03 | [dora-metrics](pieces/03-dora-metrics/README.md) | No proof AI is paying off | Delivery metrics before and after an AI rollout date | The five DORA metrics | MVP, done | TBD |
 | 04 | [secrets-guard](pieces/04-secrets-guard/README.md) | A leaked cloud key can be abused within hours | Three layers: pre-commit, CI scan, automatic key deactivation | Leaks blocked pre-commit; time from leak to deactivation | MVP, done | TBD |
-| 05 | [sbom-vuln-triage](pieces/05-sbom-vuln-triage/README.md) | Hundreds of CVEs, few that matter | Evidence-based prioritization | Open criticals; mean time to remediate | built, in review | TBD |
-| 06 | [policy-gates](pieces/06-policy-gates/README.md) | Compliance issues found after deployment | Policy as code in the pipeline | Violations caught pre-merge vs after deploy | built, in review | TBD |
-| 07 | [ci-failure-triage](pieces/07-ci-failure-triage/README.md) | Teams cannot tell code failures from pipeline failures | Classified failures and flaky-test quarantine proposals | Time to green; flaky-test rate | built, in review | TBD |
-| 08 | [aws-cost-explainer](pieces/08-aws-cost-explainer/README.md) | Cloud bill changes nobody can explain | Weekly plain-English cost summary from computed deltas | Unexplained spend | built, in review | TBD |
-| 09 | [postmortem-drafter](pieces/09-postmortem-drafter/README.md) | Postmortems are slow and inconsistent | Blameless drafts from logs, with redaction | Incident close to published postmortem | built, in review | TBD |
-| 10 | [provenance-signing](pieces/10-provenance-signing/README.md) | No proof a deployed artifact is the one built | Signed provenance verified at deploy | % deployed artifacts signed and verified | built, in review | TBD |
-| 11 | [rag-onboarding](pieces/11-rag-onboarding/README.md) | New engineers take weeks to get productive | Cited answers over code and runbooks | Time to first merged PR; eval accuracy | built, in review | TBD |
-| 12 | [golden-path-template](pieces/12-golden-path-template/README.md) | Every repo wires its own pipeline | A template that applies the pieces by default | Time from new repo to first deploy | built, in review | TBD |
-| 13 | [multi-agent-workflow](pieces/13-multi-agent-workflow/README.md) | Agent changes are hard to review | Every handoff logged and replayable | % agent changes with a complete trace | built, in review | TBD |
-| 14 | [ai-dev-tool-eval](pieces/14-ai-dev-tool-eval/README.md) | No consistent way to compare AI dev tools | Rubric and pilot plan tied to measured results | Weighted score; pilot before/after | built, in review | TBD |
+| 05 | [sbom-vuln-triage](pieces/05-sbom-vuln-triage/README.md) | Hundreds of CVEs, few that matter | Evidence-based prioritization | Open criticals; mean time to remediate | done | TBD |
+| 06 | [policy-gates](pieces/06-policy-gates/README.md) | Compliance issues found after deployment | Policy as code in the pipeline | Violations caught pre-merge vs after deploy | done | TBD |
+| 07 | [ci-failure-triage](pieces/07-ci-failure-triage/README.md) | Teams cannot tell code failures from pipeline failures | Classified failures and flaky-test quarantine proposals | Time to green; flaky-test rate | done | TBD |
+| 08 | [aws-cost-explainer](pieces/08-aws-cost-explainer/README.md) | Cloud bill changes nobody can explain | Weekly plain-English cost summary from computed deltas | Unexplained spend | done | TBD |
+| 09 | [postmortem-drafter](pieces/09-postmortem-drafter/README.md) | Postmortems are slow and inconsistent | Blameless drafts from logs, with redaction | Incident close to published postmortem | done | TBD |
+| 10 | [provenance-signing](pieces/10-provenance-signing/README.md) | No proof a deployed artifact is the one built | Signed provenance verified at deploy | % deployed artifacts signed and verified | done | TBD |
+| 11 | [rag-onboarding](pieces/11-rag-onboarding/README.md) | New engineers take weeks to get productive | Cited answers over code and runbooks | Time to first merged PR; eval accuracy | done | TBD |
+| 12 | [golden-path-template](pieces/12-golden-path-template/README.md) | Every repo wires its own pipeline | A template that applies the pieces by default | Time from new repo to first deploy | done | TBD |
+| 13 | [multi-agent-workflow](pieces/13-multi-agent-workflow/README.md) | Agent changes are hard to review | Every handoff logged and replayable | % agent changes with a complete trace | done | TBD |
+| 14 | [ai-dev-tool-eval](pieces/14-ai-dev-tool-eval/README.md) | No consistent way to compare AI dev tools | Rubric and pilot plan tied to measured results | Weighted score; pilot before/after | done | TBD |
 
 ## Quickstart
 
@@ -86,7 +86,7 @@ Compliance mappings in this repo are illustrative mappings, not compliance attes
 
 ## What is built
 
-- Pieces 05 to 14 (in review): see each piece's README from the table above. Open items are listed
+- Pieces 05 to 14: see each piece's README from the table above. Open items are listed
   in [docs/follow-ups.md](docs/follow-ups.md).
 - `pieces/04-secrets-guard`: three secret-leak layers: a gitleaks pre-commit wrapper that records
   blocks, a CI scan template, and a SAM app that verifies a GitHub secret scanning webhook and

@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 (2026-11-25)
 
 - Pieces 05 to 14, built in parallel and in review: SBOM and vulnerability triage (Syft, Grype,
   KEV, EPSS, code evidence), policy gates (OPA/Rego with conftest, illustrative NIST SP 800-171
