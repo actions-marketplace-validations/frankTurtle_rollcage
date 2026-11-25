@@ -41,7 +41,7 @@ describe('replay', () => {
     const copy = parseRecord(serializeRecord(record));
     const ledger = copy.ledgers[copy.handoffs[1]!.ledgerKey]!;
     const entry = ledger.entries.find((e) => e.event.type === 'tools.completed')!;
-    (entry.event as { results: { content: string }[] }).results[0]!.content = 'edited';
+    (entry.event as unknown as { results: { content: string }[] }).results[0]!.content = 'edited';
     const result = await replayRecord(copy, deps(w));
     expect(result.ok).toBe(false);
     expect(result.handoffMismatches.map((m) => m.seq)).toContain(2);
@@ -50,7 +50,8 @@ describe('replay', () => {
   it('detects a ledger whose transitions no longer reproduce', async () => {
     const { w, record } = await cleanRun();
     const copy = parseRecord(serializeRecord(record));
-    copy.ledgers[copy.handoffs[0]!.ledgerKey]!.entries[2]!.to = 'done' as never;
+    const entries = copy.ledgers[copy.handoffs[0]!.ledgerKey]!.entries;
+    (entries[2] as { to: string }).to = 'done';
     const result = await replayRecord(copy, deps(w));
     expect(result.ledgersOk).toBe(false);
     expect(result.ok).toBe(false);

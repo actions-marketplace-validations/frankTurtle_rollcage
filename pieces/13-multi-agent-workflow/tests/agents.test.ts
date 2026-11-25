@@ -61,7 +61,7 @@ describe('agent files', () => {
       '---\nname: a\ndescription: d\ntools:\n  - Read\n  - Glob\n---\nYou are a.',
       'x.md',
     );
-    expect(a.orchestratorTools).toEqual(['list_files', 'read_file', 'search_files']);
+    expect(a.orchestratorTools).toEqual(['list_files', 'read_file']);
     expect(() => loadRoleAgents(join(PIECE, 'fixtures'))).toThrow(/planner/);
   });
 });
