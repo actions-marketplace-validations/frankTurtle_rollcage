@@ -1,0 +1,36 @@
+name: publish-init
+
+# Publishes rollcage-init to npm with provenance via npm trusted publishing (OIDC, no token).
+# Runs when a GitHub release is published, and only when the tag matches init/package.json.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Check tag matches package version
+        working-directory: init
+        run: |
+          v="$(node -p "require('./package.json').version")"
+          test "v$v" = "${GITHUB_REF_NAME}" || { echo "tag ${GITHUB_REF_NAME} != v$v"; exit 1; }
+      - name: Test installer
+        run: node --test init/rollcage-init.test.mjs
+      - name: Publish
+        working-directory: init
+        run: npm publish

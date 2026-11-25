@@ -79,13 +79,15 @@ CI and a demo script.
 From the root of your repository, on a new branch:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -
+npx rollcage-init
 ```
+
+No npm? `curl -fsSL https://raw.githubusercontent.com/frankTurtle/rollcage/main/init/rollcage-init.mjs | node -` does the same.
 
 It detects the repo, writes the workflows, policy files and agent hook for the pieces proven in CI
 (01 to 06, plus a manual 10 provenance workflow), pins every Rollcage reference to a commit SHA,
 never overwrites a file, and prints what is left for you (secrets, branch protection). Add
-`--dry-run` to preview. Options and the full steps are in [SETUP.md](SETUP.md).
+`--dry-run` to preview (`npx rollcage-init --dry-run`). Options and the full steps are in [SETUP.md](SETUP.md).
 
 Using a coding agent? Point it at
 `https://raw.githubusercontent.com/frankTurtle/rollcage/main/SETUP.md` and ask it to set up Rollcage
