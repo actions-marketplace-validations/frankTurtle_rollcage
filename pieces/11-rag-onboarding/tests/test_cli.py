@@ -77,7 +77,13 @@ def test_eval_fails_on_regression(tmp_path: Path, capsys: pytest.CaptureFixture[
     bad = tmp_path / "bad.json"
     bad.write_text(
         json.dumps(
-            [{"id": "x", "question": "How many approvals does a pull request need?", "refuse": True}]
+            [
+                {
+                    "id": "x",
+                    "question": "How many approvals does a pull request need?",
+                    "refuse": True,
+                }
+            ]
         )
     )
     baseline = tmp_path / "baseline.json"
@@ -111,7 +117,7 @@ def test_fixtures_command_records_what_eval_replays(
 def test_metric_command(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     csv = ROOT / "demo/onboarding-sample.csv"
     code, out, _ = run(["metric", str(csv)], capsys)
-    assert code == 0 and "median days" in out and "SYNTHETIC" in out
+    assert code == 0 and "median days" in out and "synthetic" in out
 
 
 def test_errors_exit_2(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

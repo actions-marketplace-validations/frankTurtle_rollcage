@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"# A reservation that is not paid within this time is released back to stock.\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/config.py:15-20\", \"quote\": \"        # A reservation that is not paid within this time is released back to stock.\"}]}",
+  "model": "offline-generator"
+}

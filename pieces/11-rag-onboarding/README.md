@@ -110,17 +110,21 @@ over HTTP. It needs `ANTHROPIC_API_KEY`, and the model id comes from `ANTHROPIC_
 
 ### Config (`rag.yml`)
 
-| Key              | Default                           | Meaning                                                              |
-| ---------------- | --------------------------------- | -------------------------------------------------------------------- |
-| `sources`        | `demo/sample-repo`, `demo/runbooks` | Folders to index. The folder name is the first part of each citation. |
-| `extensions`     | `.md .py .ts .yml .yaml .toml .txt`, `Makefile` | File types to index.                                  |
-| `chunk_lines`    | `8`                               | Lines per chunk window.                                              |
-| `chunk_overlap`  | `2`                               | Lines shared by neighbouring chunks.                                 |
-| `top_k`          | `4`                               | Chunks retrieved per question.                                       |
-| `min_score`      | `0.25`                            | Smallest cosine similarity of the best chunk. Below it, refuse.      |
-| `min_coverage`   | `0.6`                             | Smallest share of question content words found in retrieved text.    |
+| Key             | Default                                         | Meaning                                                                |
+| --------------- | ----------------------------------------------- | ---------------------------------------------------------------------- |
+| `sources`       | `demo/sample-repo`, `demo/runbooks`             | Folders to index. The folder name is the first part of each citation.  |
+| `extensions`    | `.md .py .ts .yml .yaml .toml .txt`, `Makefile` | File types to index.                                                   |
+| `chunk_lines`   | `8`                                             | Lines per chunk window.                                                |
+| `chunk_overlap` | `2`                                             | Lines shared by neighbouring chunks. Must be below `chunk_lines`.      |
+| `top_k`         | `4`                                             | Chunks retrieved per question.                                         |
+| `min_score`     | `0.15`                                          | Smallest cosine similarity of the best chunk. Below it, refuse.        |
+| `min_coverage`  | `0.6`                                           | Smallest share of question content words found in retrieved text.      |
+| `index_dir`     | `demo/out/chroma`                               | Where ChromaDB keeps the index. Rebuilt when the sources change.       |
+| `fixtures_dir`  | `eval/llm-fixtures`                             | Recorded model responses used in the default (replay) mode.            |
+| `eval_set`      | `eval/eval_set.json`                            | The question and answer pairs.                                         |
+| `baseline`      | `eval/baseline.json`                            | The accuracy CI must not fall below.                                   |
 
-Unknown keys and out of range values are rejected. `min_score` is tuned for the offline embedder.
+Relative paths are relative to the config file. Unknown keys and out of range values are rejected. `min_score` is tuned for the offline embedder.
 Re-tune it with the eval set before using the ONNX embedder.
 
 ### Citations
@@ -134,7 +138,10 @@ are 1-based and computed by the code from the quote's position in the file, not 
 `eval/eval_set.json` holds the questions. Each answerable question names a `path` and a `line`
 that a correct citation must cover. Each refusal question has `"refuse": true`. A question
 counts as correct when it is answered with a citation that covers the expected line, or when
-a refusal question is refused. `eval/baseline.json` stores the accuracy to beat. `eval` exits
+a refusal question is refused. `eval/baseline.json` stores the accuracy to beat. It is 77.3 percent (17 of 22) today, measured
+with the offline stand-in for a model (see Status), which is deliberately naive: it quotes the
+line sharing the most rare words with the question, and it misses 5 answerable questions. A real
+model should do better, and the baseline is raised only on purpose, with `eval --write-baseline`. `eval` exits
 with 1 when accuracy falls below it, and a test runs the same check, so CI fails on regression.
 
 ### Acceptance criteria (each has a test)
@@ -224,5 +231,10 @@ DEMO_LIVE=1 ANTHROPIC_API_KEY=... uv run rag-onboarding eval --live
 
 ### Status
 
-Draft for review. The fixtures were produced by a scripted offline generator, not by a model, and
-are labeled that way. The live path (ONNX and Anthropic) has not been run.
+Draft for review. The fixtures in `eval/llm-fixtures/` were produced by a scripted offline generator
+(`offline_llm.py`), not by a model, and say `offline-generator` as their model. The live path
+(ONNX and Anthropic) has not been run. Retrieval thresholds are tuned on the 22 sample
+questions, so treat the accuracy as a regression guard for this sample, not a quality claim.
+The CI workflow installs uv from PyPI at a pinned version instead of using a third-party action,
+because no action commit SHA could be checked here. Swap in a SHA-pinned `astral-sh/setup-uv`
+if you prefer it.

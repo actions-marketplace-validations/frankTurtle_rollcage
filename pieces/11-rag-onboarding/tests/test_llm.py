@@ -81,7 +81,9 @@ def test_anthropic_requires_key() -> None:
 
 
 def test_anthropic_sends_headers_and_model_from_env() -> None:
-    t = Transport(200, {"content": [{"type": "text", "text": "he"}, {"type": "text", "text": "llo"}]})
+    t = Transport(
+        200, {"content": [{"type": "text", "text": "he"}, {"type": "text", "text": "llo"}]}
+    )
     llm = AnthropicLlm({"ANTHROPIC_API_KEY": "sk-test-fake", "ANTHROPIC_MODEL": "env-model"}, t)
     out = llm.complete(LlmRequest(system="sys", prompt="p"))
     assert (out.text, out.model) == ("hello", "env-model")

@@ -21,9 +21,7 @@ from .fakes import ROOT
 
 
 def answer(*cites: Citation, refused: bool = False) -> Answer:
-    return Answer(
-        question="q", text="t", citations=list(cites), refused=refused, source="model"
-    )
+    return Answer(question="q", text="t", citations=list(cites), refused=refused, source="model")
 
 
 def test_grade_answerable_needs_a_citation_covering_the_line() -> None:

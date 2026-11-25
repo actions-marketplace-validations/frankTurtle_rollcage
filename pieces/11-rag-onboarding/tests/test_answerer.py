@@ -10,7 +10,7 @@ from rag_onboarding.embedder import HashEmbedder
 from rag_onboarding.llm import FakeLlm, LlmRequest
 from rag_onboarding.models import Chunk
 from rag_onboarding.store import ChromaStore
-from rag_onboarding.text import content_words, coverage, best_lines
+from rag_onboarding.text import best_lines, content_words, coverage
 
 from .fakes import make_chunk
 

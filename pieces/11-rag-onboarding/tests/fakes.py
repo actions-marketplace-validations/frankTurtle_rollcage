@@ -23,4 +23,6 @@ class KeywordEmbedder:
 
 def make_chunk(path: str, start: int, text: str) -> Chunk:
     end = start + text.count("\n")
-    return Chunk(chunk_id=f"{path}:{start}-{end}", path=path, start_line=start, end_line=end, text=text)
+    return Chunk(
+        chunk_id=f"{path}:{start}-{end}", path=path, start_line=start, end_line=end, text=text
+    )

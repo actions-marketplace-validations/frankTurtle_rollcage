@@ -34,12 +34,14 @@ def test_structured_retry_then_fallback_with_reason() -> None:
     assert r.reason
 
 
-def PROMPT(question: str, excerpts: str) -> str:  # noqa: N802
+def PROMPT(question: str, excerpts: str) -> str:
     return f"Question: {question}\n\nExcerpts:\n{excerpts}\n"
 
 
 def test_offline_llm_quotes_the_best_matching_line() -> None:
-    excerpt = '<excerpt id="d/f.md:5-7">\nintro words\nThe canary runs for 10 minutes.\nend\n</excerpt>'
+    excerpt = (
+        '<excerpt id="d/f.md:5-7">\nintro words\nThe canary runs for 10 minutes.\nend\n</excerpt>'
+    )
     out = OfflineLlm().complete(LlmRequest(prompt=PROMPT("How long does the canary run?", excerpt)))
     data = json.loads(out.text)
     assert data["citations"] == [

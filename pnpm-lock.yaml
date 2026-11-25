@@ -107,6 +107,8 @@ importers:
         specifier: ^0.28.2
         version: 0.28.2
 
+  pieces/11-rag-onboarding: {}
+
   shared/ts:
     dependencies:
       yaml:

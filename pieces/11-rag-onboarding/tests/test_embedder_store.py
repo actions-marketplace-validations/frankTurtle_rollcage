@@ -23,7 +23,10 @@ def test_hash_embedder_is_deterministic_and_normalized() -> None:
 def test_hash_embedder_scores_shared_words_higher() -> None:
     e = HashEmbedder()
     q, near, far = e.embed(["rotate the webhook secret", "rotate webhook secret", "queue backlog"])
-    dot = lambda x, y: sum(i * j for i, j in zip(x, y, strict=True))  # noqa: E731
+
+    def dot(x: list[float], y: list[float]) -> float:
+        return sum(i * j for i, j in zip(x, y, strict=True))
+
     assert dot(q, near) > dot(q, far)
 
 
@@ -45,7 +48,7 @@ def test_store_returns_nearest_chunks_with_scores(tmp_path: Path) -> None:
     ]
     store.ensure(chunks)
     hits = store.query("queue backlog", 2)
-    assert [h.chunk.chunk_id for h in hits][0] == "r/queue.md:1-2"
+    assert hits[0].chunk.chunk_id == "r/queue.md:1-2"
     assert len(hits) == 2
     assert 0.0 <= hits[0].score <= 1.0
     assert hits[0].score >= hits[1].score

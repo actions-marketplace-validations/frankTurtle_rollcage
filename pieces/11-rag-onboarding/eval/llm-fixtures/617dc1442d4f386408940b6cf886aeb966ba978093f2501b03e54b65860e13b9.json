@@ -1,0 +1,4 @@
+{
+  "text": "{\"answer\": \"Migrations are forward only. Never run a down migration in production. If the bad release\", \"citations\": [{\"chunk_id\": \"runbooks/rollback.md:20-21\", \"quote\": \"Migrations are forward only. Never run a down migration in production. If the bad release\"}]}",
+  "model": "offline-generator"
+}
