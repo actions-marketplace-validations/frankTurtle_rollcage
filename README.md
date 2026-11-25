@@ -9,6 +9,42 @@ numbers that show whether AI is paying off.
 > Status: all 14 pieces are built. 0.1.0 shipped Phase 0 and the MVP (pieces 01 to 04); 0.2.0 adds
 > pieces 05 to 14; 0.3.0 adds the adoption guide, shared helpers and Escapement 0.3.0.
 
+## What this is, who it is for, and why
+
+**In one sentence:** Rollcage is a set of checks you add to your GitHub repository so that code written
+with AI coding tools gets reviewed, scanned and measured before it ships.
+
+**The problem.** Tools like Claude Code and Copilot let a team produce much more code, faster. Review,
+security and compliance work does not speed up on its own, so risky changes slip through and nobody can
+show whether the AI tools are paying off.
+
+**What you get.** Fourteen small, independent pieces. Each is working code with tests and a demo. A few
+examples:
+
+- A **risk check** on every pull request that flags changes to auth, infrastructure or dependencies
+  and requires tests and extra review for them (piece 01).
+- **Rules for AI coding agents** that are enforced, not just written down: the agent is blocked from
+  reading secrets, force-pushing or editing its own guardrails, and every decision is logged (piece 02).
+- A **secret leak guard** that stops keys before commit and in CI (piece 04).
+- **Vulnerability triage** that ranks findings by whether your code actually uses the affected
+  library, instead of a flat list of hundreds (piece 05).
+- **Delivery metrics** (the five DORA numbers) with a before and after split around the date you
+  rolled out AI tools (piece 03).
+
+**Who it is for.** Engineering teams on GitHub that already use AI coding tools, and the leaders who
+have to answer "is this safe, and is it working?". You do not need to adopt everything. Most teams
+start with pieces 02, 01 and 03.
+
+**How you use it.** You do not install it as a package. You copy or reference the pieces you want
+into your own repo (GitHub Actions, a Claude Code hook, a config file). A worked example of a real
+repo that does this is [rollcage-example](https://github.com/frankTurtle/rollcage-example), and
+[docs/adopting.md](docs/adopting.md) walks through the order to turn things on.
+
+**How ready is it?** Pieces 01 to 06 and 12 are wired into the example repo with passing CI (piece 10 is wired too, but
+its signing job has not been run yet). The others run as offline demos with recorded model responses and have not yet been proven against
+live services. Per-piece detail is in [docs/follow-ups.md](docs/follow-ups.md). Compliance mappings are
+illustrative, not attestations.
+
 ## For engineering leaders
 
 AI coding tools raise how much code a team produces. The same research that reports the gains
