@@ -196,6 +196,10 @@ terraform plan -out=tfplan && terraform show -json tfplan > plan.json
 pnpm --filter @adl/policy-gates check plan.json
 ```
 
-The committed plan fixtures were written by hand in the plan JSON shape, not produced by a
-Terraform run. Run the commands above against a real plan before you trust the rules on your
-stack. The action's conftest download step has also not been run on a GitHub runner.
+`plan-violations.json` and `plan-fixed.json` are hand-written. `plan-real-violations.json` and
+`plan-real-fixed.json` were produced by `terraform plan` and `terraform show -json` (Terraform
+1.14.4, AWS provider 6.x, fake credentials, no AWS call) from `examples/terraform/real/`; never run
+`terraform apply` there. Running the rules on the real plans found that an encryption resource
+that points at its bucket (`bucket = aws_s3_bucket.x.id`) has an unknown `bucket` in the plan, so
+PG002 now also matches by the reference recorded in the plan's `configuration`. Run the commands
+above against a real plan of your own stack before you trust the rules on it. The action's conftest download step has also not been run on a GitHub runner.

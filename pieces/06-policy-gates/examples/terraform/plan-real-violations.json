@@ -1,0 +1,261 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.14.4",
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_ebs_volume.scratch",
+          "mode": "managed",
+          "type": "aws_ebs_volume",
+          "name": "scratch",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": {
+            "availability_zone": "us-east-1a",
+            "encrypted": false,
+            "final_snapshot": false,
+            "multi_attach_enabled": null,
+            "outpost_arn": null,
+            "region": "us-east-1",
+            "size": 20,
+            "tags": null,
+            "timeouts": null,
+            "volume_initialization_rate": null
+          },
+          "sensitive_values": { "tags_all": {} },
+          "identity_schema_version": 0,
+          "identity": { "account_id": null, "id": null, "region": null }
+        },
+        {
+          "address": "aws_iam_role_policy.deploy",
+          "mode": "managed",
+          "type": "aws_iam_role_policy",
+          "name": "deploy",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": {
+            "name": "deploy",
+            "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"*\",\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+            "role": "rollcage-demo-deploy"
+          },
+          "sensitive_values": {},
+          "identity_schema_version": 0,
+          "identity": { "account_id": null, "name": null, "role": null }
+        },
+        {
+          "address": "aws_s3_bucket.assets",
+          "mode": "managed",
+          "type": "aws_s3_bucket",
+          "name": "assets",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 0,
+          "values": {
+            "acl": "public-read",
+            "bucket": "rollcage-demo-assets",
+            "force_destroy": false,
+            "region": "us-east-1",
+            "tags": null,
+            "timeouts": null
+          },
+          "sensitive_values": {
+            "cors_rule": [],
+            "grant": [],
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "replication_configuration": [],
+            "server_side_encryption_configuration": [],
+            "tags_all": {},
+            "versioning": [],
+            "website": []
+          },
+          "identity_schema_version": 0,
+          "identity": { "account_id": null, "bucket": null, "region": null }
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "aws_ebs_volume.scratch",
+      "mode": "managed",
+      "type": "aws_ebs_volume",
+      "name": "scratch",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "availability_zone": "us-east-1a",
+          "encrypted": false,
+          "final_snapshot": false,
+          "multi_attach_enabled": null,
+          "outpost_arn": null,
+          "region": "us-east-1",
+          "size": 20,
+          "tags": null,
+          "timeouts": null,
+          "volume_initialization_rate": null
+        },
+        "after_unknown": {
+          "arn": true,
+          "create_time": true,
+          "id": true,
+          "iops": true,
+          "kms_key_id": true,
+          "snapshot_id": true,
+          "tags_all": true,
+          "throughput": true,
+          "type": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": { "tags_all": {} },
+        "after_identity": { "account_id": null, "id": null, "region": null }
+      }
+    },
+    {
+      "address": "aws_iam_role_policy.deploy",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "deploy",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "name": "deploy",
+          "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"*\",\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+          "role": "rollcage-demo-deploy"
+        },
+        "after_unknown": { "id": true, "name_prefix": true },
+        "before_sensitive": false,
+        "after_sensitive": {},
+        "after_identity": { "account_id": null, "name": null, "role": null }
+      }
+    },
+    {
+      "address": "aws_s3_bucket.assets",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "assets",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "acl": "public-read",
+          "bucket": "rollcage-demo-assets",
+          "force_destroy": false,
+          "region": "us-east-1",
+          "tags": null,
+          "timeouts": null
+        },
+        "after_unknown": {
+          "acceleration_status": true,
+          "arn": true,
+          "bucket_domain_name": true,
+          "bucket_namespace": true,
+          "bucket_prefix": true,
+          "bucket_region": true,
+          "bucket_regional_domain_name": true,
+          "cors_rule": true,
+          "grant": true,
+          "hosted_zone_id": true,
+          "id": true,
+          "lifecycle_rule": true,
+          "logging": true,
+          "object_lock_configuration": true,
+          "object_lock_enabled": true,
+          "policy": true,
+          "replication_configuration": true,
+          "request_payer": true,
+          "server_side_encryption_configuration": true,
+          "tags_all": true,
+          "versioning": true,
+          "website": true,
+          "website_domain": true,
+          "website_endpoint": true
+        },
+        "before_sensitive": false,
+        "after_sensitive": {
+          "cors_rule": [],
+          "grant": [],
+          "lifecycle_rule": [],
+          "logging": [],
+          "object_lock_configuration": [],
+          "replication_configuration": [],
+          "server_side_encryption_configuration": [],
+          "tags_all": {},
+          "versioning": [],
+          "website": []
+        },
+        "after_identity": { "account_id": null, "bucket": null, "region": null }
+      }
+    }
+  ],
+  "configuration": {
+    "provider_config": {
+      "aws": {
+        "name": "aws",
+        "full_name": "registry.terraform.io/hashicorp/aws",
+        "version_constraint": "~\u003e 6.0",
+        "expressions": {
+          "access_key": { "constant_value": "mock-access-key" },
+          "region": { "constant_value": "us-east-1" },
+          "secret_key": { "constant_value": "mock-secret-key" },
+          "skip_credentials_validation": { "constant_value": true },
+          "skip_metadata_api_check": { "constant_value": true },
+          "skip_region_validation": { "constant_value": true },
+          "skip_requesting_account_id": { "constant_value": true }
+        }
+      }
+    },
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_ebs_volume.scratch",
+          "mode": "managed",
+          "type": "aws_ebs_volume",
+          "name": "scratch",
+          "provider_config_key": "aws",
+          "expressions": {
+            "availability_zone": { "constant_value": "us-east-1a" },
+            "encrypted": { "constant_value": false },
+            "size": { "constant_value": 20 }
+          },
+          "schema_version": 0
+        },
+        {
+          "address": "aws_iam_role_policy.deploy",
+          "mode": "managed",
+          "type": "aws_iam_role_policy",
+          "name": "deploy",
+          "provider_config_key": "aws",
+          "expressions": {
+            "name": { "constant_value": "deploy" },
+            "policy": {},
+            "role": { "constant_value": "rollcage-demo-deploy" }
+          },
+          "schema_version": 0
+        },
+        {
+          "address": "aws_s3_bucket.assets",
+          "mode": "managed",
+          "type": "aws_s3_bucket",
+          "name": "assets",
+          "provider_config_key": "aws",
+          "expressions": {
+            "acl": { "constant_value": "public-read" },
+            "bucket": { "constant_value": "rollcage-demo-assets" }
+          },
+          "schema_version": 0
+        }
+      ]
+    }
+  },
+  "timestamp": "2026-11-25T22:22:08Z",
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}
