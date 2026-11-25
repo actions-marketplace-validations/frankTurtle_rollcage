@@ -1,0 +1,11 @@
+{
+  "_fixtureNote": "Hand-written hints: vulnerability id to the function names the advisory points at. Used only to look for call-site evidence with grep. Illustrative, check the advisory before relying on one.",
+  "CVE-2020-8203": ["merge", "mergeWith", "defaultsDeep", "zipObjectDeep"],
+  "CVE-2021-23337": ["template"],
+  "CVE-2020-28500": ["toNumber", "trim", "trimEnd"],
+  "CVE-2022-23529": ["verify"],
+  "CVE-2020-14343": ["yaml.load", "full_load", "FullLoader"],
+  "CVE-2020-28493": ["urlize"],
+  "CVE-2024-22195": ["xmlattr"],
+  "CVE-2024-29041": ["redirect"]
+}

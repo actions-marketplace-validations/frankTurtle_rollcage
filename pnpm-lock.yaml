@@ -107,6 +107,22 @@ importers:
         specifier: ^0.28.2
         version: 0.28.2
 
+  pieces/05-sbom-vuln-triage:
+    dependencies:
+      '@adl/shared':
+        specifier: workspace:*
+        version: link:../../shared/ts
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+    devDependencies:
+      yaml:
+        specifier: ^2.6.0
+        version: 2.9.1
+
   pieces/06-policy-gates:
     dependencies:
       '@adl/shared':
