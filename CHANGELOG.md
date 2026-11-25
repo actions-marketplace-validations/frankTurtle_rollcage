@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `rollcage-init` defaults to the v0.5.0 release instead of v0.4.0. Version 0.5.1 is the first published by
+  GitHub Actions with provenance.
+
 ## 0.5.0 (2026-11-25)
 
 - The installer is published to npm as `rollcage-init` (`npx rollcage-init`), with provenance via trusted
