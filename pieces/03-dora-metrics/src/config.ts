@@ -10,7 +10,7 @@ const ConfigSchema = z
         workflow: z.string().min(1).default('deploy.yml'),
         branch: z.string().min(1).default('main'),
       })
-      .default({}),
+      .prefault({}),
     failure_window_hours: z.number().positive().default(72),
     incident_label: z.string().min(1).default('incident'),
     hotfix_labels: z.array(z.string().min(1)).default(['hotfix']),

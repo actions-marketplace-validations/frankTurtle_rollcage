@@ -72,7 +72,7 @@ describe('completeStructured with .transform', () => {
       z.object({ a: t.optional() }),
       z.object({ a: t.nullable().default(null) }),
       z.object({ a: z.union([z.number(), t]) }),
-      z.object({ a: z.record(t) }),
+      z.object({ a: z.record(z.string(), t) }),
       z.object({ a: z.tuple([z.string(), t]) }),
       z.object({ a: z.string().pipe(t) }),
       z.object({ a: z.intersection(z.object({ x: z.string() }), z.object({ y: t })) }),

@@ -8,7 +8,7 @@ const MatchSchema = z.object({
     severity: z.string(),
     fix: z
       .object({ versions: z.array(z.string()).default([]), state: z.string().default('unknown') })
-      .default({}),
+      .prefault({}),
   }),
   relatedVulnerabilities: z.array(z.object({ id: z.string() })).default([]),
   artifact: z.object({
