@@ -9,8 +9,7 @@ import { AnthropicLlm, RecordReplayLlm, isLiveMode, type LlmClient } from '@adl/
 import { runCli } from '../src/cli.ts';
 import { createConftestRunner } from '../src/conftest.ts';
 import { LLM_FIXTURE_DIR } from '../src/paths.ts';
-import { prepare } from './work.ts';
-import { PLAN, WORKFLOW } from './work.ts';
+import { PLAN, prepare, WORKFLOW } from './work.ts';
 
 const ANSWERS: Record<string, { explanation: string; assumptions: string[] }> = {
   PG001: {
