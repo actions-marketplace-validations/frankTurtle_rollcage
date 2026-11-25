@@ -1,0 +1,78 @@
+{
+  "_fixtureNote": "SYNTHETIC remediation history for the demo. Dates and findings are made up. Open entries give the first-seen date of a finding that is still in the scan.",
+  "entries": [
+    {
+      "id": "CVE-2019-10744",
+      "package": "lodash",
+      "severity": "Critical",
+      "firstSeen": "2026-06-02",
+      "resolvedAt": "2026-06-20"
+    },
+    {
+      "id": "CVE-2020-28168",
+      "package": "axios",
+      "severity": "Medium",
+      "firstSeen": "2026-06-02",
+      "resolvedAt": "2026-07-14"
+    },
+    {
+      "id": "CVE-2021-23382",
+      "package": "postcss",
+      "severity": "High",
+      "firstSeen": "2026-06-30",
+      "resolvedAt": "2026-07-09"
+    },
+    {
+      "id": "CVE-2022-21797",
+      "package": "joblib",
+      "severity": "Critical",
+      "firstSeen": "2026-07-21",
+      "resolvedAt": "2026-08-17"
+    },
+    {
+      "id": "CVE-2021-29921",
+      "package": "ipaddress",
+      "severity": "High",
+      "firstSeen": "2026-08-03",
+      "resolvedAt": "2026-08-31"
+    },
+    {
+      "id": "CVE-2022-29217",
+      "package": "pyjwt",
+      "severity": "High",
+      "firstSeen": "2026-08-11",
+      "resolvedAt": "2026-09-04"
+    },
+    {
+      "id": "CVE-2023-37920",
+      "package": "certifi",
+      "severity": "Critical",
+      "firstSeen": "2026-08-25",
+      "resolvedAt": "2026-09-08"
+    },
+    {
+      "id": "CVE-2021-44906",
+      "package": "minimist",
+      "severity": "Critical",
+      "firstSeen": "2026-08-03"
+    },
+    {
+      "id": "CVE-2020-14343",
+      "package": "PyYAML",
+      "severity": "Critical",
+      "firstSeen": "2026-09-14"
+    },
+    {
+      "id": "CVE-2022-22817",
+      "package": "Pillow",
+      "severity": "Critical",
+      "firstSeen": "2026-10-06"
+    },
+    {
+      "id": "CVE-2021-25287",
+      "package": "Pillow",
+      "severity": "Critical",
+      "firstSeen": "2026-10-06"
+    }
+  ]
+}

@@ -1,0 +1,461 @@
+{
+  "matches": [
+    {
+      "vulnerability": {
+        "id": "CVE-2020-14343",
+        "dataSource": "https://example.invalid/advisories/CVE-2020-14343",
+        "namespace": "github:language:python",
+        "severity": "Critical",
+        "urls": ["https://example.invalid/advisories/CVE-2020-14343"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 9.8
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["5.4"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "PyYAML-5.3.1",
+        "name": "PyYAML",
+        "version": "5.3.1",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/pyyaml@5.3.1"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2022-22817",
+        "dataSource": "https://example.invalid/advisories/CVE-2022-22817",
+        "namespace": "github:language:python",
+        "severity": "Critical",
+        "urls": ["https://example.invalid/advisories/CVE-2022-22817"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 9.8
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["9.0.0"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "Pillow-8.1.0",
+        "name": "Pillow",
+        "version": "8.1.0",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/pillow@8.1.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2021-25287",
+        "dataSource": "https://example.invalid/advisories/CVE-2021-25287",
+        "namespace": "github:language:python",
+        "severity": "Critical",
+        "urls": ["https://example.invalid/advisories/CVE-2021-25287"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 9.1
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["8.2.0"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "Pillow-8.1.0",
+        "name": "Pillow",
+        "version": "8.1.0",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/pillow@8.1.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2021-23437",
+        "dataSource": "https://example.invalid/advisories/CVE-2021-23437",
+        "namespace": "github:language:python",
+        "severity": "High",
+        "urls": ["https://example.invalid/advisories/CVE-2021-23437"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 7.5
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["8.3.2"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "Pillow-8.1.0",
+        "name": "Pillow",
+        "version": "8.1.0",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/pillow@8.1.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2021-33503",
+        "dataSource": "https://example.invalid/advisories/CVE-2021-33503",
+        "namespace": "github:language:python",
+        "severity": "High",
+        "urls": ["https://example.invalid/advisories/CVE-2021-33503"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 7.5
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["1.26.5"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "urllib3-1.26.4",
+        "name": "urllib3",
+        "version": "1.26.4",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/urllib3@1.26.4"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2023-43804",
+        "dataSource": "https://example.invalid/advisories/CVE-2023-43804",
+        "namespace": "github:language:python",
+        "severity": "High",
+        "urls": ["https://example.invalid/advisories/CVE-2023-43804"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 8.1
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["1.26.17"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "urllib3-1.26.4",
+        "name": "urllib3",
+        "version": "1.26.4",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/urllib3@1.26.4"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2024-23342",
+        "dataSource": "https://example.invalid/advisories/CVE-2024-23342",
+        "namespace": "github:language:python",
+        "severity": "High",
+        "urls": ["https://example.invalid/advisories/CVE-2024-23342"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 7.4
+            }
+          }
+        ],
+        "fix": {
+          "versions": [],
+          "state": "wont-fix"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "ecdsa-0.18.0",
+        "name": "ecdsa",
+        "version": "0.18.0",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/ecdsa@0.18.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2023-32681",
+        "dataSource": "https://example.invalid/advisories/CVE-2023-32681",
+        "namespace": "github:language:python",
+        "severity": "Medium",
+        "urls": ["https://example.invalid/advisories/CVE-2023-32681"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 6.1
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["2.31.0"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "requests-2.25.0",
+        "name": "requests",
+        "version": "2.25.0",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/requests@2.25.0"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2020-28493",
+        "dataSource": "https://example.invalid/advisories/CVE-2020-28493",
+        "namespace": "github:language:python",
+        "severity": "Medium",
+        "urls": ["https://example.invalid/advisories/CVE-2020-28493"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 5.3
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["2.11.3"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "Jinja2-2.11.2",
+        "name": "Jinja2",
+        "version": "2.11.2",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/jinja2@2.11.2"
+      }
+    },
+    {
+      "vulnerability": {
+        "id": "CVE-2024-22195",
+        "dataSource": "https://example.invalid/advisories/CVE-2024-22195",
+        "namespace": "github:language:python",
+        "severity": "Medium",
+        "urls": ["https://example.invalid/advisories/CVE-2024-22195"],
+        "cvss": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "version": "3.1",
+            "metrics": {
+              "baseScore": 5.4
+            }
+          }
+        ],
+        "fix": {
+          "versions": ["3.1.3"],
+          "state": "fixed"
+        },
+        "advisories": []
+      },
+      "relatedVulnerabilities": [],
+      "matchDetails": [
+        {
+          "type": "exact-direct-match",
+          "matcher": "python-matcher"
+        }
+      ],
+      "artifact": {
+        "id": "Jinja2-2.11.2",
+        "name": "Jinja2",
+        "version": "2.11.2",
+        "type": "python",
+        "locations": [
+          {
+            "path": "/requirements.txt"
+          }
+        ],
+        "language": "python",
+        "purl": "pkg:pypi/jinja2@2.11.2"
+      }
+    }
+  ],
+  "ignoredMatches": [],
+  "source": {
+    "type": "sbom",
+    "target": {
+      "userInput": "fixtures/python-app.cdx.json"
+    }
+  },
+  "distro": {
+    "name": "",
+    "version": "",
+    "idLike": null
+  },
+  "descriptor": {
+    "name": "grype",
+    "version": "0.122.0-fixture"
+  },
+  "_fixtureNote": "Hand-authored in Grype's JSON shape because no vulnerability DB was available when this fixture was written. Severities and fix versions are illustrative. Regenerate real output with: syft ... | grype sbom:... -o json (see README)."
+}
