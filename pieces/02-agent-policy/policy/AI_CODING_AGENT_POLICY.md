@@ -35,7 +35,10 @@ accountable for it as if they had written it. Agent output is a draft until a hu
 - Force-push, or rewrite history on a shared branch.
 - Write outside the repository working tree (except `<ALLOWED SCRATCH DIRECTORIES>`).
 - Contact hosts that are not on the allowed list.
-- Turn off, edit or bypass these guardrails, the hooks that enforce them, or the audit log.
+- Turn off, edit or bypass these guardrails, the hooks that enforce them, or the audit log. The
+  hook settings, the policy config and the hook's source are protected paths: only a human edits
+  them, and the hook blocks an agent's write, edit, redirect, `sed -i`, `tee`, `cp`, `mv` or `rm`
+  aimed at them (`<PROTECTED PATHS>`).
 - Approve or merge its own work.
 
 ## 5. Data

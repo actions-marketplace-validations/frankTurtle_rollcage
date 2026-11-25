@@ -129,6 +129,9 @@ person has read them.
 
 - https://slsa.dev/spec/v1.0/levels and
   https://docs.github.com/en/actions/security-for-github-actions/using-artifact-attestations
-- Piece 10's README claims Build 2 for its (disabled) attestation workflow and Build 3 only with a
-  reusable workflow. These pages were not fetched during the build.
-- Status: VERIFY BEFORE PUBLISHING.
+- Read on 2026-11-25. GitHub's page
+  https://docs.github.com/en/actions/concepts/security/artifact-attestations says artifact
+  attestations by themselves provide SLSA v1.0 Build Level 2, and reusable workflows can provide the
+  isolation needed for Build Level 3. The slsa.dev page names Build L2 "hosted build platform" and
+  Build L3 "hardened builds". Piece 10's README matches both.
+- Status: checked; re-check before each release.

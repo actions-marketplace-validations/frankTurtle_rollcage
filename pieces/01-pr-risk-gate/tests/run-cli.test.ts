@@ -4,14 +4,13 @@ import { join } from 'node:path';
 import {
   AuditLogger,
   FakeLlm,
-  RecordReplayLlm,
+  UnavailableLlm,
   readAuditRecords,
   verifyAuditChain,
 } from '@adl/shared';
 import { describe, expect, it } from 'vitest';
 import { runCli } from '../src/cli.ts';
 import { loadConfig } from '../src/config.ts';
-import { selectLlm, UnavailableLlm } from '../src/llm-select.ts';
 import { computeMetrics, formatMetrics } from '../src/metrics.ts';
 import { runGate } from '../src/run.ts';
 import { writeSyntheticHistory } from '../src/synthetic.ts';
@@ -143,22 +142,6 @@ describe('demo fixtures stay in sync with the prompt (recorded replies are used,
     expect(lines.join('\n')).toContain(`level=${level.toUpperCase()}`);
     expect(lines.join('\n')).not.toContain('model not used');
     expect(code).toBe(exit);
-  });
-});
-
-describe('selectLlm', () => {
-  it('chooses by mode', () => {
-    expect(selectLlm('none', {})).toBeInstanceOf(UnavailableLlm);
-    expect(selectLlm('auto', {})).toBeInstanceOf(UnavailableLlm);
-    expect(selectLlm('auto', { ANTHROPIC_API_KEY: 'k' }).constructor.name).toBe('AnthropicLlm');
-    expect(selectLlm('live', { ANTHROPIC_API_KEY: 'k' }).constructor.name).toBe('AnthropicLlm');
-    expect(selectLlm('replay', {}, LLM_FX)).toBeInstanceOf(RecordReplayLlm);
-    expect(() => selectLlm('replay', {})).toThrow('--fixtures');
-    expect(() => selectLlm('live', {})).toThrow('ANTHROPIC_API_KEY');
-  });
-
-  it('UnavailableLlm always rejects', async () => {
-    await expect(new UnavailableLlm('why').complete()).rejects.toThrow('why');
   });
 });
 

@@ -49,14 +49,17 @@ Which level this piece reaches:
 - Build 3 needs the build and the attestation to run in a reusable workflow that callers cannot
   alter. GitHub documents that pattern. This piece does not implement it, so it does not claim
   Build 3.
-- Right now no level is reached in practice. The attestation job is disabled in this repository
-  until the maintainer approves it (see "Verify before you deploy"). Nothing here has produced a
-  real attestation.
+- The attestation job runs only when started by hand (`workflow_dispatch`), because each run
+  writes a public Sigstore entry. A run's provenance reaches Build 2; see "Verify before you
+  deploy" for how to start one and check it.
 - The offline demo signs with a throwaway local key. That shows tamper detection. It is not
   provenance and reaches no SLSA level.
 
-Source: slsa.dev specification v1.0, build track, and GitHub's documentation on artifact
-attestations and SLSA. These pages were not fetched while building this piece, so check both before you quote a level to an auditor.
+Sources, read on 2026-11-25: the SLSA v1.0 levels page (https://slsa.dev/spec/v1.0/levels) and
+GitHub's artifact attestations page
+(https://docs.github.com/en/actions/concepts/security/artifact-attestations), which says
+attestations by themselves provide SLSA v1.0 Build Level 2 and that reusable workflows can provide
+the isolation for Build Level 3.
 
 **Adopt it in a week.**
 
@@ -176,9 +179,8 @@ only with the maintainer's approval. `verify` mode needs `contents: read` only.
 
 - `test-and-demo`: runs coverage and the offline demo. Read-only permissions. Always on.
 - `attest-sample`: builds the sample tarball with `npm pack` and attests it with
-  `actions/attest-build-provenance`, then runs the gate against the result. It is switched off
-  with `if: false` and needs the maintainer's approval to enable, because it writes to the public
-  Sigstore log with the repository identity. Only this job holds `id-token: write` and
+  `actions/attest-build-provenance`, then runs the gate against the result. It runs only on
+  `workflow_dispatch`, because it writes to the public Sigstore log with the repository identity. Only this job holds `id-token: write` and
   `attestations: write`.
 
 Container images: after `docker build`, push the image and call `actions/attest-build-provenance`
@@ -187,11 +189,10 @@ This path is not exercised here.
 
 ### Verify before you deploy
 
-Everything below needs the maintainer's approval because it writes to a public log. Run it only
-against the public demo repository.
+Each run writes to a public log. Run it only against the public demo repository.
 
-1. Change `if: false` to `if: github.event_name == 'workflow_dispatch'` on `attest-sample`.
-2. Run the workflow manually. Check the attestation under the repository's Attestations page.
+1. Start it: `gh workflow run piece-10-provenance-signing.yml --ref main`.
+2. Wait for it to finish. Check the attestation under the repository's Attestations page.
 3. Download the artifact and verify it:
 
 ```bash

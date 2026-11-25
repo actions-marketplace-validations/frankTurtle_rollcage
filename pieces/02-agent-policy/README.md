@@ -103,8 +103,15 @@ Claude Code docs on 2026-11-24 ([hooks](https://code.claude.com/docs/en/hooks),
 | `secret-read`        | Read, Edit, Write, Grep on secret paths (`.env*`, keys, `.aws/`, `.ssh/`, ...); shell commands that name one                  |
 | `force-push`         | `git push` with `--force`, `-f`, `--force-with-lease`, or a `+refspec`, also inside `sh -c`                                   |
 | `write-outside-repo` | Write/Edit outside the repo and allowed scratch dirs; shell redirects and file-changing commands aimed outside                |
+| `protected-path`     | Write/Edit/MultiEdit, shell redirects, `sed -i`, `tee`, `cp`/`mv` onto, and `rm` of the guard's own config and source (see `protected_paths`); reads stay allowed |
 | `network-allowlist`  | WebFetch and shell network tools (curl, wget, ssh, git URLs, ...) to hosts not on the allowlist, or with no determinable host |
 | `unparseable`        | A shell command the analyzer cannot parse (unbalanced quotes). Fail closed.                                                   |
+
+`protected-path` closes the self-edit gap: without it an agent could rewrite `.claude/settings.json`
+or `.claude/agent-policy.yml` and switch its own guardrails off. The block message tells the agent
+to ask a human, who edits the file themselves (outside the agent session). Removing or moving a
+parent directory of a protected file (`rm -rf .claude`) is blocked too. If you change the hook
+source in a branch or worktree, edit it yourself or from a session that does not run this hook.
 
 Everything else is allowed by the hook. Permission rules in `templates/settings.json` add a second layer.
 
@@ -115,6 +122,7 @@ Everything else is allowed by the hook. Permission rules in `templates/settings.
 | 4. Never read or send secrets | `secret-read` rule; `permissions.deny` Read rules                       | `deny` record with rule `secret-read`               |
 | 4. No force-push              | `force-push` rule; `permissions.deny` and `ask` Bash rules              | `deny` record with rule `force-push`                |
 | 4. No writes outside the repo | `write-outside-repo` rule                                               | `deny` record with rule `write-outside-repo`        |
+| 4. Do not edit the guardrails | `protected-path` rule; a human edits the protected files themselves    | `deny` record with rule `protected-path`            |
 | 4. No unlisted hosts          | `network-allowlist` rule; `WebFetch(domain:...)` allow rules            | `deny` record with rule `network-allowlist`         |
 | 3. Pushing needs approval     | `permissions.ask` for `Bash(git push *)`                                | Claude Code permission prompt; `allow` record       |
 | 4. Do not disable guardrails  | `check` fails if hooks are missing or `disableAllHooks` is true         | CI result                                           |
@@ -142,6 +150,7 @@ about 65 ms per process and `tsx` about 190 ms, so adopters should use the bundl
 | ------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
 | `allowed_hosts`     | docs and package hosts, loopback               | Hosts the agent may contact. `*.example.com` matches subdomains. |
 | `allow_write_dirs`  | `/tmp`, `/private/tmp`, `~/.claude`            | Extra directories outside the repo that may be written.          |
+| `protected_paths`   | `.claude/settings.json`, `.claude/settings.local.json`, `.claude/agent-policy.yml`, `pieces/02-agent-policy/src/**` | Files the agent may read but never change. Globs; a path with a `/` is relative to the repo root. Replaces the default list when set. |
 | `secret_paths`      | built-in list                                  | Globs treated as secrets. Replaces the default list when set.    |
 | `secret_exceptions` | `.env.example`, `.env.sample`, `.env.template` | Secret-looking paths that are fine to read.                      |
 | `allow_web_search`  | `true`                                         | WebSearch is not host-scoped, so it is a switch.                 |

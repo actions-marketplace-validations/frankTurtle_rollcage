@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Piece 10's attestation job is enabled for manual runs (`workflow_dispatch`) only, and its SLSA
+  level claims are sourced.
+- Piece 02 blocks agents from editing the guard's own config and source (`protected_paths`).
+- Shared helpers moved into `@adl/shared`: `selectLlm`, `unifiedDiff`, the markdown link checker
+  and `daysBetween`; `completeStructured` rejects zod schemas that use `.transform`.
+- Piece 05's feed parsers are pinned to real KEV and EPSS responses; piece 08 was deployed once in
+  fixture mode.
+
 ## 0.2.0 (2026-11-25)
 
 - Pieces 05 to 14, built in parallel and in review: SBOM and vulnerability triage (Syft, Grype,

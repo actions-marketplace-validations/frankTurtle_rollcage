@@ -11,6 +11,7 @@
     "demo:reset": "rm -rf demo/out"
   },
   "dependencies": {
+    "@adl/shared": "workspace:*",
     "zod": "^3.23.0"
   }
 }
