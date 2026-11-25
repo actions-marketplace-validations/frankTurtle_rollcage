@@ -1,0 +1,11 @@
+{
+  "name": "rollcage-sample",
+  "version": "1.0.0",
+  "description": "Sample package the provenance-signing demo builds and signs. Not published.",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ]
+}

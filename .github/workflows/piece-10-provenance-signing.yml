@@ -1,0 +1,75 @@
+name: piece-10-provenance-signing
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      [
+        'pieces/10-provenance-signing/**',
+        'shared/ts/**',
+        '.github/workflows/piece-10-provenance-signing.yml',
+      ]
+  pull_request:
+    paths:
+      [
+        'pieces/10-provenance-signing/**',
+        'shared/ts/**',
+        '.github/workflows/piece-10-provenance-signing.yml',
+      ]
+  # Only used by attest-sample, which is switched off until the maintainer approves it.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      # The demo signs with a throwaway local key and needs the cosign binary.
+      - uses: sigstore/cosign-installer@881c63bd87e38389154debd8331404ce7ca8a3ab # v4.1.4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @adl/provenance-signing coverage
+      - name: Demo runs offline end to end (throwaway key, no transparency log)
+        run: pnpm --filter @adl/provenance-signing demo
+
+  # DISABLED. Keyless signing and GitHub artifact attestations write a public Sigstore (Rekor)
+  # entry that includes the repository identity. Do not enable without the maintainer's approval,
+  # and only on the public demo repository. To enable, replace `if: false` with
+  # `if: github.event_name == 'workflow_dispatch'`.
+  attest-sample:
+    if: false
+    runs-on: ubuntu-latest
+    # The only job in this file with id-token and attestations write.
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Build the sample tarball
+        run: npm pack ./pieces/10-provenance-signing/sample-package --pack-destination "$RUNNER_TEMP/dist"
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: ${{ runner.temp }}/dist/rollcage-sample-1.0.0.tgz
+      - name: Verify what was just attested (the deploy gate check)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify "$RUNNER_TEMP/dist/rollcage-sample-1.0.0.tgz" \
+            --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/piece-10-provenance-signing.yml"
