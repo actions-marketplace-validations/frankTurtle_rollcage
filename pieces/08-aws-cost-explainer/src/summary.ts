@@ -1,6 +1,7 @@
 import { completeStructured } from '@adl/shared';
 import type { LlmClient } from '@adl/shared';
 import { z } from 'zod';
+import { round2 } from './analysis.ts';
 import type { Analysis, DeltaRow } from './analysis.ts';
 
 export interface Summary {
@@ -15,8 +16,6 @@ export interface SummaryResult {
   source: 'model' | 'fallback';
   reason?: string;
 }
-
-const round2 = (n: number): number => Math.round(n * 100) / 100;
 
 export function usd(n: number): string {
   const digits = Number.isInteger(n) ? 0 : 2;

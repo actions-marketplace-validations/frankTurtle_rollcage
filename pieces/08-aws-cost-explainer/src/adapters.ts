@@ -11,64 +11,82 @@ import type { Anomaly, CostPort, CostRow, DateRange, Grouping, NotifyPort } from
 
 /** Thin wrappers over the AWS SDK v3 and fetch. They hold no decisions; the logic is in analysis.ts. */
 
+/** Calls `page` with each NextPageToken until the service stops returning one. */
+async function paginate<T extends { NextPageToken?: string | undefined }>(
+  page: (token: string | undefined) => Promise<T>,
+  each: (out: T) => void,
+): Promise<void> {
+  let token: string | undefined;
+  do {
+    const out = await page(token);
+    each(out);
+    token = out.NextPageToken;
+  } while (token);
+}
+
 /** Read-only: this adapter can only issue GetCostAndUsage and GetAnomalies. */
 export function ceCostPort(client: CostExplorerClient): CostPort {
   return {
     async costByGroup(range, grouping) {
       const totals = new Map<string, number>();
-      let token: string | undefined;
-      do {
-        const out = await client.send(
-          new GetCostAndUsageCommand({
-            TimePeriod: { Start: range.start, End: range.end },
-            Granularity: 'DAILY',
-            Metrics: ['UnblendedCost'],
-            GroupBy: [
-              grouping.type === 'SERVICE'
-                ? { Type: 'DIMENSION', Key: 'SERVICE' }
-                : { Type: 'TAG', Key: grouping.key },
-            ],
-            ...(token ? { NextPageToken: token } : {}),
-          }),
-        );
-        for (const day of out.ResultsByTime ?? []) {
-          for (const group of day.Groups ?? []) {
-            const key = groupKey(group.Keys?.[0] ?? '', grouping);
-            const amount = Number(group.Metrics?.['UnblendedCost']?.Amount ?? '0');
-            if (!Number.isFinite(amount)) throw new Error(`cost amount for ${key} is not a number`);
-            totals.set(key, (totals.get(key) ?? 0) + amount);
+      await paginate(
+        (token) =>
+          client.send(
+            new GetCostAndUsageCommand({
+              TimePeriod: { Start: range.start, End: range.end },
+              Granularity: 'DAILY',
+              Metrics: ['UnblendedCost'],
+              GroupBy: [
+                grouping.type === 'SERVICE'
+                  ? { Type: 'DIMENSION', Key: 'SERVICE' }
+                  : { Type: 'TAG', Key: grouping.key },
+              ],
+              ...(token ? { NextPageToken: token } : {}),
+            }),
+          ),
+        (out) => {
+          for (const day of out.ResultsByTime ?? []) {
+            for (const group of day.Groups ?? []) {
+              const key = groupKey(group.Keys?.[0] ?? '', grouping);
+              const amount = Number(group.Metrics?.['UnblendedCost']?.Amount ?? '0');
+              if (!Number.isFinite(amount))
+                throw new Error(`cost amount for ${key} is not a number`);
+              totals.set(key, (totals.get(key) ?? 0) + amount);
+            }
           }
-        }
-        token = out.NextPageToken;
-      } while (token);
+        },
+      );
       return [...totals].map(([key, amount]): CostRow => ({ key, amount }));
     },
 
     async anomalies(range) {
       const found: Anomaly[] = [];
-      let token: string | undefined;
-      do {
-        const out = await client.send(
-          new GetAnomaliesCommand({
-            DateInterval: { StartDate: range.start, EndDate: range.end },
-            ...(token ? { NextPageToken: token } : {}),
-          }),
-        );
-        for (const a of out.Anomalies ?? []) {
-          const service = a.RootCauses?.[0]?.Service ?? a.DimensionValue;
-          if (!a.AnomalyId || !service) continue;
-          found.push({
-            id: a.AnomalyId,
-            service,
-            startDate: a.AnomalyStartDate ?? range.start,
-            totalImpact: a.Impact?.TotalImpact ?? 0,
-            rootCauses: (a.RootCauses ?? [])
-              .map((c) => [c.UsageType, c.Region ? `in ${c.Region}` : ''].filter(Boolean).join(' '))
-              .filter(Boolean),
-          });
-        }
-        token = out.NextPageToken;
-      } while (token);
+      await paginate(
+        (token) =>
+          client.send(
+            new GetAnomaliesCommand({
+              DateInterval: { StartDate: range.start, EndDate: range.end },
+              ...(token ? { NextPageToken: token } : {}),
+            }),
+          ),
+        (out) => {
+          for (const a of out.Anomalies ?? []) {
+            const service = a.RootCauses?.[0]?.Service ?? a.DimensionValue;
+            if (!a.AnomalyId || !service) continue;
+            found.push({
+              id: a.AnomalyId,
+              service,
+              startDate: a.AnomalyStartDate ?? range.start,
+              totalImpact: a.Impact?.TotalImpact ?? 0,
+              rootCauses: (a.RootCauses ?? [])
+                .map((c) =>
+                  [c.UsageType, c.Region ? `in ${c.Region}` : ''].filter(Boolean).join(' '),
+                )
+                .filter(Boolean),
+            });
+          }
+        },
+      );
       return found;
     },
   };

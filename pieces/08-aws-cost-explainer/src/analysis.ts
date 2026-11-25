@@ -1,3 +1,4 @@
+import { round1 } from '@adl/shared';
 import type { AnalysisConfig, Anomaly, CostRow, DateRange } from './types.ts';
 import { UNTAGGED } from './types.ts';
 
@@ -49,8 +50,7 @@ export interface Analysis {
   unexplained: { amount: number; share: number; services: string[] };
 }
 
-const round1 = (n: number): number => Math.round(n * 10) / 10;
-const round2 = (n: number): number => Math.round(n * 100) / 100;
+export const round2 = (n: number): number => Math.round(n * 100) / 100;
 const sum = (rows: CostRow[]): number => round2(rows.reduce((total, r) => total + r.amount, 0));
 const pctChange = (previous: number, delta: number): number | null =>
   previous === 0 ? null : round1((delta / previous) * 100);

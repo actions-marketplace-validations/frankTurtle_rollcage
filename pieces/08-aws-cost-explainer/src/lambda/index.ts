@@ -6,14 +6,13 @@ import { ceCostPort, secretReader, slackNotifier, snsNotifier } from '../adapter
 import type { NotifyPort } from '../types.ts';
 import { loadConfig } from './config.ts';
 import { createHandler } from './handler.ts';
-import { lazy, remember } from './memo.ts';
 
 /** Lambda entry point: wires the real AWS clients. Not unit tested; it holds no decisions. */
 const env = process.env;
 
-const secrets = lazy(() => secretReader(new SecretsManagerClient({})));
-const slackUrl = remember(() => secrets()(env['SLACK_WEBHOOK_SECRET_ARN'] ?? ''));
-const anthropicKey = remember(() => secrets()(env['ANTHROPIC_KEY_SECRET_ARN'] ?? ''));
+// The schedule is weekly, so every run is a cold start: read each secret once, when it is needed.
+const readSecret = secretReader(new SecretsManagerClient({}));
+const slackUrl = () => readSecret(env['SLACK_WEBHOOK_SECRET_ARN'] ?? '');
 
 const handle = createHandler({
   config: loadConfig(env),
@@ -24,7 +23,7 @@ const handle = createHandler({
     if (!env['ANTHROPIC_KEY_SECRET_ARN']) return undefined;
     try {
       return new AnthropicLlm({
-        ANTHROPIC_API_KEY: await anthropicKey(),
+        ANTHROPIC_API_KEY: await readSecret(env['ANTHROPIC_KEY_SECRET_ARN']),
         ...(env['ANTHROPIC_MODEL'] ? { ANTHROPIC_MODEL: env['ANTHROPIC_MODEL'] } : {}),
       });
     } catch (error) {
