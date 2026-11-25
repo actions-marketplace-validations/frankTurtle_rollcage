@@ -79,7 +79,7 @@ flowchart LR
 ```bash
 pnpm install
 pnpm --filter @adl/golden-path-template scaffold ~/code/payments-api \
-  --name payments-api --owner my-org --ref v0.1.0
+  --name payments-api --owner my-org --ref v0.2.0
 ```
 
 Commands:
@@ -144,7 +144,7 @@ Piece 04 is not an action. The generated `secrets-scan.yml` is the reusable form
 (with the gitleaks default rules, since the generated repo has no `secrets-guard` build).
 
 All five use one placeholder, `__ROLLCAGE_REF__`, which the scaffold replaces with `--ref`. The
-default is `v0.1.0`. That ref must point to a release that contains pieces 05, 06 and 10. If the
+default is `v0.2.0`. That ref must point to a release that contains pieces 05, 06 and 10. If the
 release you pick does not, pass a commit that does.
 
 ### Pinning
@@ -162,7 +162,7 @@ The scaffold checks every `uses:` line in the generated workflows:
 To turn the tag into a SHA before you rely on it:
 
 ```bash
-git ls-remote https://github.com/frankTurtle/rollcage refs/tags/v0.1.0
+git ls-remote https://github.com/frankTurtle/rollcage refs/tags/v0.2.0
 pnpm --filter @adl/golden-path-template scaffold ~/code/payments-api \
   --name payments-api --owner my-org --ref <sha>
 ```
