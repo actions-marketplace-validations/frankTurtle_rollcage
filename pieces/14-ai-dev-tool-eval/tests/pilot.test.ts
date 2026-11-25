@@ -31,7 +31,7 @@ describe('AC10: pilot plan', () => {
 
   it('states the sample size caveat and the decision rule', () => {
     expect(pilot).toContain('min_samples');
-    expect(pilot).toMatch(/not a statistical threshold/);
+    expect(pilot).toMatch(/no statistical threshold/);
     expect(pilot).toMatch(/^## Decision rule/m);
     expect(pilot).toMatch(/no decision yet/);
   });
