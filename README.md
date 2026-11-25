@@ -7,7 +7,8 @@ AI-assisted software delivery: working code, tests and CI for guardrails you can
 numbers that show whether AI is paying off.
 
 > Status: all 14 pieces are built. 0.1.0 shipped Phase 0 and the MVP (pieces 01 to 04); 0.2.0 adds
-> pieces 05 to 14; 0.3.0 adds the adoption guide, shared helpers and Escapement 0.3.0.
+> pieces 05 to 14; 0.3.0 adds the adoption guide, shared helpers and Escapement 0.3.0; 0.4.0 adds
+> one-command setup and live proofs of the pieces against real tools (see docs/live-proof-report.md).
 
 ## What this is, who it is for, and why
 

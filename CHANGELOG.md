@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.4.0 (2026-11-25)
+
+- `init/rollcage-init.mjs`: one command that sets Rollcage up in an existing repository (pieces 01
+  to 06 and a manual 10 workflow), pinned to a commit SHA, never overwriting files. `SETUP.md` and
+  `llms.txt` give coding agents the same steps at a stable URL.
+- README: a plain-English what, who and why section at the top.
 - Live proofs (see `docs/live-proof-report.md`): pieces 05, 06, 07, 09, 11, 12 and 13 were run
   against the real tools and model. Real Grype, syft, Terraform plan and GitHub log output is now
   pinned as fixtures. Piece 11's recorded responses are real model output and its baseline is 100%.
@@ -10,10 +16,6 @@
 - Pieces 05 and 08: the live model calls asked for too few tokens and fell back to the template.
 - Piece 07: strips the byte order mark real job logs start with. Piece 05: table column spacing.
 - Piece 11: `fixtures --with-model`. Piece 12: template Markdown tables are formatted.
-
-- `init/rollcage-init.mjs`: one command that sets Rollcage up in an existing repository (pieces 01
-  to 06 and a manual 10 workflow), pinned to a commit SHA, never overwriting files. `SETUP.md` and
-  `llms.txt` give coding agents the same steps at a stable URL.
 
 ## 0.3.0 (2026-11-25)
 
