@@ -40,8 +40,8 @@ into your own repo (GitHub Actions, a Claude Code hook, a config file). A worked
 repo that does this is [rollcage-example](https://github.com/frankTurtle/rollcage-example), and
 [docs/adopting.md](docs/adopting.md) walks through the order to turn things on.
 
-**How ready is it?** Pieces 01 to 06 and 10 and 12 are wired into the example repo with passing CI.
-The others run as offline demos with recorded model responses and have not yet been proven against
+**How ready is it?** Pieces 01 to 06 and 12 are wired into the example repo with passing CI (piece 10 is wired too, but
+its signing job has not been run yet). The others run as offline demos with recorded model responses and have not yet been proven against
 live services. Per-piece detail is in [docs/follow-ups.md](docs/follow-ups.md). Compliance mappings are
 illustrative, not attestations.
 
