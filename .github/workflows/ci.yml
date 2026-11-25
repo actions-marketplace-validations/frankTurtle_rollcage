@@ -29,6 +29,7 @@ jobs:
       - run: pnpm format:check
       - run: pnpm typecheck
       - run: pnpm coverage
+      - run: pnpm test:init
       - name: Agent policy and guardrails are present
         run: pnpm policy:check
       - name: The agent hook runs and blocks a secret read
