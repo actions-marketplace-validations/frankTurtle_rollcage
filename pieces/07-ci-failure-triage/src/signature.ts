@@ -2,12 +2,14 @@ import { redactSecrets, sha256Hex } from '@adl/shared';
 
 // Built from a string so the escape character is explicit and the control-character lint rule stays on.
 const ANSI = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, 'g');
+// The log download starts with a UTF-8 byte order mark, which would hide the first timestamp.
+const BOM = /^\uFEFF/;
 const GH_TIMESTAMP_PREFIX = /^\d{4}-\d\d-\d\dT[\d:.]+Z\s?/;
 const MAX_LINE = 200;
 
 /** A raw log line without ANSI codes and without the Actions timestamp prefix. */
 export const cleanLine = (raw: string): string =>
-  raw.replace(ANSI, '').replace(GH_TIMESTAMP_PREFIX, '').trimEnd();
+  raw.replace(BOM, '').replace(ANSI, '').replace(GH_TIMESTAMP_PREFIX, '').trimEnd();
 
 const hasDigitAndLetter = (s: string): boolean => /\d/.test(s) && /[a-f]/i.test(s);
 
