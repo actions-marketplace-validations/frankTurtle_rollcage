@@ -1,11 +1,10 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
-import { AuditLogger, readAuditRecords } from '@adl/shared';
+import { AuditLogger, parseLlmMode, readAuditRecords, selectLlm } from '@adl/shared';
 import type { FetchLike } from '@adl/shared';
 import { loadConfig } from './config.js';
 import { GitHubApi, GitHubIO } from './github.js';
 import type { PrRef } from './github.js';
-import { parseLlmMode, selectLlm } from './llm-select.js';
 import { LocalIO } from './local-io.js';
 import { computeMetrics, formatMetrics } from './metrics.js';
 import { runGate } from './run.js';
@@ -107,7 +106,7 @@ async function evaluate(args: string[], deps: CliDeps): Promise<number> {
 
   const result = await runGate({
     io,
-    llm: selectLlm(parseLlmMode(values.llm), deps.env, values.fixtures),
+    llm: selectLlm(parseLlmMode(values.llm), deps.env, values.fixtures, '--fixtures'),
     config,
     ...(values.audit ? { audit: new AuditLogger(values.audit) } : {}),
   });

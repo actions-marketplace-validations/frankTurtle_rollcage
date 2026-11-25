@@ -28,12 +28,22 @@ Collected from each piece's integration notes. Nothing here blocks the demos.
 
 ## Candidates for `shared/ts`
 
-- A command runner with an injectable exec (pieces 05, 06, 10).
-- A redactor (pieces 07, 09).
-- `selectLlm` / `UnavailableLlm` (copied in piece 07 from piece 01).
-- `unifiedDiff` (07), the markdown link checker (14), `memo` and a `must()` test helper (08), a
-  day-difference helper (05).
-- `completeStructured` should reject zod schemas that use `.transform` (09).
+Done: `selectLlm` / `UnavailableLlm` / `parseLlmMode`, `unifiedDiff`, the markdown link checker,
+`daysBetween` (piece 05), and `completeStructured` now rejects `.transform` schemas.
+
+Skipped, with the reason:
+
+- A command runner with an injectable exec (pieces 05, 06, 10). The three copies differ in
+  behavior: 05 uses `spawn` and returns `status` (null on a signal) but rejects when the program
+  cannot start; 06 uses `execFile`, returns `code`, rejects on a missing program and callers read
+  `error.code === 'ENOENT'`; 10 never throws, returns `code: null` plus an `error` string, and adds
+  a timeout and extra env. Unifying them would change error handling in two pieces.
+- A redactor (pieces 07, 09). They are not the same function. Piece 09's `Redactor` is stable
+  per-value placeholders, a report, `assertClean`, and covers JWT, email, card (Luhn), IPs and
+  phone; piece 07's `redact` uses fixed markers and a smaller pattern set. Sharing one would change
+  piece 07's output, and moving 07 onto 09's is a behavior change to review on its own.
+- `memo` and a `must()` test helper (08); piece 08 was left alone, including its private
+  `daysBetween`, which is identical to the shared one and can switch in a later change.
 
 ## Escapement 0.2.0 gaps found by piece 13
 
