@@ -58,8 +58,8 @@ pnpm demo:11 after
 ```
 
 Grades all 22 eval questions, 6 of them refusals, and prints accuracy next to the committed
-baseline (77.3 percent, 17 of 22, from the offline stand-in). Point at the five FAIL lines and
-say the baseline is a floor, not a target. It ends with PASS. Then say what happens when someone changes retrieval and accuracy
+baseline (100 percent, 22 of 22, from recorded real model responses). Say the baseline is a floor,
+not a target, and that it covers 22 sample questions only. It ends with PASS. Then say what happens when someone changes retrieval and accuracy
 drops: the command exits 1 and CI fails.
 
 ## 5:30 to 6:30, the metric

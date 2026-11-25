@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"return 422, {\\\"error\\\": f\\\"an order can have at most {MAX_LINE_ITEMS} line items\\\"}\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/api.py:13-20\", \"quote\": \"        return 422, {\\\"error\\\": f\\\"an order can have at most {MAX_LINE_ITEMS} line items\\\"}\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"An order can have at most 50 line items. MAX_LINE_ITEMS is set to 50, and the order handler rejects any request with more items than that, returning a 422 error. This assumes the MAX_LINE_ITEMS constant is not overridden elsewhere, since the excerpts only show it defined in api.py.\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/api.py:1-7\", \"quote\": \"MAX_LINE_ITEMS = 50\"}, {\"chunk_id\": \"sample-repo/src/orders/api.py:13-20\", \"quote\": \"    if len(items) > MAX_LINE_ITEMS:\"}, {\"chunk_id\": \"sample-repo/src/orders/api.py:13-20\", \"quote\": \"        return 422, {\\\"error\\\": f\\\"an order can have at most {MAX_LINE_ITEMS} line items\\\"}\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

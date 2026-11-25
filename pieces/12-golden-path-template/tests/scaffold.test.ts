@@ -36,11 +36,11 @@ describe('scaffold: generation (AC1)', () => {
     );
   });
 
-  it('defaults the ref to v0.2.0 and renames gitignore to .gitignore', () => {
+  it('defaults the ref to v0.3.0 and renames gitignore to .gitignore', () => {
     const target = join(tempDir(), 'svc');
     scaffold({ ...OPTS, targetDir: target });
     expect(readFileSync(join(target, '.github/workflows/policy-gates.yml'), 'utf8')).toContain(
-      'pieces/06-policy-gates@v0.2.0',
+      'pieces/06-policy-gates@v0.3.0',
     );
     expect(existsSync(join(target, '.gitignore'))).toBe(true);
     expect(existsSync(join(target, 'gitignore'))).toBe(false);

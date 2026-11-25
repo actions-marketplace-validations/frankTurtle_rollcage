@@ -5,7 +5,7 @@ import { checkPins } from './pins.ts';
 import { validateName, validateOwner, validateRef } from './validate.ts';
 
 export const TEMPLATE_DIR = join(dirname(fileURLToPath(import.meta.url)), '../template');
-export const DEFAULT_REF = 'v0.2.0';
+export const DEFAULT_REF = 'v0.3.0';
 
 export class ScaffoldError extends Error {}
 

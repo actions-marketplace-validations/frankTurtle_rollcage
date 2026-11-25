@@ -34,7 +34,8 @@ function wrap(text: string, first: string, rest = first): string[] {
   return lines;
 }
 
-const pad = (s: string, n: number): string => s.padEnd(n);
+/** Pads to a column width, but always leaves one space so a long value cannot run into the next column. */
+const pad = (s: string, n: number): string => (s.length >= n ? `${s} ` : s.padEnd(n));
 
 function row(f: Triaged): string[] {
   const epss = f.epss === null ? 'EPSS n/a' : `EPSS ${f.epss.toFixed(2)}`;

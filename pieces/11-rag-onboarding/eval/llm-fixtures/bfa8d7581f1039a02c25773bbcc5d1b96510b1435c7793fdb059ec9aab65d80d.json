@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"Install dependencies with `make setup`. Start the service with `make dev`. It listens on port\", \"citations\": [{\"chunk_id\": \"sample-repo/README.md:14-19\", \"quote\": \"Install dependencies with `make setup`. Start the service with `make dev`. It listens on port\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"Locally the service listens on port 8087. The README says `make dev` starts the service on that port, and config.py shows 8087 is the default, which can be overridden with the `ORDERS_PORT` environment variable. If `ORDERS_PORT` is set in your environment, the port will be different.\", \"citations\": [{\"chunk_id\": \"sample-repo/README.md:14-19\", \"quote\": \"Install dependencies with `make setup`. Start the service with `make dev`. It listens on port\"}, {\"chunk_id\": \"sample-repo/README.md:14-19\", \"quote\": \"8087 and uses an in-memory store unless `ORDERS_DATABASE_URL` is set.\"}, {\"chunk_id\": \"sample-repo/src/orders/config.py:15-20\", \"quote\": \"port=int(os.environ.get(\\\"ORDERS_PORT\\\", \\\"8087\\\")),\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

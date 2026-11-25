@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"2. Branch from `main` and name the branch `<your-handle>/<short-topic>`.\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:1-8\", \"quote\": \"2. Branch from `main` and name the branch `<your-handle>/<short-topic>`.\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"Branch from `main` and name your branch `<your-handle>/<short-topic>`, where the first part is your own handle and the second is a short description of what the change is about. This comes from the \\\"Your first pull request\\\" steps in CONTRIBUTING.md, so it assumes you are following that first-PR workflow.\", \"citations\": [{\"chunk_id\": \"sample-repo/CONTRIBUTING.md:1-8\", \"quote\": \"2. Branch from `main` and name the branch `<your-handle>/<short-topic>`.\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

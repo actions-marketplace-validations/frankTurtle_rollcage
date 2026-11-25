@@ -1,0 +1,16 @@
+﻿2026-11-25T20:47:25.9355363Z Current runner version: '2.338.2'
+2026-11-25T20:47:25.9384085Z ##[group]Runner Image Provisioner
+2026-11-25T20:47:25.9385118Z Hosted Compute Agent
+2026-11-25T20:49:17.6705113Z +---------------------+---------------------+---------------------------+
+2026-11-25T20:49:17.8300478Z Failure running container a715a978622b6e9defd1a54bdcc602272b5bc438467aca6f024690a9b0d519a8: Error: Command failed with exit code 1: /bin/sh -c $DEPENDABOT_HOME/dependabot-updater/bin/run update_files
+2026-11-25T20:49:18.0846899Z Cleaned up container a715a978622b6e9defd1a54bdcc602272b5bc438467aca6f024690a9b0d519a8
+2026-11-25T20:49:18.0953369Z   proxy | 2026/11/25 20:49:18 99/411 calls cached (24%)
+2026-11-25T20:49:18.0954075Z 2026/11/25 20:49:18 Posting metrics to remote API endpoint
+2026-11-25T20:49:18.7847499Z ##[error]Dependabot encountered an error performing the update
+
+Error: The updater encountered one or more errors.
+
+For more information see: https://github.com/frankTurtle/rollcage-example/network/updates/1731106029 (write access to the repository is required to view the log)
+2026-11-25T20:49:18.7856857Z 🤖 ~ finished: error reported to Dependabot ~
+2026-11-25T20:49:18.8027317Z Post job cleanup.
+2026-11-25T20:49:18.9522980Z Cleaning up orphan processes

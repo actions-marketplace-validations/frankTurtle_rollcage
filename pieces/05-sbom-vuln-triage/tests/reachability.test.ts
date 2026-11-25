@@ -145,6 +145,16 @@ describe('reachability notes from the model', () => {
     expect(llm.calls[0]?.prompt).not.toContain('minimist');
   });
 
+  it('asks for room in proportion to the findings, so a long reply is not cut off', async () => {
+    const many = Array.from({ length: 30 }, (_, i) => ({
+      ...(items[0] as (typeof items)[number]),
+      key: `k${i}`,
+    }));
+    const llm = new FakeLlm(['{}', '{}']);
+    await generateReachabilityNotes(llm, many);
+    expect(llm.calls[0]?.maxTokens).toBeGreaterThanOrEqual(9000);
+  });
+
   it('AC7: makes no model call when nothing has evidence', async () => {
     const llm = new FakeLlm([]);
     const result = await generateReachabilityNotes(llm, [items[1] as (typeof items)[number]]);

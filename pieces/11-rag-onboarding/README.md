@@ -138,10 +138,12 @@ are 1-based and computed by the code from the quote's position in the file, not 
 `eval/eval_set.json` holds the questions. Each answerable question names a `path` and a `line`
 that a correct citation must cover. Each refusal question has `"refuse": true`. A question
 counts as correct when it is answered with a citation that covers the expected line, or when
-a refusal question is refused. `eval/baseline.json` stores the accuracy to beat. It is 77.3 percent (17 of 22) today, measured
-with the offline stand-in for a model (see Status), which is deliberately naive: it quotes the
-line sharing the most rare words with the question, and it misses 5 answerable questions. A real
-model should do better, and the baseline is raised only on purpose, with `eval --write-baseline`. `eval` exits
+a refusal question is refused. `eval/baseline.json` stores the accuracy to beat. It is 100 percent (22 of 22) today, measured by replaying
+fixtures recorded from a real model (`claude-sonnet-5-5`) with the offline embedder. The earlier
+baseline, 77.3 percent (17 of 22), came from the naive offline stand-in, which quotes the line
+sharing the most rare words with the question. The same 22 questions also scored 22 of 22 live,
+with the ONNX embedder and the model, on 2026-11-25. Raise the baseline only on purpose, with
+`eval --write-baseline`. `eval` exits
 with 1 when accuracy falls below it, and a test runs the same check, so CI fails on regression.
 
 ### Acceptance criteria (each has a test)
@@ -225,15 +227,16 @@ Not verified here, because it needs a network, a model download or an API key:
 ```bash
 # 1. ONNX embedder end to end (downloads a model on first use):
 cd pieces/11-rag-onboarding && uv run rag-onboarding ask --live "How many approvals does a pull request need?"
-# 2. Eval with the ONNX embedder and a live model. Expect to re-tune min_score first:
+# 2. Eval with the ONNX embedder and a live model (22 of 22 on 2026-11-25 without re-tuning min_score):
 DEMO_LIVE=1 ANTHROPIC_API_KEY=... uv run rag-onboarding eval --live
 ```
 
 ### Status
 
-Draft for review. The fixtures in `eval/llm-fixtures/` were produced by a scripted offline generator
-(`offline_llm.py`), not by a model, and say `offline-generator` as their model. The live path
-(ONNX and Anthropic) has not been run. Retrieval thresholds are tuned on the 22 sample
+Draft for review. The fixtures in `eval/llm-fixtures/` are real `claude-sonnet-5-5` responses,
+recorded on 2026-11-25 with `uv run rag-onboarding fixtures --with-model` (the model, with the
+offline embedder so they replay in the default mode). The live path (ONNX embedder and Anthropic)
+was run end to end the same day: `ask --live` and `eval --live` both worked. Retrieval thresholds are tuned on the 22 sample
 questions, so treat the accuracy as a regression guard for this sample, not a quality claim.
 The CI workflow installs uv from PyPI at a pinned version instead of using a third-party action,
 because no action commit SHA could be checked here. Swap in a SHA-pinned `astral-sh/setup-uv`

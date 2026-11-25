@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"Migrations are forward only. Never run a down migration in production. If the bad release\", \"citations\": [{\"chunk_id\": \"runbooks/rollback.md:20-21\", \"quote\": \"Migrations are forward only. Never run a down migration in production. If the bad release\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"No. Migrations are forward only and you should never run a down migration in production. If a bad release included a migration, ask the database owner for a fix-forward change instead.\", \"citations\": [{\"chunk_id\": \"runbooks/rollback.md:20-21\", \"quote\": \"Migrations are forward only. Never run a down migration in production. If the bad release\"}, {\"chunk_id\": \"runbooks/rollback.md:20-21\", \"quote\": \"included a migration, ask the database owner for a fix-forward change instead.\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

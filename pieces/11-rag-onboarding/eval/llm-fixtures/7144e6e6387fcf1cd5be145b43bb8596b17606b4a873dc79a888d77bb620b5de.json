@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"return FLAT_SHIPPING_CENTS\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/pricing.py:15-19\", \"quote\": \"    return FLAT_SHIPPING_CENTS\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"The flat shipping fee is 495 cents ($4.95), defined as FLAT_SHIPPING_CENTS. It applies to orders whose subtotal after discount is below 7500 cents (75.00); orders at or above that threshold ship free.\", \"citations\": [{\"chunk_id\": \"sample-repo/src/orders/pricing.py:1-8\", \"quote\": \"FLAT_SHIPPING_CENTS = 495\"}, {\"chunk_id\": \"sample-repo/src/orders/pricing.py:1-8\", \"quote\": \"FREE_SHIPPING_THRESHOLD_CENTS = 7500\"}, {\"chunk_id\": \"sample-repo/src/orders/pricing.py:15-19\", \"quote\": \"    if subtotal_after_discount_cents >= FREE_SHIPPING_THRESHOLD_CENTS:\"}, {\"chunk_id\": \"sample-repo/src/orders/pricing.py:15-19\", \"quote\": \"    return FLAT_SHIPPING_CENTS\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

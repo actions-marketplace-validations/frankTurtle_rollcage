@@ -6,17 +6,17 @@ check names from that run.
 
 ## Settings
 
-| Setting                                  | Value                                            |
-| ---------------------------------------- | ------------------------------------------------ |
-| Require a pull request before merging    | on                                               |
-| Required approving reviews               | 1 (raise it for high-risk repositories)          |
-| Require review from Code Owners          | on (`.github/CODEOWNERS` names the owners)       |
-| Dismiss stale approvals on new commits   | on                                               |
-| Require status checks to pass            | on, and require branches to be up to date        |
-| Required checks                          | the jobs listed below                            |
-| Include administrators                   | on                                               |
-| Allow force pushes and deletions         | off                                              |
-| Require linear history                   | on                                               |
+| Setting                                | Value                                      |
+| -------------------------------------- | ------------------------------------------ |
+| Require a pull request before merging  | on                                         |
+| Required approving reviews             | 1 (raise it for high-risk repositories)    |
+| Require review from Code Owners        | on (`.github/CODEOWNERS` names the owners) |
+| Dismiss stale approvals on new commits | on                                         |
+| Require status checks to pass          | on, and require branches to be up to date  |
+| Required checks                        | the jobs listed below                      |
+| Include administrators                 | on                                         |
+| Allow force pushes and deletions       | off                                        |
+| Require linear history                 | on                                         |
 
 A single-maintainer repository cannot satisfy "one approving review" for its own pull requests.
 Either add a second reviewer or lower the count and accept the weaker control.

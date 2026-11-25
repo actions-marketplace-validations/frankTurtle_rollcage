@@ -221,6 +221,13 @@ GITHUB_TOKEN=$(gh auth token) pnpm --filter @adl/ci-failure-triage exec tsx src/
   --repo OWNER/NAME --since 2026-03-01 --until 2026-03-08 --llm none --out out-live
 ```
 
+Run against `frankTurtle/rollcage-example` on 2026-11-25 (read-only): runs were listed, the job logs endpoint
+redirect was followed, a real log was triaged, and a run's `updated_at` was within one second of its
+last job's `completed_at` for completed runs. The real log starts with a byte order mark, which the
+cleaner now strips. One failed run there was a Dependabot job, whose real cause (an update that could
+not be made) the rules read as a network error: Dependabot runs are not CI runs, so filter them out
+of the workflows you triage.
+
 Check that `out-live/triage.md` lists the failed runs you expect and that job logs were found. The
 endpoints used are: list workflow runs, get a workflow run attempt, list jobs for a workflow run
 attempt, and download job logs for a workflow run (all in GitHub's REST reference). Log downloads

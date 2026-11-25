@@ -1,4 +1,4 @@
 {
-  "text": "{\"answer\": \"1. Page the database owner on the `db-primary` rotation. Do not fail over alone.\", \"citations\": [{\"chunk_id\": \"runbooks/database-failover.md:7-14\", \"quote\": \"1. Page the database owner on the `db-primary` rotation. Do not fail over alone.\"}]}",
-  "model": "offline-generator"
+  "text": "{\"answer\": \"Page the database owner on the `db-primary` rotation. The runbook says not to fail over alone. This assumes the 'primary database is down' situation is the orders database, which is the one the failover runbook covers.\", \"citations\": [{\"chunk_id\": \"runbooks/database-failover.md:7-14\", \"quote\": \"1. Page the database owner on the `db-primary` rotation. Do not fail over alone.\"}], \"refused\": false, \"reason\": null}",
+  "model": "claude-sonnet-5-5"
 }

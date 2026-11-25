@@ -79,7 +79,7 @@ flowchart LR
 ```bash
 pnpm install
 pnpm --filter @adl/golden-path-template scaffold ~/code/payments-api \
-  --name payments-api --owner my-org --ref v0.2.0
+  --name payments-api --owner my-org --ref v0.3.0
 ```
 
 Commands:
@@ -144,7 +144,7 @@ Piece 04 is not an action. The generated `secrets-scan.yml` is the reusable form
 (with the gitleaks default rules, since the generated repo has no `secrets-guard` build).
 
 All five use one placeholder, `__ROLLCAGE_REF__`, which the scaffold replaces with `--ref`. The
-default is `v0.2.0`. That ref must point to a release that contains pieces 05, 06 and 10. If the
+default is `v0.3.0`. That ref must point to a release that contains pieces 05, 06 and 10. If the
 release you pick does not, pass a commit that does.
 
 ### Pinning
@@ -162,7 +162,7 @@ The scaffold checks every `uses:` line in the generated workflows:
 To turn the tag into a SHA before you rely on it:
 
 ```bash
-git ls-remote https://github.com/frankTurtle/rollcage refs/tags/v0.2.0
+git ls-remote https://github.com/frankTurtle/rollcage refs/tags/v0.3.0
 pnpm --filter @adl/golden-path-template scaffold ~/code/payments-api \
   --name payments-api --owner my-org --ref <sha>
 ```
@@ -226,7 +226,15 @@ The scaffold uses only Node built-ins. The generated project's dev dependencies 
 - It never overwrites. The non-empty check runs before the first write.
 - Generated workflows set `permissions: contents: read` at the top and grant more only to the job
   that needs it. Checkout uses `persist-credentials: false`.
-- The branch-protection guide contains a `gh api` command. The scaffold does not run it.
+- The branch-protection guide contains a `gh api` command. The scaffold does not run it. It was
+  checked without applying it (2026-11-25): its payload has every field GitHub's published REST
+  schema requires for this endpoint and no unknown one (`contexts` is marked deprecated in favor
+  of `checks` but still accepted), and its check names match the ones a real run of this
+  template's workflows reports (`build-test / build-test`, `risk-gate / gate`,
+  `secrets / gitleaks`, `sbom / sbom`, `policy / policy`).
+- A generated project was installed with a real `pnpm install` and passed `lint`, `typecheck`,
+  `test`, `build` and coverage. Its `format:check` script failed on two template Markdown files
+  whose tables were not formatted; that is fixed.
 - The generated `SECURITY.md` points to GitHub private vulnerability reporting. You must enable it
   on the new repo.
 

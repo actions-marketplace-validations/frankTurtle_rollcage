@@ -157,7 +157,7 @@ export async function explain(llm: LlmClient | undefined, a: Analysis): Promise<
     {
       system: SYSTEM,
       prompt: `FACTS:\n${JSON.stringify(buildFacts(a), null, 2)}`,
-      maxTokens: 800,
+      maxTokens: 2000, // 800 cut a real reply off mid-string
     },
     summarySchema(allowedAmounts(a)),
     () => deterministicSummary(a),

@@ -39,6 +39,22 @@ describe.skipIf(!hasConftest)('committed examples under real conftest', () => {
     expect(report.violations).toEqual([]);
   });
 
+  // Produced by `terraform plan` + `terraform show -json` (Terraform 1.14.4, AWS provider 6.x) from
+  // examples/terraform/real/{violations,fixed}. The fixed plan has the encryption resource pointing at
+  // the bucket by reference, so its `bucket` is unknown in the plan: this is what a real plan looks like.
+  it('a real Terraform plan with violations fails the same five rules', async () => {
+    const { code, report } = await gate(join(EXAMPLES, 'terraform/plan-real-violations.json'));
+    expect(code).toBe(1);
+    const ids = report.violations.map((v: { ruleId: string }) => v.ruleId).sort();
+    expect(ids).toEqual(['PG001', 'PG002', 'PG002', 'PG003', 'PG003']);
+  });
+
+  it('the real fixed plan passes, including an encryption resource matched by reference', async () => {
+    const { code, report } = await gate(join(EXAMPLES, 'terraform/plan-real-fixed.json'));
+    expect(code).toBe(0);
+    expect(report.violations).toEqual([]);
+  });
+
   it('the workflow with violations fails PG004, PG005 and PG006', async () => {
     const { code, report } = await gate(join(EXAMPLES, 'workflows/deploy-violations.yml'));
     expect(code).toBe(1);
@@ -54,7 +70,7 @@ describe.skipIf(!hasConftest)('committed examples under real conftest', () => {
   it('testing a directory finds the violations in both file types', async () => {
     const { code, report } = await gate(EXAMPLES);
     expect(code).toBe(1);
-    expect(report.violations.length).toBe(5 + 4);
+    expect(report.violations.length).toBe(5 + 5 + 4); // both violating plans and the violating workflow
   });
 
   it('exits 2 for a path that does not exist', async () => {
