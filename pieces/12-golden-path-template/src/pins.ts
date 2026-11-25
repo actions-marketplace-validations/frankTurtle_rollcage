@@ -53,8 +53,8 @@ export function checkPins(files: Record<string, string>, rollcageRef: string): P
   const warnings =
     movableRefs > 0
       ? [
-          `ref ${rollcageRef} is not a commit SHA, so ${movableRefs} rollcage reference(s) can move. ` +
-            'Resolve it with git ls-remote and pass the SHA as --ref.',
+          `ref ${rollcageRef} is not a commit SHA, so ${movableRefs} rollcage references can move.\n` +
+            '  Resolve it with git ls-remote and pass the SHA as --ref.',
         ]
       : [];
   return { errors, warnings };

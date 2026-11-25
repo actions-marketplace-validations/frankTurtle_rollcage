@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { checkProject, percentOnPath } from './check.ts';
 import { runPipeline } from './pipeline.ts';
@@ -35,15 +34,14 @@ function runScaffold(dir: string, values: { name?: string; owner?: string; ref?:
     return usageError(io, 'scaffold needs --name and --owner');
   }
   try {
-    const target = resolve(dir);
     const { name, owner } = values;
     const result = scaffold({
-      targetDir: target,
+      targetDir: dir,
       name,
       owner,
       ...(values.ref === undefined ? {} : { ref: values.ref }),
     });
-    io.out(`Created ${result.files.length} files in ${target}`);
+    io.out(`Created ${result.files.length} files in ${dir}`);
     io.out('Pin check: ok');
     for (const w of result.warnings) io.out(`Warning: ${w}`);
     return 0;
@@ -55,10 +53,13 @@ function runScaffold(dir: string, values: { name?: string; owner?: string; ref?:
 }
 
 function runCheck(dirs: string[], io: Io): number {
-  const results = dirs.map((d) => checkProject(resolve(d)));
+  const results = dirs.map((d) => checkProject(d));
   for (const r of results) {
     io.out(`${r.onPath ? 'ON ' : 'OFF'}  ${r.dir}`);
-    if (r.missing.length > 0) io.out(`      missing: ${r.missing.join(', ')}`);
+    if (r.missing.length > 0) {
+      io.out(`      missing ${r.missing.length} files:`);
+      for (const f of r.missing) io.out(`        ${f}`);
+    }
     for (const e of r.pinErrors) io.out(`      ${e}`);
   }
   const on = results.filter((r) => r.onPath).length;
@@ -67,7 +68,7 @@ function runCheck(dirs: string[], io: Io): number {
 }
 
 function runPipelineCommand(dir: string, linkModules: string | undefined, io: Io): number {
-  const result = runPipeline(resolve(dir), linkModules === undefined ? {} : { linkModules });
+  const result = runPipeline(dir, linkModules === undefined ? {} : { linkModules });
   for (const s of result.steps) {
     io.out(
       `${s.status === 'passed' ? 'PASS' : s.status === 'failed' ? 'FAIL' : 'SKIP'}  ${s.name}`,
