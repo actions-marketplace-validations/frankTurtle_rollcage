@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { type Fetcher, checkLinks, listMarkdownFiles } from './links.ts';
+import { type Fetcher, checkLinks, listMarkdownFiles } from '@adl/shared';
 import { parseWeights } from './schema.ts';
 import { ScorecardError, parseScorecard, rankTools, type ToolResult } from './score.ts';
 

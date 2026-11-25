@@ -1,4 +1,5 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
@@ -7,8 +8,9 @@ import {
   headingSlugs,
   listMarkdownFiles,
   slugify,
-} from '../src/links.ts';
-import { PIECE_ROOT, tmpDir } from './helpers.ts';
+} from '../src/index.js';
+
+const tmpDir = (): string => mkdtempSync(join(tmpdir(), 'adl-links-'));
 
 describe('AC9: link extraction', () => {
   it('finds inline links, images, reference definitions and autolinks with line numbers', () => {
@@ -144,8 +146,8 @@ describe('AC9: live external checks', () => {
   });
 
   it('refuses live mode without a fetcher, so no default network call is made', async () => {
-    await expect(
-      checkLinks({ root: PIECE_ROOT, files: ['README.md'], live: true }),
-    ).rejects.toThrow(/fetcher/);
+    await expect(checkLinks({ root: tmpDir(), files: ['README.md'], live: true })).rejects.toThrow(
+      /fetcher/,
+    );
   });
 });

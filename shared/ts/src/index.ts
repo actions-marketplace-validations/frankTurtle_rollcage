@@ -16,3 +16,4 @@ export * from './demo.js';
 export * from './llm-select.js';
 export * from './diff.js';
 export * from './dates.js';
+export * from './links.js';
