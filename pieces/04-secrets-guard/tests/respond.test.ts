@@ -40,13 +40,6 @@ describe('AC-4 deactivation', () => {
     expect(r.calls.audit).toEqual(r.entries);
   });
 
-  it('uses only characters IAM allows in tag values', async () => {
-    const r = await run();
-    for (const value of Object.values(r.calls.tagged[0]?.[1] ?? {})) {
-      expect(value).toMatch(/^[\p{L}\p{N}\s_.:/=+\-@]+$/u);
-    }
-  });
-
   it('still reports the key as deactivated and notifies when tagging fails', async () => {
     const r = await run(event(), { failOn: 'tag' });
     expect(decisions(r)).toEqual(['deactivated']);

@@ -114,14 +114,16 @@ export async function respondToAlert(
     }
     await ports.iam.deactivate(key.id, user);
     // The key is already inactive. A tagging failure is recorded but must not hide that fact or
-    // skip the notification. IAM tag values cannot contain '#', so the separator is ':'.
-    const tagError = await ports.iam
-      .tagUser(user, {
+    // skip the notification.
+    let tagError: string | undefined;
+    try {
+      await ports.iam.tagUser(user, {
         'secrets-guard-deactivated-at': at.toISOString(),
         'secrets-guard-alert': `${base.repo}:${alert.number}`,
-      })
-      .then(() => undefined)
-      .catch((error: unknown) => errorName(error));
+      });
+    } catch (error) {
+      tagError = errorName(error);
+    }
     const seconds = alert.created_at
       ? Math.max(0, Math.round((at.getTime() - Date.parse(alert.created_at)) / 1000))
       : undefined;

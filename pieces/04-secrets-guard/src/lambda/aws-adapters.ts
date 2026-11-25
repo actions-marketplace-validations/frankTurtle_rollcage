@@ -18,6 +18,10 @@ import { GitHubHttp } from '@adl/shared';
 import type { LeakAuditEntry } from '../types.js';
 import type { IamPort } from './ports.js';
 
+/** IAM tag values allow letters, digits, spaces and _ . : / = + - @ only, up to 256 characters. */
+export const iamTagValue = (value: string): string =>
+  value.replace(/[^\p{L}\p{N}\s_.:/=+@-]/gu, '-').slice(0, 256);
+
 /** Thin wrappers over the AWS SDK v3. They hold no decisions; the logic is in respond.ts. */
 
 export function iamPort(client: IAMClient): IamPort {
@@ -54,7 +58,7 @@ export function iamPort(client: IAMClient): IamPort {
       await client.send(
         new TagUserCommand({
           UserName: userName,
-          Tags: Object.entries(tags).map(([Key, Value]) => ({ Key, Value })),
+          Tags: Object.entries(tags).map(([Key, Value]) => ({ Key, Value: iamTagValue(Value) })),
         }),
       );
     },
