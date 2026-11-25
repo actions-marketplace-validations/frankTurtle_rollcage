@@ -9,6 +9,7 @@ import {
   alertSecretFetcher,
   auditWriter,
   iamPort,
+  iamTagValue,
   notifier,
   secretReader,
 } from '../src/lambda/aws-adapters.ts';
@@ -80,6 +81,15 @@ describe('iamPort', () => {
     expect(await iamPort(fakeClient<IAMClient>(() => ({})).client).keyIsActive('AKIA1', 'a')).toBe(
       false,
     );
+  });
+
+  it('makes tag values IAM accepts (no # and at most 256 characters)', async () => {
+    expect(iamTagValue('org/repo#7')).toBe('org/repo-7');
+    expect(iamTagValue('org/repo:7 a_b.c=d+e-f@g')).toBe('org/repo:7 a_b.c=d+e-f@g');
+    expect(iamTagValue('x'.repeat(300))).toHaveLength(256);
+    const { client, sent } = fakeClient<IAMClient>();
+    await iamPort(client).tagUser('alice', { k: 'a#b' });
+    expect(JSON.stringify(sent)).toContain('"Value":"a-b"');
   });
 
   it('deactivates by setting Inactive, never by deleting, and tags the user', async () => {

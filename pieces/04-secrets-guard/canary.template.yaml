@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  A permissionless IAM user under the guarded path, for testing secrets-guard end to end.
+  Create its access key with the CLI (see DEPLOY.md). Delete the key, then this stack.
+
+Resources:
+  CanaryUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /secrets-guard-demo/
+      UserName: leak-test

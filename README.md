@@ -3,23 +3,21 @@
 **The AI DevSecOps Library: making AI-accelerated delivery safe to ship, and measurable.**
 
 A roll cage lets a car go fast and survive the crash. This repository does the same for
-AI-assisted software delivery: guardrails you can adopt, and numbers that prove they work.
-
-Working code, tests and CI for making AI-assisted software delivery safe to ship, and for
-measuring whether it is paying off.
+AI-assisted software delivery: working code, tests and CI for guardrails you can adopt, and
+numbers that show whether AI is paying off.
 
 > Status: Phase 0 (skeleton) is done. Pieces 01 to 04 (the MVP) are done. The rest are planned.
 
 ## For engineering leaders
 
-**The problem.** AI coding tools raise how much code a team produces. The same research that
-reports the gains also reports that AI amplifies whatever a team already does, good or bad,
-and developers say they do not fully trust the output (see [docs/sources.md](docs/sources.md);
-figures there are flagged VERIFY BEFORE PUBLISHING). Review, security and compliance
-checks have to keep up, and you need numbers to show whether they do.
+AI coding tools raise how much code a team produces. The same research that reports the gains
+also reports that AI amplifies whatever a team already does, good or bad, and that developers
+say they do not fully trust the output (see [docs/sources.md](docs/sources.md); figures there
+are flagged VERIFY BEFORE PUBLISHING). Review, security and compliance checks have to keep up,
+and you need numbers to show whether they do.
 
-Each piece below solves one problem you probably already have. Each ships as code with tests and
-CI, and each has a demo script.
+Each piece below solves a problem you probably already have. Each ships as code with tests,
+CI and a demo script.
 
 | # | Piece | Problem | What it proves | Metric | Status | Video |
 |---|-------|---------|----------------|--------|--------|-------|
@@ -64,13 +62,13 @@ pnpm demo:0N:reset   # restore the before state for another take
 
 ## Principles
 
-- **Deterministic decisions, AI explanations.** Thresholds, pass/fail and policy live in code.
-  The model classifies, summarizes and drafts; its output is schema-validated, with a
-  deterministic fallback.
-- **Fail closed.** If the model is unavailable, high-risk categories are blocked, not waved through.
-- **Every action is logged.** Decisions append to a hash-chained JSONL audit log.
-- **No secrets in code.** gitleaks runs pre-commit and in CI. Tests never touch the network.
-- **AI output states its assumptions** and does not claim confirmation without evidence.
+- Code makes the decisions and the model explains them. Thresholds, pass/fail and policy live
+  in code. The model classifies, summarizes and drafts, and its output is schema-validated with
+  a deterministic fallback.
+- When the model is unavailable, high-risk categories are blocked.
+- Decisions append to a hash-chained JSONL audit log.
+- gitleaks runs pre-commit and in CI, and tests never touch the network.
+- AI output states its assumptions and does not claim confirmation without evidence.
 
 Compliance mappings in this repo are illustrative mappings, not compliance attestations.
 
@@ -78,7 +76,7 @@ Compliance mappings in this repo are illustrative mappings, not compliance attes
 
 - `pieces/04-secrets-guard`: three secret-leak layers: a gitleaks pre-commit wrapper that records
   blocks, a CI scan template, and a SAM app that verifies a GitHub secret scanning webhook and
-  deactivates (never deletes) a leaked AWS key. Dry run by default; not deployed.
+  deactivates (never deletes) a leaked AWS key. Dry run by default; deployed and tested once against a canary IAM user.
 - `pieces/03-dora-metrics`: the five DORA metrics from the GitHub API, a before and after split
   around an AI rollout date, a JSON report, a single-file HTML dashboard and a CFO summary.
 - `pieces/02-agent-policy`: a one-page AI coding agent policy, Claude Code hooks that block

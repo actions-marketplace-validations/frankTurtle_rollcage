@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Piece 04 deployed to AWS (us-east-1) and tested with signed webhooks and a canary IAM user. The
+  live test found that tagging a user with `#` in the value fails; the tag separator is now `:`,
+  and a failed tag no longer hides a successful deactivation or skips the notification. Template
+  gains `RetainAuditTable` so a demo stack deletes in one command; `canary.template.yaml` added;
+  every resource is tagged `project=rollcage`. Video 01's DORA hook is now sourced.
+
 - Release prep: security contact set; the unsourced "$40K" hook dropped; AWS facts for piece 04
   checked against AWS docs (runtime `nodejs24.x`, SDK bundled, Lambda bundled by `build:lambda`
   because the SAM esbuild builder cannot resolve the workspace dependency); the agent-policy hook

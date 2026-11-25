@@ -22,12 +22,19 @@ Parameters:
     Type: String
     Default: ''
     Description: Optional address for notifications. Leave empty to skip the subscription.
+  RetainAuditTable:
+    Type: String
+    Default: 'true'
+    AllowedValues: ['true', 'false']
+    Description: When true, the audit table survives stack deletion. Use false for a throwaway demo so one delete removes everything.
   GitHubTokenSecretArn:
     Type: String
     Default: ''
     Description: Optional Secrets Manager secret holding a GitHub token that can read secret scanning alerts.
 
 Conditions:
+  KeepAuditTable: !Equals [!Ref RetainAuditTable, 'true']
+  DisposeAuditTable: !Not [!Condition KeepAuditTable]
   HasEmail: !Not [!Equals [!Ref NotifyEmail, '']]
   HasGitHubToken: !Not [!Equals [!Ref GitHubTokenSecretArn, '']]
 
@@ -42,8 +49,27 @@ Resources:
 
   AuditTable:
     Type: AWS::DynamoDB::Table
+    Condition: KeepAuditTable
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
+  AuditTableDisposable:
+    Type: AWS::DynamoDB::Table
+    Condition: DisposeAuditTable
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
     Properties:
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
@@ -96,7 +122,7 @@ Resources:
           WEBHOOK_SECRET_ARN: !Ref WebhookSecret
           GITHUB_TOKEN_SECRET_ARN: !Ref GitHubTokenSecretArn
           TOPIC_ARN: !Ref AlertTopic
-          TABLE_NAME: !Ref AuditTable
+          TABLE_NAME: !If [KeepAuditTable, !Ref AuditTable, !Ref AuditTableDisposable]
       Policies:
         - Version: '2012-10-17'
           Statement:
@@ -120,7 +146,8 @@ Resources:
               Resource: !Ref AlertTopic
             - Effect: Allow
               Action: dynamodb:PutItem
-              Resource: !GetAtt AuditTable.Arn
+              Resource:
+                !If [KeepAuditTable, !GetAtt AuditTable.Arn, !GetAtt AuditTableDisposable.Arn]
             - Effect: Allow
               Action: secretsmanager:GetSecretValue
               Resource:
@@ -135,6 +162,6 @@ Outputs:
     Description: Where the generated webhook secret is stored.
     Value: !Ref WebhookSecret
   AuditTableName:
-    Value: !Ref AuditTable
+    Value: !If [KeepAuditTable, !Ref AuditTable, !Ref AuditTableDisposable]
   TopicArn:
     Value: !Ref AlertTopic

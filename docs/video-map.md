@@ -5,7 +5,7 @@ Hook lines marked * depend on a statistic or figure that is not yet verified in 
 
 | # | Piece | Hook line | Tier | Status |
 |---|-------|-----------|------|--------|
-| 01 | pr-risk-gate | AI made your team faster. DORA says it also made you break more. Here's the fix.* | MVP | demo-ready |
+| 01 | pr-risk-gate | AI makes teams ship faster. DORA found it is also associated with less stable delivery. Here's the fix. | MVP | demo-ready |
 | 02 | agent-policy | Your engineers are already using AI. Here's the one-page policy and the guardrails that enforce it. | MVP | demo-ready |
 | 03 | dora-metrics | How to prove AI is paying off: the 5 DORA numbers your CFO will understand. | MVP | demo-ready |
 | 04 | secrets-guard | A leaked AWS key is an incident waiting to happen. Here is the 3-layer guard that stops it. | MVP | demo-ready |

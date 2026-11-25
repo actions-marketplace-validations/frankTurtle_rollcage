@@ -9,8 +9,8 @@ it does not replace a human reading the primary source.
 - URL: https://dora.dev/research/2025/dora-report/ (landing page). Full report download is
   linked from https://cloud.google.com/dora (not yet read).
 - Claims to support, with status:
-  - About 90% use AI at work. **Not found on the landing page. Not confirmed.**
-  - AI adoption correlates with higher throughput and higher delivery instability. **Not found on the landing page. Not confirmed.**
+  - 90% use AI at work, and over 80% believe it raised their productivity. **Read on 2026-11-25** in DORA's own post https://dora.dev/insights/balancing-ai-tensions/ (March 10, 2026). Not yet checked in the report PDF.
+  - Higher AI adoption is associated with higher throughput and higher delivery instability. **Read on 2026-11-25** in https://dora.dev/insights/balancing-ai-tensions/ and https://dora.dev/insights/dora-2025-year-in-review/ ("AI improves throughput, but often at the cost of stability if your foundation isn't solid"). This is an association, so say "associated with", not "causes".
   - About 30% report little or no trust in AI-generated code. **Not found on the landing page. Not confirmed.**
   - "AI doesn't fix a team; it amplifies what's already there." **Exact quote not found.** The landing page says the report's "primary role is as an amplifier, magnifying an organization's existing strengths and weaknesses." Use that wording, or confirm the quote in the full report.
 - Status: VERIFY BEFORE PUBLISHING. Read the full report before citing any number.
