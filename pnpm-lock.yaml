@@ -107,6 +107,12 @@ importers:
         specifier: ^0.28.2
         version: 0.28.2
 
+  pieces/12-golden-path-template:
+    dependencies:
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
+
   shared/ts:
     dependencies:
       yaml:

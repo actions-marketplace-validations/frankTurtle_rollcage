@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { runCli, type Io } from '../src/cli.ts';
 import { tempDir, writeFile } from './helpers.ts';
@@ -83,5 +84,22 @@ describe('cli (AC10)', () => {
 
   it('pipeline without a directory exits 2', () => {
     expect(run(['pipeline']).code).toBe(2);
+  });
+
+  it('pipeline reports a failing install and exits 1', () => {
+    const r = run(['pipeline', tempDir()]);
+    expect(r.code).toBe(1);
+    expect(r.out).toMatch(/FAIL {2}install/);
+    expect(r.out).toMatch(/SKIP {2}lint/);
+  });
+
+  it('pipeline runs a scaffolded project with linked modules and lists skipped jobs', () => {
+    const target = join(tempDir(), 'svc');
+    run(['scaffold', target, '--name', 'svc', '--owner', 'example-org']);
+    const modules = join(dirname(fileURLToPath(import.meta.url)), '../../../node_modules');
+    const r = run(['pipeline', target, '--link-modules', modules]);
+    expect(r.code).toBe(0);
+    expect(r.out).toMatch(/PASS {2}build/);
+    expect(r.out).toMatch(/SKIP {2}sbom \(needs GitHub: .*sbom-vuln\.yml\)/);
   });
 });

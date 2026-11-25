@@ -1,0 +1,4 @@
+# Branch protection with "Require review from Code Owners" turns this into a required reviewer.
+* @__OWNER__
+/.github/ @__OWNER__
+/SECURITY.md @__OWNER__
