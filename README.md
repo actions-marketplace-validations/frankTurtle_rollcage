@@ -1,5 +1,11 @@
 # Rollcage
 
+[![ci](https://github.com/frankTurtle/rollcage/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/frankTurtle/rollcage/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/rollcage-init?label=rollcage-init)](https://www.npmjs.com/package/rollcage-init)
+[![provenance](https://img.shields.io/badge/npm-provenance-blue)](https://www.npmjs.com/package/rollcage-init#provenance)
+[![release](https://img.shields.io/github/v/release/frankTurtle/rollcage)](https://github.com/frankTurtle/rollcage/releases)
+[![license](https://img.shields.io/github/license/frankTurtle/rollcage)](LICENSE)
+
 **The AI DevSecOps Library: making AI-accelerated delivery safe to ship, and measurable.**
 
 A roll cage lets a car go fast and survive the crash. This repository does the same for
