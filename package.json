@@ -38,5 +38,11 @@
     "typescript": "^5.6.0",
     "typescript-eslint": "^8.0.0",
     "vitest": "^3.0.0"
-  }
+  },
+  "author": "Barret Nobel (https://github.com/frankTurtle)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankTurtle/rollcage.git"
+  },
+  "homepage": "https://github.com/frankTurtle/rollcage#readme"
 }
