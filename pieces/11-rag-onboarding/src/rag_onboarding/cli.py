@@ -43,7 +43,14 @@ def _parser() -> argparse.ArgumentParser:
     ev = sub.add_parser("eval", help="grade the eval set against the committed baseline")
     common(ev)
     ev.add_argument("--write-baseline", action="store_true", help="store this accuracy as baseline")
-    common(sub.add_parser("fixtures", help="re-record the LLM fixtures the eval set needs"))
+    fx = sub.add_parser("fixtures", help="re-record the LLM fixtures the eval set needs")
+    common(fx)
+    fx.add_argument(
+        "--with-model",
+        action="store_true",
+        help="record real model responses (needs ANTHROPIC_API_KEY) but retrieve with the offline "
+        "embedder, so the fixtures replay in the default mode",
+    )
     metric = sub.add_parser("metric", help="median days to first merged PR, per cohort")
     metric.add_argument("csv", type=Path)
     return parser
@@ -90,16 +97,19 @@ def _cmd_eval(
     return 0 if ok else 1
 
 
-def _cmd_fixtures(settings: Settings, live: bool, env: Mapping[str, str]) -> int:
+def _cmd_fixtures(
+    settings: Settings, live: bool, env: Mapping[str, str], with_model: bool = False
+) -> int:
+    use_model = live or with_model
+    source: LlmClient = build_llm(settings, True, env) if use_model else OfflineLlm()
     for old in settings.fixtures_dir.glob("*.json"):
         old.unlink()
-    source: LlmClient = build_llm(settings, True, env) if live else OfflineLlm()
     recorder = RecordReplayLlm(settings.fixtures_dir, "record", source)
     answerer = _answerer(settings, live, recorder)
     for item in load_eval_set(settings.eval_set):
         answerer.ask(item.question)
     count = len(list(settings.fixtures_dir.glob("*.json")))
-    who = "a live model" if live else "the offline generator (not a model)"
+    who = "a live model" if use_model else "the offline generator (not a model)"
     print(f"recorded {count} fixtures in {settings.fixtures_dir} using {who}")
     return 0
 
@@ -125,7 +135,7 @@ def main(argv: Sequence[str] | None = None, env: Mapping[str, str] | None = None
             return _cmd_ask(settings, live, env, args)
         if args.command == "eval":
             return _cmd_eval(settings, live, env, args)
-        return _cmd_fixtures(settings, live, env)
+        return _cmd_fixtures(settings, live, env, args.with_model)
     except (OSError, ValueError, RuntimeError) as err:
         print(f"error: {err}", file=sys.stderr)
         return 2

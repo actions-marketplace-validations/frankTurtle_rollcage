@@ -110,7 +110,9 @@ export async function generateReachabilityNotes(
     {
       system: REACH_SYSTEM,
       prompt: `DATA:\n${JSON.stringify({ findings: data }, null, 1)}`,
-      maxTokens: 2000,
+      // About 300 tokens a note (up to 700 characters, a key and its citations). A fixed 2000 cut the
+      // JSON off mid-string on a real scan with 25 findings, which fell back to the template.
+      maxTokens: Math.min(16_000, 500 + 300 * withEvidence.length),
     },
     reachSchema(allowed),
     () => ({ notes: [] as { key: string; note: string; cites: string[] }[] }),

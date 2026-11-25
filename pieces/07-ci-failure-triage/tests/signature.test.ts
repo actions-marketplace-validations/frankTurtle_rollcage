@@ -126,3 +126,13 @@ describe('redaction and excerpts', () => {
     expect(excerpt(gh('nothing wrong here'), 5)).toEqual([]);
   });
 });
+
+// fixtures/logs/real-dependabot-job.log is the head and tail of a real job log downloaded from
+// GitHub on 2026-11-25 through the job logs endpoint (it starts with a byte order mark).
+describe('real downloaded log', () => {
+  it('strips the byte order mark and the timestamp from the first line', () => {
+    const first = readLog('real-dependabot-job.log').split('\n')[0] ?? '';
+    expect(first.startsWith('﻿')).toBe(true);
+    expect(normalizeLine(first)).toBe("Current runner version: '<N>'");
+  });
+});
