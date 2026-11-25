@@ -1,7 +1,7 @@
 // Sample app source. The triage tool greps this tree for evidence; nothing here runs.
-const express = require('express');
-const _ = require('lodash');
-const jwt = require('jsonwebtoken');
+import express from 'express';
+import _ from 'lodash';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const defaults = { currency: 'EUR', pageSize: 20 };
@@ -12,8 +12,12 @@ app.get('/orders', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const token = jwt.sign({ sub: req.body.user }, process.env.JWT_SECRET);
+  const token = jwt.sign({ sub: req.body.user }, loadSecret());
   res.json({ token });
 });
 
-module.exports = app;
+function loadSecret() {
+  return '';
+}
+
+export default app;

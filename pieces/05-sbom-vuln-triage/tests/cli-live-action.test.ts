@@ -5,7 +5,7 @@ import { parse } from 'yaml';
 import { describe, expect, it } from 'vitest';
 import { runCli } from '../src/cli.ts';
 import type { CliDeps } from '../src/cli.ts';
-import { runSyftAndGrype } from '../src/live.ts';
+import { runSyftAndGrype, spawnRunner } from '../src/live.ts';
 import type { Runner } from '../src/live.ts';
 import { fixtureText, fixturePath, NODE_SRC, PIECE, PY_SRC } from './helpers.ts';
 
@@ -271,5 +271,20 @@ describe('AC16: action.yml', () => {
     for (const step of action.runs.steps) {
       if (step.uses) expect(step.uses).toMatch(/@[0-9a-f]{40}/);
     }
+  });
+});
+
+describe('spawnRunner', () => {
+  it('runs a program with an argument list and captures output and status', async () => {
+    const ok = await spawnRunner(process.execPath, ['-e', 'console.log("hi")']);
+    expect(ok).toMatchObject({ status: 0, stdout: 'hi\n' });
+    const bad = await spawnRunner(process.execPath, ['-e', 'process.exit(3)']);
+    expect(bad.status).toBe(3);
+  });
+
+  it('rejects with ENOENT for a program that does not exist', async () => {
+    await expect(spawnRunner('definitely-not-a-real-program-xyz', [])).rejects.toMatchObject({
+      code: 'ENOENT',
+    });
   });
 });
