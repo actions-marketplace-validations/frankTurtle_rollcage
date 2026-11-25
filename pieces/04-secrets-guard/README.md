@@ -197,7 +197,11 @@ instead of being reported as out of scope. It only reads the owner name and last
   2026-11-25 (see `docs/sources.md`). What is still unverified is listed under "Verify before you
   deploy".
 
-### Verify before you deploy
+### Verified on AWS
+
+Deployed and tested once on 2026-11-25 (see DEPLOY.md): the IAM user-path scoping, the Function URL,
+the bundled Node 24 handler, deactivation, tagging and the audit table all worked against real AWS.
+GitHub's own delivery and the teardown commands are still untested.
 
 Checked against AWS documentation on 2026-11-25:
 

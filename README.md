@@ -76,7 +76,7 @@ Compliance mappings in this repo are illustrative mappings, not compliance attes
 
 - `pieces/04-secrets-guard`: three secret-leak layers: a gitleaks pre-commit wrapper that records
   blocks, a CI scan template, and a SAM app that verifies a GitHub secret scanning webhook and
-  deactivates (never deletes) a leaked AWS key. Dry run by default; not deployed.
+  deactivates (never deletes) a leaked AWS key. Dry run by default; deployed and tested once against a canary IAM user.
 - `pieces/03-dora-metrics`: the five DORA metrics from the GitHub API, a before and after split
   around an AI rollout date, a JSON report, a single-file HTML dashboard and a CFO summary.
 - `pieces/02-agent-policy`: a one-page AI coding agent policy, Claude Code hooks that block
