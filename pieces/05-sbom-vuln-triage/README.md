@@ -91,7 +91,7 @@ only writes prose from evidence the code hands it, and its output is validated b
 ```bash
 pnpm install
 pnpm demo:05                       # the whole demo, offline
-pnpm --filter @adl/sbom-vuln-triage exec tsx src/bin.ts --help
+pnpm --filter @adl/sbom-vuln-triage triage report --app NAME:GRYPE_JSON:SRC_DIR
 ```
 
 Commands. Every command is offline unless you pass `--live` or `--live-feeds`.
@@ -113,7 +113,10 @@ options:
   --as-of YYYY-MM-DD     the date used for ages and waiver expiry (default: today, UTC)
   --epss-threshold N     EPSS above this counts as likely exploited (default 0.1)
   --minutes-per-finding N  assumption for the triage-time estimate (default 15)
-  --out DIR              write findings.json, report.md, leadership.md, sbom-diff.md here
+  --fail-on LEVEL        critical (default), high, medium or low; used by the gate
+  --show LIST            sections to print: table,notes,leadership,metrics,gate
+  --audit FILE           gate only: append the decision to a hash-chained JSONL audit log
+  --out DIR              write findings.json, report.md and leadership.md here
   --live                 run syft and grype (needs both installed and a Grype database)
   --live-feeds           fetch KEV from CISA and EPSS from FIRST instead of the snapshots
   --llm-live             call the model (needs ANTHROPIC_API_KEY; model from ANTHROPIC_MODEL)
@@ -121,7 +124,9 @@ options:
 
 The model is never called unless `--llm-live` or `DEMO_LIVE=1` is set. By default the CLI answers
 from recorded responses in `fixtures/llm/`, and falls back to the deterministic text when a
-recording is missing.
+recording is missing. The committed recordings were written by a scripted stand-in
+(`demo/record-llm.ts`), not by a real model, because no API key was used to build this piece.
+Re-run that script after you change a prompt or the demo inputs; a test fails when they are stale.
 
 ### Prioritization rules
 
@@ -270,12 +275,14 @@ I could not prove these offline. Run them once before you rely on the Action:
 ```bash
 # 1. Real scanner output parses. Needs a Grype database (grype db update downloads one).
 grype db update
-pnpm --filter @adl/sbom-vuln-triage exec tsx src/bin.ts report --live --path pieces/05-sbom-vuln-triage/demo/apps/node-app
+pnpm --filter @adl/sbom-vuln-triage triage report --live --path "$PWD/pieces/05-sbom-vuln-triage/demo/apps/node-app"
 # 2. Real feeds parse.
-pnpm --filter @adl/sbom-vuln-triage exec tsx src/bin.ts report --live --live-feeds --path pieces/05-sbom-vuln-triage/demo/apps/python-app
+pnpm --filter @adl/sbom-vuln-triage triage report --live --live-feeds --path "$PWD/pieces/05-sbom-vuln-triage/demo/apps/python-app"
 # 3. The Action on a throwaway branch of the repository, with Syft and Grype installed by pinned steps.
 ```
 
 The Grype JSON fields read here (`matches[].vulnerability.id`, `.severity`, `.fix.versions`,
 `.fix.state`, `relatedVulnerabilities[].id`, `artifact.name`, `.version`, `.purl`) come from
-Grype's documented JSON output. Step 1 is what confirms them against the installed version.
+Grype's documented JSON output. The CLI flags used (`syft dir:PATH -q -o cyclonedx-json`,
+`grype sbom:FILE -q -o json`) were checked against `syft --help` and `grype --help` at Syft 1.57
+and Grype 0.122, but neither tool was run end to end. Step 1 is what confirms them against the installed version.
