@@ -56,7 +56,7 @@ Which level this piece reaches:
   provenance and reaches no SLSA level.
 
 Source: slsa.dev specification v1.0, build track, and GitHub's documentation on artifact
-attestations and SLSA. Check both before you quote a level to an auditor.
+attestations and SLSA. These pages were not fetched while building this piece, so check both before you quote a level to an auditor.
 
 **Adopt it in a week.**
 
@@ -131,7 +131,7 @@ The gate exits 0 when every artifact verifies, 1 when it blocks, and 2 for bad u
 | ------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
 | `--mode`                  | all                        | `key`, `cosign-keyless` or `github-attestation`. Required.                       |
 | `--artifact PATH`         | all                        | Artifact to check. Repeat for several. At least one is required.                 |
-| `--bundle PATH`           | `key`, `cosign-keyless`    | Sigstore bundle. Default: `<artifact>.sigstore.json`. Optional for github mode (offline verification). |
+| `--bundle PATH`           | `key`, `cosign-keyless`    | Sigstore bundle. Default: `<artifact>.sigstore.json`. Optional for github mode (offline verification). One artifact only; with several, each uses its default. |
 | `--public-key PATH`       | `key`                      | Cosign public key.                                                               |
 | `--allow-no-tlog`         | `key`                      | Adds `--insecure-ignore-tlog`. For the offline demo only. See security notes.    |
 | `--cert-identity VALUE`   | `cosign-keyless`           | Exact certificate identity (the workflow URL and ref). Required.                 |
@@ -209,7 +209,7 @@ artifact, which is the safe failure.
 ### Config and extension
 
 - Add a verifier by adding a mode in `src/verify.ts`: build the arguments, then write a parser that
-  returns `verified`, `failed` or `error`. Anything the parser cannot read is `error`.
+  returns `verified` or `failed`. Anything the parser cannot read is `failed`.
 - Swap the runner by passing a different `CommandRunner` to `runGate`. The default runs the tool
   with `execFile` (no shell) and a timeout.
 
@@ -226,7 +226,7 @@ artifact, which is the safe failure.
 - AC-8: the exact argument lists passed to cosign and gh match the documented flags, and
   `--insecure-ignore-tlog` appears only when `--allow-no-tlog` is set.
 - AC-9: no test starts a real process; the real runner is covered with a harmless local command.
-- AC-10: the offline demo signs, verifies, tampers one byte, and the gate blocks.
+- AC-10: the offline demo signs, verifies, tampers one byte, and the gate blocks. This runs real cosign, so it is checked by the demo step in CI and not by unit tests.
 
 ### Tests
 

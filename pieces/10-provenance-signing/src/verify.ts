@@ -70,18 +70,23 @@ const failed = (artifact: string, reason: string, sha256?: string): ArtifactResu
   sha256,
 });
 
-const firstLine = (text: string): string => text.trim().split('\n').pop()?.trim() ?? '';
+/** The last stderr line, without cosign's boilerplate prefixes, so the reason fits on one screen line. */
+const lastLine = (text: string): string =>
+  (text.trim().split('\n').pop() ?? '')
+    .replace(/^(Error: |error during command execution: )+/, '')
+    .replace(/^failed to verify signature: could not verify message: /, '')
+    .trim();
 
 /** Judge cosign's result. Both the exit code and the success line must agree. */
 function judgeCosign(result: CommandResult): string | undefined {
-  if (result.code !== 0) return `cosign exited ${result.code}: ${firstLine(result.stderr)}`;
+  if (result.code !== 0) return `cosign exited ${result.code}: ${lastLine(result.stderr)}`;
   const said = `${result.stdout}\n${result.stderr}`.includes(COSIGN_OK);
   return said ? undefined : 'ambiguous result: cosign exited 0 without printing "Verified OK"';
 }
 
 /** Judge gh's JSON: at least one verified statement must name this file's sha256 as a subject. */
 function judgeGh(result: CommandResult, digest: string): string | undefined {
-  if (result.code !== 0) return `gh exited ${result.code}: ${firstLine(result.stderr)}`;
+  if (result.code !== 0) return `gh exited ${result.code}: ${lastLine(result.stderr)}`;
   let json: unknown;
   try {
     json = JSON.parse(result.stdout);
