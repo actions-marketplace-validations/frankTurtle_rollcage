@@ -72,6 +72,8 @@ pnpm demo:NN:reset   # restore the before state for another take
 2. Add **01 (PR risk gate)** so risky changes get extra scrutiny.
 3. Measure with **03 (DORA metrics)**, using the date you rolled out AI tools as the split.
 
+For the full path in a real repo, with checks at each step, see [docs/adopting.md](docs/adopting.md).
+
 ## Principles
 
 - Code makes the decisions and the model explains them. Thresholds, pass/fail and policy live
