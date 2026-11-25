@@ -21,6 +21,8 @@ credentials
 .vscode/
 .idea/
 *.log
+# test fixtures that are logs on purpose
+!pieces/*/fixtures/**/*.log
 .claude/settings.local.json
 
 # runtime audit logs (demo logs are written here; fixtures live elsewhere)

@@ -1,0 +1,11 @@
+2026-03-19T08:02:31.5521001Z ##[group]Run pnpm install --frozen-lockfile
+2026-03-19T08:02:31.5522210Z pnpm install --frozen-lockfile
+2026-03-19T08:02:31.5523001Z ##[endgroup]
+2026-03-19T08:02:32.9011230Z Scope: all 4 workspace projects
+2026-03-19T08:02:33.1102004Z  ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with package.json
+2026-03-19T08:02:33.1103119Z
+2026-03-19T08:02:33.1104001Z Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+2026-03-19T08:02:33.1105102Z
+2026-03-19T08:02:33.1106001Z   Failure reason:
+2026-03-19T08:02:33.1107020Z   specifiers in the lockfile ({"zod":"^3.23.0"}) don't match specs in package.json ({"zod":"^3.24.0"})
+2026-03-19T08:02:33.2210456Z ##[error]Process completed with exit code 1.
