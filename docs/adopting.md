@@ -1,79 +1,81 @@
 # Adopting Rollcage in a real project
 
-The demos show each piece alone. This guide shows them together, in the order a team would turn
-them on, using [rollcage-example](https://github.com/frankTurtle/rollcage-example), a small orders
-service that adopts the library.
+The demos show each piece alone. This guide turns the pieces on in the order a team would, using
+[rollcage-example](https://github.com/frankTurtle/rollcage-example), a small orders service that
+adopts the library. It covers sequencing and checks. Each piece's README has the install detail, so
+this guide links to it instead of repeating it.
 
-Read the phases in order. Each one is small enough to land as one pull request and has a check that
-tells you it worked. Compliance mappings are illustrative, not attestations.
+Before you start:
 
-## Shortcut for a new repo
+- The example's workflows have not been run against GitHub yet, and several live paths in the pieces
+  are unproven (see [follow-ups.md](follow-ups.md)). Treat the "Check" lines as what to expect, and
+  tell us when one differs.
+- `protected_paths` (phase 0) is not in the `v0.2.0` tag. Use a ref that includes it, and pin to a
+  commit SHA either way.
+- Compliance mappings in the pieces are illustrative, not attestations.
 
-Piece 12 scaffolds phases 1 and 2 (risk gate, secrets scan, SBOM triage, policy gates, provenance
-verify) into a new repo:
+## Start the baseline now (piece 03)
 
-```bash
-pnpm --filter @adl/golden-path-template scaffold ~/code/my-service --name my-service --owner my-org --ref <sha>
-```
-
-rollcage-example was started that way. It then added the agent policy (phase 0) and DORA (phase 3).
-For an existing repo, follow the phases below.
+DORA needs weeks of history to mean anything, so set it up first and let it collect while you do
+the rest. Schedule the [piece 03](../pieces/03-dora-metrics/README.md) action weekly
+(`dora.example.yml` is the config) and set `compare-at` to the day you rolled out AI tools. Small
+repos report "not enough samples" until they pass `min_samples`.
 
 ## Phase 0: rules before usage grows
 
-**Piece 02, agent policy.** Copy `policy/AI_CODING_AGENT_POLICY.md` and fill in the placeholders.
-Build the hook (`pnpm --filter @adl/agent-policy build`) and copy `dist/agent-policy-hook.mjs`,
-`templates/settings.json` and `templates/agent-policy.yml` into `.claude/`. Add a CI job that runs
-`agent-policy check --root .` (see `.github/workflows/agent-policy.yml` in the example).
+**[Piece 02, agent policy](../pieces/02-agent-policy/README.md).** Fill in the policy, build the
+hook, copy the hook and templates into `.claude/`, and add a CI job that runs
+`agent-policy check --root .` (the example's `agent-policy.yml` workflow does this).
 
-Set `protected_paths` so an agent cannot edit the guard's own config, hook or policy. In the
-example the list covers `.claude/settings.json`, `.claude/agent-policy.yml`, `.claude/hooks/**`,
-the policy file, the check workflow and CODEOWNERS. A human edits those.
+Set `protected_paths` so an agent cannot edit the guard's own config, hook, policy, check workflow
+or CODEOWNERS. A human edits those. The example's list is in `.claude/agent-policy.yml`.
 
-Check: ask an agent to edit `.claude/agent-policy.yml`. It is blocked with rule `protected-path`
-and the block lands in the audit log.
+Check: pipe a synthetic Edit of `.claude/agent-policy.yml` into the hook
+(`hook pre`). It exits 2 with rule `protected-path`. The block shows in the audit log.
 
-**Piece 04, secrets guard.** Install the pre-commit hook and call the secrets-scan workflow in CI.
-Check: commit a fake AWS key locally and see the commit refused.
+**[Piece 04, secrets guard](../pieces/04-secrets-guard/README.md).** Layer 1 is the pre-commit hook
+(`templates/pre-commit-config.yaml`, `gitleaks.toml` and the built `secrets-guard.mjs`). Layer 2 is
+`templates/workflows/secrets-scan.yml`. Land the CI file with the phase 1 workflows if you want one
+PR.
+
+Check: stage a file with a fake AWS key and run `git commit`. The hook refuses before a commit
+exists, so there is nothing to clean up.
 
 ## Phase 1: gate the pull request
 
-**Piece 01, PR risk gate.** Add `risk-gate.yml` with `mode: observe` and call the gate workflow on
-`pull_request`. Run for a week, read the comments, tune weights, then switch to `enforce`.
+Add these as one PR if you like. They are independent jobs.
 
-**Piece 05, SBOM and CVE triage.** Run it on every PR with `fail-on: critical`. The job fails only
-for unresolved findings that are in KEV or above the EPSS threshold, so it blocks real risk and not
-noise. Use a waivers file for accepted findings, with an end date.
+- **[Piece 01, PR risk gate](../pieces/01-pr-risk-gate/README.md).** Copy `risk-gate.example.yml` to
+  `risk-gate.yml`, start in `mode: observe`, and enforce once the scores look right. Pieces 05 and 06
+  do not wait for that flip.
+- **[Piece 05, SBOM and CVE triage](../pieces/05-sbom-vuln-triage/README.md).** Run it with
+  `fail-on: critical`, and record accepted findings in a waivers file.
+- **[Piece 06, policy gates](../pieces/06-policy-gates/README.md).** Run conftest on Terraform plan
+  JSON and workflow YAML. The example keeps its Terraform in `infra/`; the path is up to you.
 
-**Piece 06, policy gates.** Keep Terraform in `infra/` and run conftest against the plan JSON and the
-workflow files. The example's bucket module sets encryption, public access block and tags so it
-passes; remove one and the job names the violated control.
-
-Check: open a PR that touches `.github/workflows/` and see the risk comment score it higher than a
-docs change.
+Check: the PR that adds these workflows touches `.github/workflows/`, so the risk comment on it
+should score it above a docs-only change. For piece 06, run conftest locally on a plan with a
+violation; the output names the control.
 
 ## Phase 2: trust what you deploy
 
-**Piece 10, provenance.** Build the artifact once, attest it in a manual or release workflow, and
-make the deploy job run the `verify` mode with `signer-workflow` set. Attestation writes a public
-Sigstore entry on public repos, so it runs only when started by hand. The example's current
-`provenance.yml` verifies a build output; attesting a release tarball is the next step there.
+**[Piece 10, provenance](../pieces/10-provenance-signing/README.md).** Start with `verify` on an
+existing build output, with `signer-workflow` set so only your build workflow satisfies it. Add the
+`attest` step when you have a release artifact. Attestation is manual by design because it writes a
+public Sigstore entry on public repos. The example has only the verify half so far.
 
-## Phase 3: show whether it pays off
+## Later, as needed
 
-**Piece 03, DORA metrics.** Add `dora.yml` and the weekly workflow with `compare-at` set to the date
-you rolled out AI tools. Report the five metrics before and after. Expect "not enough samples" for
-small repos; the config has a `min_samples` floor.
+- Operate: [07 CI failure triage](../pieces/07-ci-failure-triage/README.md),
+  [08 AWS cost explainer](../pieces/08-aws-cost-explainer/README.md),
+  [09 postmortem drafter](../pieces/09-postmortem-drafter/README.md).
+- Enable: [11 RAG onboarding](../pieces/11-rag-onboarding/README.md) and
+  [13 multi-agent workflow](../pieces/13-multi-agent-workflow/README.md), both optional.
+- Choose tools: [14 tool eval](../pieces/14-ai-dev-tool-eval/README.md) is for deciding what to buy,
+  so run it before you roll out a new tool, not after.
 
-## Phase 4: operate it (not yet wired in the example)
+## Shortcut for a new repo
 
-- 07 CI failure triage on failed runs; 08 cost explainer on a schedule; 09 postmortem drafter after
-  incidents, with redaction on.
-- 11 RAG onboarding over your own docs and runbooks; 13 multi-agent workflow for changes that need
-  a replayable trace; 14 tool eval before you buy a new AI tool.
-
-## What is not proven
-
-Several live paths are unproven; see [follow-ups.md](follow-ups.md). In particular the example's
-workflows have not been run against GitHub yet, and recorded model responses in the pieces are
-scripted stand-ins.
+[Piece 12](../pieces/12-golden-path-template/README.md) scaffolds pieces 01, 04, 05, 06 and 10 into
+a new repo. The example was started that way. Add phase 0's agent policy and the DORA workflow by
+hand.
