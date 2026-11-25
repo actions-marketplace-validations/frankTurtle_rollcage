@@ -24,8 +24,8 @@ Match the column layout of the existing rows.
 ## docs/sources.md
 
 No new entry. No statistic is cited. The demo script points to the existing DORA 2025 entry
-(association of AI adoption with delivery instability). The GitLab "76%" figure is not used
-anywhere in this piece. Leave the video hook to the orchestrator.
+(association of AI adoption with delivery instability). The unverified GitLab statistic is not
+used anywhere in this piece. The video hook is left to the orchestrator.
 
 ## Contract for piece 12
 
