@@ -28,7 +28,7 @@ describe('AC-4 deactivation', () => {
     expect(tagged?.[0]).toBe('leak-test');
     expect(tagged?.[1]).toMatchObject({
       'secrets-guard-deactivated-at': NOW.toISOString(),
-      'secrets-guard-alert': 'example-org/example-repo#7',
+      'secrets-guard-alert': 'example-org/example-repo:7',
     });
     expect(r.calls.notified).toHaveLength(1);
     expect(r.calls.notified[0]?.subject).toBe('Leaked AWS key deactivated');
@@ -38,6 +38,21 @@ describe('AC-4 deactivation', () => {
       detail: { user: 'leak-test', keySuffix: 'MPLE', leakToActionSeconds: 95, dryRun: false },
     });
     expect(r.calls.audit).toEqual(r.entries);
+  });
+
+  it('uses only characters IAM allows in tag values', async () => {
+    const r = await run();
+    for (const value of Object.values(r.calls.tagged[0]?.[1] ?? {})) {
+      expect(value).toMatch(/^[\p{L}\p{N}\s_.:/=+\-@]+$/u);
+    }
+  });
+
+  it('still reports the key as deactivated and notifies when tagging fails', async () => {
+    const r = await run(event(), { failOn: 'tag' });
+    expect(decisions(r)).toEqual(['deactivated']);
+    expect(r.calls.deactivated).toEqual([[KEY, 'leak-test']]);
+    expect(r.entries[0]?.detail).toMatchObject({ user: 'leak-test', tagError: 'AccessDenied' });
+    expect(r.calls.notified).toHaveLength(1);
   });
 
   it('omits the elapsed time when the alert has no timestamp', async () => {
@@ -121,7 +136,6 @@ describe('AC-9 errors', () => {
   it.each([
     ['iam', { deactivated: 0, tagged: 0, notified: 0 }],
     ['deactivate', { deactivated: 0, tagged: 0, notified: 0 }],
-    ['tag', { deactivated: 1, tagged: 0, notified: 0 }],
     ['notify', { deactivated: 1, tagged: 1, notified: 0 }],
   ] as const)(
     'an AWS failure at %s is audited as an error and stops what follows',

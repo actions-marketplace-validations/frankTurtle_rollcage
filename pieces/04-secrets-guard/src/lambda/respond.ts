@@ -113,16 +113,25 @@ export async function respondToAlert(
       };
     }
     await ports.iam.deactivate(key.id, user);
-    await ports.iam.tagUser(user, {
-      'secrets-guard-deactivated-at': at.toISOString(),
-      'secrets-guard-alert': `${base.repo}#${alert.number}`,
-    });
+    // The key is already inactive. A tagging failure is recorded but must not hide that fact or
+    // skip the notification. IAM tag values cannot contain '#', so the separator is ':'.
+    const tagError = await ports.iam
+      .tagUser(user, {
+        'secrets-guard-deactivated-at': at.toISOString(),
+        'secrets-guard-alert': `${base.repo}:${alert.number}`,
+      })
+      .then(() => undefined)
+      .catch((error: unknown) => errorName(error));
     const seconds = alert.created_at
       ? Math.max(0, Math.round((at.getTime() - Date.parse(alert.created_at)) / 1000))
       : undefined;
     return {
       decision: 'deactivated',
-      detail: { user, ...(seconds === undefined ? {} : { leakToActionSeconds: seconds }) },
+      detail: {
+        user,
+        ...(seconds === undefined ? {} : { leakToActionSeconds: seconds }),
+        ...(tagError === undefined ? {} : { tagError }),
+      },
       notice: {
         subject: 'Leaked AWS key deactivated',
         message: `${what[0]?.toUpperCase()}${what.slice(1)} was set to Inactive ${where}. It was not deleted. Rotate the credentials and review recent activity.`,
