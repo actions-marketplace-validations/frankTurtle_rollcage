@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.6.0 (2026-11-26)
+
+- `rollcage-init` defaults to the v0.6.0 release.
+- README badge linking to the GitHub Actions catalog.
+
 - Root `action.yml`: one umbrella action (`uses: frankTurtle/rollcage@<sha>` with `piece:`) for a GitHub Marketplace
   listing. A test keeps its pins on one version and pointing at real pieces.
 
