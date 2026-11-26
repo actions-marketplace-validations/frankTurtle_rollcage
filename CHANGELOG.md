@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.5.2 (2026-11-25)
+
+- README badges: CI, npm version, npm provenance, release and license. The example repo gets a CI badge.
+
 ## 0.5.1 (2026-11-25)
 
 - `rollcage-init` defaults to the v0.5.0 release instead of v0.4.0. Version 0.5.1 is the first published by
