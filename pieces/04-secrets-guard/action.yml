@@ -1,0 +1,24 @@
+name: Secrets scan
+description: Scan a pull request, push or the full history for leaked secrets with gitleaks.
+author: rollcage
+
+inputs:
+  config:
+    description: Path to a gitleaks config, relative to the workspace. Empty uses the gitleaks defaults.
+    default: ''
+  license:
+    description: GITLEAKS_LICENSE. Free for personal accounts; organizations need one.
+    default: ''
+  github-token:
+    description: Token with contents:read (and pull-requests:read on pull requests).
+    default: ${{ github.token }}
+
+# The caller must check out with fetch-depth: 0 so the scan covers the whole history.
+runs:
+  using: composite
+  steps:
+    - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        GITLEAKS_LICENSE: ${{ inputs.license }}
+        GITLEAKS_CONFIG: ${{ inputs.config }}
