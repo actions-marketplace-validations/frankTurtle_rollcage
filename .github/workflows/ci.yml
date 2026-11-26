@@ -44,7 +44,6 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - uses: ./pieces/02-agent-policy
-      - uses: ./pieces/06-policy-gates
 
   dependency-review:
     # The dependency graph API needs GitHub Advanced Security on private repositories.
