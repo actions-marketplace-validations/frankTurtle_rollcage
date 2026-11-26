@@ -1,0 +1,120 @@
+name: Rollcage
+description: 'AI DevSecOps guardrails for GitHub: PR risk, agent policy, secrets, SBOM, policy gates, DORA, provenance.'
+author: rollcage
+
+branding:
+  icon: shield
+  color: blue
+
+# Pick one gate with `piece`. Each piece is also an action of its own under pieces/, with the full
+# input list; this one covers the common inputs. Set every piece you use to the same version.
+inputs:
+  piece:
+    description: 'risk-gate, agent-policy, dora, secrets, sbom, policy-gates, ci-triage or provenance.'
+    required: true
+  config:
+    description: Config file path (risk-gate, dora, secrets, ci-triage). Empty uses that piece's default.
+    default: ''
+  path:
+    description: Directory or files to scan (sbom, policy-gates).
+    default: ''
+  root:
+    description: Repository root to check (agent-policy).
+    default: ''
+  mode:
+    description: 'risk-gate: enforce or observe. provenance: attest or verify.'
+    default: ''
+  fail-on:
+    description: Lowest severity that fails the job (sbom).
+    default: ''
+  epss-threshold:
+    description: EPSS score above which a finding counts as likely exploited (sbom).
+    default: ''
+  waivers:
+    description: Waivers JSON file (sbom).
+    default: ''
+  live-feeds:
+    description: Fetch KEV and EPSS live (sbom). Set false for the demo snapshots.
+    default: ''
+  policy:
+    description: Policy directory (policy-gates). Empty uses the bundled rules.
+    default: ''
+  days:
+    description: Days of history (dora, ci-triage).
+    default: ''
+  compare-at:
+    description: Date AI tools were rolled out, YYYY-MM-DD (dora).
+    default: ''
+  license:
+    description: GITLEAKS_LICENSE (secrets). Organizations need one.
+    default: ''
+  artifact:
+    description: Artifact path (provenance).
+    default: ''
+  signer-workflow:
+    description: Workflow that must have signed (provenance verify).
+    default: ''
+  repo:
+    description: Repository the attestation must come from (provenance verify).
+    default: ''
+  bundle:
+    description: Offline attestation bundle (provenance verify).
+    default: ''
+  github-token:
+    description: Token for pieces that call the GitHub API.
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - if: inputs.piece == 'risk-gate'
+      uses: frankTurtle/rollcage/pieces/01-pr-risk-gate@v0.6.0
+      with:
+        config: ${{ inputs.config || 'risk-gate.yml' }}
+        mode: ${{ inputs.mode }}
+        github-token: ${{ inputs.github-token }}
+    - if: inputs.piece == 'agent-policy'
+      uses: frankTurtle/rollcage/pieces/02-agent-policy@v0.6.0
+      with:
+        root: ${{ inputs.root || '.' }}
+    - if: inputs.piece == 'dora'
+      uses: frankTurtle/rollcage/pieces/03-dora-metrics@v0.6.0
+      with:
+        config: ${{ inputs.config || 'dora.yml' }}
+        days: ${{ inputs.days || '90' }}
+        compare-at: ${{ inputs.compare-at }}
+        github-token: ${{ inputs.github-token }}
+    - if: inputs.piece == 'secrets'
+      uses: frankTurtle/rollcage/pieces/04-secrets-guard@v0.6.0
+      with:
+        config: ${{ inputs.config }}
+        license: ${{ inputs.license }}
+        github-token: ${{ inputs.github-token }}
+    - if: inputs.piece == 'sbom'
+      uses: frankTurtle/rollcage/pieces/05-sbom-vuln-triage@v0.6.0
+      with:
+        path: ${{ inputs.path || '.' }}
+        fail-on: ${{ inputs.fail-on || 'critical' }}
+        epss-threshold: ${{ inputs.epss-threshold || '0.1' }}
+        waivers: ${{ inputs.waivers }}
+        live-feeds: ${{ inputs.live-feeds || 'true' }}
+    - if: inputs.piece == 'policy-gates'
+      uses: frankTurtle/rollcage/pieces/06-policy-gates@v0.6.0
+      with:
+        path: ${{ inputs.path || '.' }}
+        policy: ${{ inputs.policy }}
+    - if: inputs.piece == 'ci-triage'
+      uses: frankTurtle/rollcage/pieces/07-ci-failure-triage@v0.6.0
+      with:
+        days: ${{ inputs.days || '14' }}
+        config: ${{ inputs.config || 'triage.yml' }}
+        github-token: ${{ inputs.github-token }}
+    - if: inputs.piece == 'provenance'
+      uses: frankTurtle/rollcage/pieces/10-provenance-signing@v0.6.0
+      with:
+        artifact: ${{ inputs.artifact }}
+        mode: ${{ inputs.mode || 'verify' }}
+        signer-workflow: ${{ inputs.signer-workflow }}
+        repo: ${{ inputs.repo || github.repository }}
+        bundle: ${{ inputs.bundle }}
+        github-token: ${{ inputs.github-token }}

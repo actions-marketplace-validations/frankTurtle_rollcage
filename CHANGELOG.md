@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Root `action.yml`: one umbrella action (`uses: frankTurtle/rollcage@<sha>` with `piece:`) for a GitHub Marketplace
+  listing. A test keeps its pins on one version and pointing at real pieces.
+
 - Pieces 02 and 04 are composite actions (`pieces/02-agent-policy`, `pieces/04-secrets-guard`), so eight pieces are now
   `uses:` targets. New `docs/github-actions.md` lists them all.
 - `rollcage-init` and the piece 12 template call those actions instead of cloning rollcage or inlining gitleaks.

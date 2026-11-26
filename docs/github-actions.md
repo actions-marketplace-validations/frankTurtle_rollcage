@@ -23,6 +23,21 @@ A tag such as `@v0.6.0` also works, but a tag can move.
 
 Each action's inputs are listed in its `action.yml`.
 
+## One action for everything
+
+The repository root is an action too. Pick a gate with `piece`:
+
+```yaml
+- uses: frankTurtle/rollcage@<sha> # v0.6.0
+  with:
+    piece: sbom
+    fail-on: high
+```
+
+`piece` is one of `risk-gate`, `agent-policy`, `dora`, `secrets`, `sbom`, `policy-gates`, `ci-triage`
+or `provenance`. The root action carries the common inputs; the per-piece actions above carry all of
+them. The root action calls each piece at the same release tag, so one version covers everything.
+
 ## One workflow, five gates
 
 ```yaml
