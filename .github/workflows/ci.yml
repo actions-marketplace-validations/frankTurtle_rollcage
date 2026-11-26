@@ -35,6 +35,17 @@ jobs:
       - name: The agent hook runs and blocks a secret read
         run: pnpm policy:selftest
 
+  actions-dogfood:
+    # Runs the composite actions from this checkout, so a broken action.yml fails here first.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ./pieces/02-agent-policy
+      - uses: ./pieces/06-policy-gates
+
   dependency-review:
     # The dependency graph API needs GitHub Advanced Security on private repositories.
     if: github.event_name == 'pull_request' && !github.event.repository.private

@@ -1,0 +1,29 @@
+name: Agent policy check
+description: Fail the job if the AI coding agent policy, the Claude Code guardrail settings or the hook are missing or weakened.
+author: rollcage
+
+inputs:
+  root:
+    description: Repository root to check, relative to the workspace.
+    default: '.'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 24
+    - name: Install dependencies
+      shell: bash
+      working-directory: ${{ github.action_path }}/../..
+      run: |
+        corepack enable
+        pnpm install --frozen-lockfile --filter "@adl/agent-policy..."
+    - name: Check agent policy and guardrails
+      shell: bash
+      env:
+        AP_ROOT: ${{ github.workspace }}/${{ inputs.root }}
+        AP_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        "$AP_ACTION_PATH/node_modules/.bin/tsx" "$AP_ACTION_PATH/src/bin.ts" check --root "$AP_ROOT" | tee -a "$GITHUB_STEP_SUMMARY"
+        exit "${PIPESTATUS[0]}"

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Pieces 02 and 04 are composite actions (`pieces/02-agent-policy`, `pieces/04-secrets-guard`), so eight pieces are now
+  `uses:` targets. New `docs/github-actions.md` lists them all.
+- `rollcage-init` and the piece 12 template call those actions instead of cloning rollcage or inlining gitleaks.
+
 ## 0.5.2 (2026-11-25)
 
 - README badges: CI, npm version, npm provenance, release and license. The example repo gets a CI badge.
