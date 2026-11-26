@@ -83,7 +83,7 @@ test('empty repo: writes every default piece, pinned by SHA, nothing unfilled', 
   for (const file of ['gate-pr-risk', 'sbom-vuln', 'policy-gates', 'dora-weekly', 'provenance']) {
     assert.match(read(dir, `.github/workflows/${file}.yml`), SHA_PIN, file);
   }
-  assert.match(read(dir, '.github/workflows/agent-policy.yml'), /ref: [0-9a-f]{40} # /);
+  assert.match(read(dir, '.github/workflows/agent-policy.yml'), SHA_PIN);
   assert.match(read(dir, '.github/CODEOWNERS'), /@acme/);
   assert.match(read(dir, '.github/workflows/provenance.yml'), /acme\/widgets\/\.github/);
   assert.equal(read(dir, 'risk-gate.yml').includes('mode: observe'), true);
@@ -177,9 +177,7 @@ test('embedded action pins match piece 12 template, and a dash-leading ref is re
   const dir = repo();
   init(dir);
   const generated = read(dir, '.github/workflows/agent-policy.yml');
-  for (const action of ['actions/checkout', 'pnpm/action-setup', 'actions/setup-node']) {
-    const pin = new RegExp(`${action}@[0-9a-f]{40} # \\S+`);
-    assert.equal(generated.match(pin)?.[0], template.match(pin)?.[0], action);
-  }
+  const pin = /actions\/checkout@[0-9a-f]{40} # \S+/;
+  assert.equal(generated.match(pin)?.[0], template.match(pin)?.[0]);
   assert.match(init(repo(), '--ref=--upload-pack=x').err, /invalid --ref/);
 });

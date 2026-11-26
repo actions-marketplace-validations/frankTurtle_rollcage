@@ -4,6 +4,7 @@
 [![npm](https://img.shields.io/npm/v/rollcage-init?label=rollcage-init)](https://www.npmjs.com/package/rollcage-init)
 [![provenance](https://img.shields.io/badge/npm-provenance-blue)](https://www.npmjs.com/package/rollcage-init#provenance)
 [![release](https://img.shields.io/github/v/release/frankTurtle/rollcage)](https://github.com/frankTurtle/rollcage/releases)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-8_reusable_actions-2088FF?logo=githubactions&logoColor=white)](docs/github-actions.md)
 [![license](https://img.shields.io/github/license/frankTurtle/rollcage)](LICENSE)
 
 **The AI DevSecOps Library: making AI-accelerated delivery safe to ship, and measurable.**
@@ -42,8 +43,10 @@ examples:
 have to answer "is this safe, and is it working?". You do not need to adopt everything. Most teams
 start with pieces 02, 01 and 03.
 
-**How you use it.** You do not install it as a package. You copy or reference the pieces you want
-into your own repo (GitHub Actions, a Claude Code hook, a config file). A worked example of a real
+**How you use it.** Run `npx rollcage-init` to set it up in one command, or call a piece directly:
+`uses: frankTurtle/rollcage/pieces/02-agent-policy@<sha>`. Eight pieces are
+[reusable GitHub Actions](docs/github-actions.md). Others you copy into your own repo (a Claude Code
+hook, a config file). A worked example of a real
 repo that does this is [rollcage-example](https://github.com/frankTurtle/rollcage-example), and
 [docs/adopting.md](docs/adopting.md) walks through the order to turn things on.
 

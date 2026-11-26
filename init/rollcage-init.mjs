@@ -26,7 +26,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 
-const DEFAULT_REF = 'v0.5.0';
+const DEFAULT_REF = 'v0.6.0';
 const REPO_URL = 'https://github.com/frankTurtle/rollcage';
 export const DEFAULT_PIECES = ['01', '02', '03', '04', '05', '06', '10'];
 const PIECE_NAMES = {
@@ -41,7 +41,6 @@ const PIECE_NAMES = {
 
 const CHECKOUT = 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1';
 const PNPM = 'pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1';
-const NODE = 'actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0';
 
 class InitError extends Error {}
 
@@ -247,29 +246,11 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: rollcage
     steps:
       - uses: ${CHECKOUT}
         with:
-          path: app
           persist-credentials: false
-      - uses: ${CHECKOUT}
-        with:
-          repository: frankTurtle/rollcage
-          ref: ${pinned(ctx)}
-          path: rollcage
-          fetch-depth: 1
-          persist-credentials: false
-      - uses: ${PNPM}
-        with:
-          package_json_file: rollcage/package.json
-      - uses: ${NODE}
-        with:
-          node-version: 24
-      - run: pnpm install --frozen-lockfile --filter "@adl/agent-policy..."
-      - run: pnpm --filter @adl/agent-policy exec tsx src/bin.ts check --root "$GITHUB_WORKSPACE/app"
+      - uses: frankTurtle/rollcage/pieces/02-agent-policy@${pinned(ctx)}
 `;
 
 const doraWorkflow = (

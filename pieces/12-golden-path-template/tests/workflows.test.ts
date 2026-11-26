@@ -130,8 +130,10 @@ describe('ci.yml wiring (AC6)', () => {
     expect(prov).toMatch(/mode: /);
   });
 
-  it('piece 04 is the gitleaks scan from its template', () => {
-    expect(workflows['secrets-scan.yml']).toContain('gitleaks/gitleaks-action@');
+  it('piece 04 calls the secrets-guard action', () => {
+    expect(workflows['secrets-scan.yml']).toContain(
+      'frankTurtle/rollcage/pieces/04-secrets-guard@v0.4.0',
+    );
   });
 
   it('only the risk gate job is granted pull-requests: write', () => {
